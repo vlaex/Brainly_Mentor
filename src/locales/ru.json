@@ -1,0 +1,10 @@
+{
+  "actions": "Акции",
+  "approveAction": "Одобрить!",
+  "disapproveAction": "Неверно!",
+  "revertAction": "Вернуть из одобренных/неверных",
+  "answerDeleted": "Ответ удалён",
+  "questionDeleted": "Вопрос удалён",
+  "commentDeleted": "Комментарий удалён",
+  "attachmentDeleted": "Вложение удалено"
+}

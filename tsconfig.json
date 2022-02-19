@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "allowJs": true,
+    "baseUrl": "./src",
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@locales/*": ["./src/locales/*"]
+    }
+  },
+  "exclude": ["node_modules", "build"],
+  "include": ["src"]
+}

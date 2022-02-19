@@ -1,0 +1,27 @@
+{
+  "author": "andrewss",
+  "manifest_version": 3,
+  "name": "Brainly Mentor",
+  "host_permissions": [
+    "*://znanija.com/*",
+    "*://brainly.com/*"
+  ],
+  "permissions": ["storage"],
+  "content_scripts": [{
+    "matches": ["*://znanija.com/moderation_new/view_moderator/*"],
+    "js": [
+      "content-scripts/ModeratorActions/Init.js",
+      "assets/styleguide-icons.js"
+    ]
+  }],
+  "icons": {
+    "128": "icons/icon.png"
+  },
+  "action": {
+    "default_icon": "icons/icon.png"
+  },
+  "web_accessible_resources": [{
+    "matches": ["<all_urls>"],
+    "resources": ["styles/*"]
+  }]
+}
