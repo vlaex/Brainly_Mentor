@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowJs": true,
     "baseUrl": "./src",
     "target": "es6",
@@ -9,7 +9,10 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "paths": {
-      "@locales/*": ["./src/locales/*"]
+      "@locales": ["./locales"],
+      "@typings*": ["typings*", "typings"],
+      "@lib/*": ["./lib/*"],
+      "@utils/*": ["./utils/*"]
     }
   },
   "exclude": ["node_modules", "build"],

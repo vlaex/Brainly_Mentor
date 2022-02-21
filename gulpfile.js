@@ -14,7 +14,7 @@ task("manifest", () => {
     version: process.env.npm_package_version,
     content_scripts: [{
       matches: generateMarketUrls("/moderation_new/view_moderator/*"),
-      js: ["content-scripts/ModeratorActions/Init.js", "assets/styleguide-icons.js"]
+      js: ["content-scripts/ModeratorActions/index.js", "assets/styleguide-icons.js"]
     }]
   };
 

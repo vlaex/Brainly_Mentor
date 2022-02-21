@@ -7,13 +7,6 @@
     "*://brainly.com/*"
   ],
   "permissions": ["storage"],
-  "content_scripts": [{
-    "matches": ["*://znanija.com/moderation_new/view_moderator/*"],
-    "js": [
-      "content-scripts/ModeratorActions/Init.js",
-      "assets/styleguide-icons.js"
-    ]
-  }],
   "icons": {
     "128": "icons/icon.png"
   },

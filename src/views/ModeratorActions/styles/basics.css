@@ -1,8 +1,31 @@
-.sg-spinner.js-react-container-spinner {
-  width: 140px;
-  height: 140px;
+[hidden], .hidden, body:not(.brainlyMentor) {
+  display: none !important;
+}
+
+.js-react-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.js-react-loading-container,
+.js-react-error-container {
+  margin: auto;
+  align-items: center;
+  flex-direction: column;
+}
+
+.js-react-loading-container > *:last-child,
+.js-react-error-container > *:last-child {
+  margin-top: 10px;
+}
+
+.js-react-loading-container > .sg-spinner {
+  width: 100px;
+  height: 100px;
   border-width: 3px;
 }
+
 header.sg-header {
   background: white;
 }
@@ -14,7 +37,7 @@ header.sg-header {
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 10px;
   margin: 10px;
-  margin-top: 3rem;
+  margin-top: 5rem;
 }
 
 .actions > .Action {
@@ -90,7 +113,7 @@ header.sg-header {
   margin-left: auto;
 }
 
-.action:not(.Action-Disapproved):not(.Action-Approved) .Action-Operations .revert-action,
+.Action:not(.Action-Disapproved):not(.Action-Approved) .Action-Operations .revert-action,
 .Action.Action-Disapproved .Action-Operations .sg-button:not(.revert-action),
 .Action.Action-Approved .Action-Operations .sg-button:not(.revert-action) {
   display: none;
@@ -113,7 +136,7 @@ header.sg-header {
 .sg-button.disapprove-action {
   background: #e75745;
 }
-.sg-button.disapprove-action:hover, .sg-button.disapprove-action:active:focus {
+.sg-button.disapprove-action:hover, .sg-button.disapprove-action:active {
   background: #cf4d3d !important;
 }
 .sg-button {

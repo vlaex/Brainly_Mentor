@@ -1,0 +1,57 @@
+export default {
+  "market": "us",
+  "marketURL": "https://brainly.com",
+  "marketHost": "brainly.com",
+  "marketName": "brainly",
+  "messages": {
+    "loading": "Loading...",
+    "actions": "Actions",
+    "tryAgain": "Try again",
+    "approveAction": "Approve!",
+    "disapproveAction": "Disapprove!",
+    "revertAction": "Revert this action",
+    "answerDeleted": "Answer deleted",
+    "questionDeleted": "Question deleted",
+    "commentDeleted": "Comment deleted",
+    "attachmentDeleted": "Attachment deleted",
+    "contentAccepted": "Content accepted",
+    "toCorrect": "Asked for correction"
+  },
+  "errors": {
+    "couldNotLoadActions": "We could not load moderator actions :("
+  },
+  "dateTimeFormat": "DD.MM.YYYY, hh:mm:ss",
+  "taskPathFormat": "/question",
+  "deleteReasons": [
+    {"name": "Спам", "regex": /не является ответом\s|осмысленные вопросы/i, "id": 1},
+    {"name": "Оскорбления", "regex": /оскорбительного содержания|оскорбительные слова/i, "id": 2},
+    {"name": "Культура", "regex": /в грубой форме/i, "id": 3},
+    {"name": "Контрольная", "regex": /контрольных/i, "id": 4},
+    {"name": "Реклама", "regex": /реклам/i, "id": 5},
+    {"name": "Копия/плагиат", "regex": /скопирован с [^онлайн]/i, "id": 6},
+    {"name": "Онлайн-калькулятор", "regex": /онлайн калькулятора|photomath/i, "id": 7},
+    {"name": "Не ответ", "regex": /комментарий не является ответом/i, "id": 8},
+    {"name": "Ссылки", "regex": /ссылки на другие сайты|ссылок на сторонние ресурсы/i, "id": 9},
+    {"name": "Неполное условие", "regex": /вопрос непонятен/i, "id": 10},
+    {"name": "Учебник", "regex": /вопрос из учебника/i, "id": 11},
+    {"name": "Не тот предмет", "regex": /в соответствующем ему предмете/i, "id": 12},
+    {"name": "Не школа", "regex": /не связан с тематикой/i, "id": 13},
+    {"name": "Банальный", "regex": /является слишком простым/i, "id": 14},
+    {"name": "Нет приложения", "regex": /качественное приложение/i, "id": 15},
+    {"name": "Пропало приложение", "regex": /решение, данное Вами во вложении/i, "id": 16},
+    {"name": "Много вопросов", "regex": /больше 3 вопросов/i, "id": 17},
+    {"name": "Проверить ответ", "regex": /проверить Ваше решение/i, "id": 18},
+    {"name": "Изменить язык", "regex": /не относящимся к литературе и языку/i, "id": 19},
+    {"name": "Неверный ответ", "regex": /ответ содержит ошибки/i, "id": 20},
+    {"name": "Неполный ответ", "regex": /не является полным/i, "id": 21},
+    {"name": "Нет расчётов", "regex": /не содержит шагов решения/i, "id": 22},
+    {"name": "Переводчик", "regex": /онлайн-переводчика/i, "id": 23},
+    {"name": "Не тот ответ", "regex": /не\s{1,}соответствует заданному вопросу/i, "id": 24},
+  ],
+  "regexps": {
+    "accepted": /принятые/i,
+    "deleted": /удален/i,
+    "answer": /решение/i,
+    "sentForCorrection": /отмечено не верно/i
+  }
+}

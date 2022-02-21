@@ -1,5 +1,3 @@
-class BrainlyApi {
-  private graphqlURL = "https://brainly.com/graphql";
-}
+class BrainlyApi {}
 
 export default new BrainlyApi();

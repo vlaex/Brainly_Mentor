@@ -3,15 +3,17 @@ const path = require("path");
 const webpack = require("webpack");
 
 const TerserPlugin = require("terser-webpack-plugin");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 let contentScriptFiles = glob.sync("./src/views/*/*(*.ts|*.tsx|*.js|*.jsx)");
 let contentScriptEntries = {};
 
 for(let file of contentScriptFiles) {
   let fileSplitted = file.split(/\.|\//);
+  let len = fileSplitted.length;
 
-  let folderName = fileSplitted.at(-3);
-  let scriptName = fileSplitted.at(-2);
+  let folderName = fileSplitted[len - 3];
+  let scriptName = fileSplitted[len - 2];
 
   contentScriptEntries[`content-scripts/${folderName}/${scriptName}`] = file;
 }
@@ -42,7 +44,8 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".js", ".tsx", ".sass"],
+    extensions: [".ts", ".js", ".tsx"],
+    plugins: [new TsconfigPathsPlugin()]
   },
   target: "web",
   devtool: "cheap-module-source-map"
