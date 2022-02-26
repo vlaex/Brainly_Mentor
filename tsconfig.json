@@ -12,7 +12,8 @@
       "@locales": ["./locales"],
       "@typings*": ["typings*", "typings"],
       "@lib/*": ["./lib/*"],
-      "@utils/*": ["./utils/*"]
+      "@utils/*": ["./utils/*"],
+      "@assets/*": ["./assets/*"]
     }
   },
   "exclude": ["node_modules", "build"],

@@ -1,14 +1,14 @@
 import {
-  ApiFailedResponse, 
-  ApiSuccessResponse, 
+  Action,
   Candidate, 
   Market, 
-  Mentee 
+  Mentee, 
+  BasicSuccessResponse
 } from "@typings";
 
 class Api {
   private extApiURL = process.env.NODE_ENV === "development" ? 
-    "http://localhost:8000" :
+    "http://localhost:8080" :
     "https://mentors.br-helper.com";
 
   private market: "ru" | "us" = "us";
@@ -39,26 +39,29 @@ class Api {
 
     if(res.error) throw Error(res.error);
 
-    return res.data;
+    return res;
+  }
+
+  public async GetActions(userId: number, pageId: number): Promise<{
+    actions: Action[],
+    pagination: {
+      hasMore: boolean;
+      nextPage?: number;
+    }
+  }> {
+    return await this.Req("GET", `actions/${userId}/${pageId}`);
   }
 
   public async GetMentees(): Promise<{
-    data: Mentee[]
+    mentors: Mentee[];
   }> {
     return await this.Req("GET", "mentees");
   }
 
-  public async AddMentee(data: {
-    privileges: number[];
-    id: number;
-  }): Promise<ApiFailedResponse | ApiSuccessResponse> {
-    return await this.Req("POST", "mentees", data);
-  }
-
   public async ReviewAction(
     actionHash: string,
-    actionStatus: "approved" | "disapproved"
-  ): Promise<ApiSuccessResponse | ApiFailedResponse> {
+    actionStatus?: "approved" | "disapproved"
+  ): Promise<BasicSuccessResponse> {
     return await this.Req("POST", "actions/review", {
       hash: actionHash,
       status: actionStatus
@@ -66,20 +69,21 @@ class Api {
   }
 
   /** Candidates - ru market only */
-  public async GetCandidates(): Promise<ApiFailedResponse | {
-    data: Candidate[]
+  public async GetCandidates(): Promise<{
+    candidates: Candidate[];
   }> {
     return await this.Req("GET", "candidates");
   }
 
-  public async GetCandidate(userId: number): Promise<ApiFailedResponse | {
-    data: Candidate
+  public async GetCandidate(userId: number): Promise<{
+    candidate: Candidate;
   }> {
     return await this.Req("GET", `candidate/${userId}`);
   }
 
-  public async CheckCandidate(userId: number): Promise<ApiFailedResponse | {
-    data: { errors: string[] }
+  public async CheckCandidate(userId: number): Promise<{
+    checked: true;
+    errors: string[];
   }> {
     return await this.Req("POST", `candidates/${userId}/check`);
   }

@@ -1,8 +1,5 @@
-export type ApiFailedResponse = {
-  error: string;
-}
-export type ApiSuccessResponse = {
-  data: any;
+export type BasicSuccessResponse = {
+  success: true;
 }
 
 export enum Market {
@@ -12,22 +9,28 @@ export enum Market {
 
 export type Action = {
   hash: string;
-  beautifiedDate: string;
   taskId: number;
   taskLink: string;
-  contentType: "answer" | "question" | "comment" | "attachment" | "unknown";
-  type: "deleted" | "accepted" | "sentForCorrection";
-  content?: string;
-  reason?: string;
-  reasonShort?: string;
+  content: string;
   user: {
-    nick: string;
+    link: string;
     id: number;
+    nick: string;
+    avatar?: string;
   };
-  disapproved: boolean;
-  approved: boolean;
+  date: string;
+  reviewStatus?: "approved" | "disapproved";
+  autoReview?: unknown;
+  contentType: "answer" | "question" | "comment" | "attachment" | "unknown";
+  type: "DELETED" | "ACCEPTED" | "REPORTED_FOR_CORRECTION";
+  shortReason: string;
   localizedType: string;
-  icon: string;
+  frontIcon: string;
+  reason: {
+    full: string;
+    short: string;
+    id?: number;
+  }
 };
 
 export type Mentee = {

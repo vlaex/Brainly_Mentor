@@ -1,0 +1,75 @@
+@import "./basics";
+@import "./layout";
+
+// Actions
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 10px;
+  width: 100%;
+  overflow: auto;
+  max-height: calc(100vh - 65px);
+  padding: 10px 5px 10px 10px;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cbcbcb;
+  transition-duration: .3s;
+
+  & .action-content {
+    font-size: 14px;
+    line-height: 1.2;
+    margin: 8px 0 12px 0;
+    height: 105px;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &.action-approved {
+    background-color: #c3ffe1 !important;
+    border-color: #60d399 !important;
+  }
+  &.action-disapproved {
+    background-color: #ffd4ce !important;
+    border-color: #ff7968 !important;
+  }
+
+  & .action-operations {
+    margin-left: auto;
+  }
+
+  &.action-disapproved, &.action-approved {
+    .action-operations .sg-button:not(.revert-action) {
+      display: none;
+    }
+  }
+
+  &:not(.action-disapproved):not(.action-approved) .action-operations .revert-action {
+    display: none;
+  }
+
+}
+
+// Pagination
+
+.actions-pagination {
+  gap: 10px;
+  padding: 15px 0;
+  border-bottom: 2px solid #e1eaf1;
+
+  &[disabled] {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+}
+
+.sg-button.disapprove-action .sg-icon {
+  transform: scale(-1, 1);
+}

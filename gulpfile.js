@@ -1,22 +1,15 @@
-const { src, task, dest, series } = require("gulp");
+const { src, task, dest, series, watch } = require("gulp");
+
 const gulpChange = require("gulp-change");
 const mergeDeep = require("merge-deep");
+const sass = require("gulp-dart-sass");
+
+const { GetFiles, ExtractFolder } = require("./scripts/getFiles");
 
 const BUILD_FOLDER = "./build";
 
 task("manifest", () => {
-  const generateMarketUrls = (path) => {
-    const markets = ["*://znanija.com", "*://brainly.com"];
-    return markets.map(market => market + path);
-  }
-
-  const manifestData = {
-    version: process.env.npm_package_version,
-    content_scripts: [{
-      matches: generateMarketUrls("/moderation_new/view_moderator/*"),
-      js: ["content-scripts/ModeratorActions/index.js", "assets/styleguide-icons.js"]
-    }]
-  };
+  const manifestData = { version: process.env.npm_package_version };
 
   return src("./manifest.json")
     .pipe(
@@ -42,6 +35,22 @@ task("assets", () => {
   });
 
   return src(".");
+});
+
+task("sass", () => {
+  let files = GetFiles("./src/styles/*/styles.scss");
+
+  for (let file of files) {
+    src(file)
+      .pipe(sass({ outputStyle: "compressed" }))
+      .pipe(dest(`${BUILD_FOLDER}/styles/${ExtractFolder(file)}`));
+  }
+  
+  return src(".");
 })
 
-exports.default = series("manifest", "assets");
+task("watch", () => {
+  watch(["./src/styles/*/styles.scss"], series("sass"));
+})
+
+exports.default = series("manifest", "assets", "sass", "watch");

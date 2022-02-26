@@ -1,27 +1,36 @@
-const { glob } = require("glob");
 const path = require("path");
 const webpack = require("webpack");
-
 const TerserPlugin = require("terser-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
-let contentScriptFiles = glob.sync("./src/views/*/*(*.ts|*.tsx|*.js|*.jsx)");
-let contentScriptEntries = {};
+const { GetFiles, ExtractFolder } = require("./scripts/getFiles");
 
-for(let file of contentScriptFiles) {
-  let fileSplitted = file.split(/\.|\//);
-  let len = fileSplitted.length;
+function MakeEntries(
+  pattern, 
+  outputFolder,
+  bundleFileName,
+  withFolder = true
+) {
+  let files = GetFiles(pattern);
+  let entries = {};
 
-  let folderName = fileSplitted[len - 3];
-  let scriptName = fileSplitted[len - 2];
+  for(let file of files) {
+    let bundleFile = `${outputFolder}`;
+    if (withFolder) bundleFile += `/${ExtractFolder(file)}`;
+    bundleFile += `/${bundleFileName}`;
 
-  contentScriptEntries[`content-scripts/${folderName}/${scriptName}`] = file;
+    if(!entries[bundleFile]) entries[bundleFile] = [];
+    entries[bundleFile].push(file);
+  }
+
+  return entries;
 }
 
 /** @type {webpack.Configuration} */
 module.exports = {
   entry: {
-    ...contentScriptEntries
+    ...MakeEntries("./src/views/*/*(*.ts|*.tsx|*.js|*.jsx)", "content-scripts", "index", true),
+    ...MakeEntries("./src/views/Inject.ts", "content-scripts", "contentScript", false)
   },
   output: {
     path: path.resolve(__dirname, "build"),
@@ -30,10 +39,6 @@ module.exports = {
     rules: [{
       test: /\.tsx?$/,
       use: "ts-loader",
-      exclude: /node_modules/,
-    }, {
-      test: /\.css$/i,
-      use: ["style-loader", "css-loader"],
       exclude: /node_modules/
     }],
   },
@@ -45,8 +50,10 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".js", ".tsx"],
-    plugins: [new TsconfigPathsPlugin()]
+    plugins: [
+      new TsconfigPathsPlugin()
+    ]
   },
   target: "web",
-  devtool: "cheap-module-source-map"
+  devtool: "inline-cheap-source-map"
 };

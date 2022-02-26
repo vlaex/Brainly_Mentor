@@ -1,0 +1,45 @@
+#app, 
+#app > div:first-child.js-react-loading-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.js-react-loading-container,
+.js-react-error-container {
+  margin: auto;
+  align-items: center;
+  flex-direction: column;
+
+  > *:last-child {
+    margin-top: 10px;
+  }
+}
+
+.js-react-loading-container > .sg-spinner {
+  width: 100px;
+  height: 100px;
+  border-width: 3px;
+}
+
+.layout {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  overflow: hidden;
+
+  & > .sg-flex:last-child:not(.js-react-loading-container) {
+    background: #f5f8fa;
+  }
+}
+
+.layout-aside-container {
+  border-right: 2px solid #e1eaf1;
+  padding: 10px;
+
+  & .sg-home-button {
+    height: 40px;
+    width: auto;
+  }
+}

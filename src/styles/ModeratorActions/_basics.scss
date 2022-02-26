@@ -1,0 +1,23 @@
+[hidden], .hidden {
+  display: none !important;
+}
+
+.sg-flex--margin-top-auto {
+  margin-top: auto;
+}
+
+.sg-button {
+  flex-shrink: 0;
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.flash-messages {
+  position: fixed;
+  z-index: 10000;
+  top: 4rem;
+  left: 3.9rem;
+  right: 0;
+}

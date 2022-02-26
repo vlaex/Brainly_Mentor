@@ -16,5 +16,13 @@
   "web_accessible_resources": [{
     "matches": ["<all_urls>"],
     "resources": ["styles/*"]
+  }, {
+    "matches": ["<all_urls>"],
+    "resources": ["content-scripts/*"]
+  }],
+  "content_scripts": [{
+    "matches": ["*://znanija.com/*", "*://brainly.com/*"],
+    "js": ["content-scripts/contentScript.js"],
+    "run_at": "document_start"
   }]
 }

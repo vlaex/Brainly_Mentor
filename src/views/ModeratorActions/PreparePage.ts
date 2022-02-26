@@ -1,21 +1,11 @@
-export async function PreparePage() {
-  const modElement = document.querySelector("#content-old > h1 .nick");
-  const moderator: {
-    nick: string;
-    link: string;
-    id: number;
-  } = {
-    nick: modElement.textContent,
-    link: modElement.getAttribute("href"),
-    id: +modElement.getAttribute("href").match(/\d+$/)[0],
-  };
+import locales from "@locales";
 
-  document.title = moderator.nick;
-  document.body.innerHTML = "";
+export async function PreparePage() {
+  document.title = locales.messages.actions;
   document.body.insertAdjacentHTML("afterbegin", `<div id="app"></div>`);
 
   let brainlyLinks = document.querySelectorAll(`
-    script[src*="zadanium"], script[src*="chat/bind"], link[type="text/css"]
+    script[src*="zadanium"], script[src*="chat/bind"], link:not([data-brainly-mentor])[rel="stylesheet"]
   `);
   brainlyLinks.forEach(e => e.remove());
 
