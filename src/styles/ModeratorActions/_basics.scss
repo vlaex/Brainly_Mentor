@@ -10,8 +10,12 @@
   flex-shrink: 0;
 
   &[disabled] {
-    opacity: 0.5;
+    opacity: .1;
   }
+}
+
+.sg-flex.sg-flex--relative {
+  position: relative !important;
 }
 
 .flash-messages {

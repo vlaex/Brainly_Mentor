@@ -1,0 +1,22 @@
+#open-mentees-dashboard-btn {
+  position: fixed;
+  top: 8rem;
+  right: 3.5rem;
+  transition: .5s ease;
+
+  &.to-bottom {
+    transform: translate(2.6rem, 2.5rem);
+  }
+}
+
+#mentees-dashboard-overlay {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  position: fixed;
+  z-index: 1000;
+  background: rgb(0 0 0 / 67%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

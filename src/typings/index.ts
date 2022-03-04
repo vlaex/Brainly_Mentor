@@ -13,36 +13,41 @@ export type Action = {
   taskLink: string;
   content: string;
   user: {
-    link: string;
-    id: number;
     nick: string;
+    id: number;
     avatar?: string;
   };
   date: string;
-  reviewStatus?: "approved" | "disapproved";
-  autoReview?: unknown;
+  reviewStatus: "APPROVED" | "DISAPPROVED" | "NONE";
   contentType: "answer" | "question" | "comment" | "attachment" | "unknown";
-  type: "DELETED" | "ACCEPTED" | "REPORTED_FOR_CORRECTION";
-  shortReason: string;
+  type: "DELETED" | "ACCEPTED" | "REPORTED_FOR_CORRECTION" | "UNKNOWN";
   localizedType: string;
   frontIcon: string;
   reason: {
-    full: string;
-    short: string;
-    id?: number;
-  }
-};
+    fullText: string;
+    shortReason: string;
+    id: number;
+  };
 
-export type Mentee = {
-  market: Market;
-  mentor: string; // mentor hash
-  note: string;
-  nick: string;
-  id: number;
-  privileges: number[];
+  /** client only fields */
+  isModerator?: boolean;
 }
 
-export type Candidate = {
-  status: string;
-  link: string;
+export type Mentee = {
+  id: number;
+  market: Market;
+  mentorId: number;
+  nick: string;
+  note: string;
+  avatar?: string;
+  specialRanks?: {
+    name: string;
+    id: string;
+  }[]
+}
+
+export type ActionFilters = {
+  hideComments?: boolean;
+  contentType?: string;
+  type?: string;
 }

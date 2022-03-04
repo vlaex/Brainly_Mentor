@@ -1,18 +1,20 @@
 {
-  "author": "andrewss",
+  "author": "andrewss <andrewss.krlv@gmail.com>",
+  "name": "__MSG_name__",
+  "description": "__MSG_description__",
   "manifest_version": 3,
-  "name": "Brainly Mentor",
-  "host_permissions": [
-    "*://znanija.com/*",
-    "*://brainly.com/*"
-  ],
-  "permissions": ["storage"],
+  "default_locale": "en",
   "icons": {
     "128": "icons/icon.png"
   },
   "action": {
     "default_icon": "icons/icon.png"
   },
+  "host_permissions": [
+    "*://znanija.com/*",
+    "*://brainly.com/*"
+  ],
+  "permissions": ["storage"],
   "web_accessible_resources": [{
     "matches": ["<all_urls>"],
     "resources": ["styles/*"]
@@ -24,5 +26,8 @@
     "matches": ["*://znanija.com/*", "*://brainly.com/*"],
     "js": ["content-scripts/contentScript.js"],
     "run_at": "document_start"
-  }]
+  }],
+  "background": {
+    "service_worker": "background/serviceWorker.js"
+  }
 }

@@ -4,7 +4,7 @@ const gulpChange = require("gulp-change");
 const mergeDeep = require("merge-deep");
 const sass = require("gulp-dart-sass");
 
-const { GetFiles, ExtractFolder } = require("./scripts/getFiles");
+const { GetFiles, ExtractFolder } = require("./scripts/files");
 
 const BUILD_FOLDER = "./build";
 
@@ -26,8 +26,8 @@ task("assets", () => {
     src: "./src/icons/**/*",
     buildDir: "icons"
   }, {
-    src: "./src/assets/**/*",
-    buildDir: "assets"
+    src: "./src/_locales/**/*",
+    buildDir: "_locales"
   }];
 
   assets.forEach(asset => {
@@ -50,7 +50,7 @@ task("sass", () => {
 })
 
 task("watch", () => {
-  watch(["./src/styles/*/styles.scss"], series("sass"));
+  watch(["./src/styles/*/*.scss"], series("sass"));
 })
 
 exports.default = series("manifest", "assets", "sass", "watch");

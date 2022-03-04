@@ -27,29 +27,36 @@ class BrainlyApi {
     return await this.GQL(`{ ${q} }`);
   }
 
-  public async GetUserAvatars(userIds: number[]): Promise<{
+  public async GetUsers(userIds: number[]): Promise<{
     id: number;
     avatar: string;
+    specialRanks: {
+      name: string;
+      id: string;
+    }[];
   }[]> {
+    if (!userIds.length) return [];
+
     let queries = {};
 
     userIds.forEach(id => {
       let key = `_${id}`;
-      queries[key] = `userById(id: ${id}) { avatar {thumbnailUrl} }`;
+      queries[key] = `userById(id: ${id}) { 
+        avatar {thumbnailUrl}
+        specialRanks {name id}
+      }`;
     })
 
     let data = await this.GQLMultiple(queries)
     data = data.data;
 
-    let users: {
-      id: number;
-      avatar: string;
-    }[] = [];
+    let users = [];
     
     for(let key of Object.keys(data)) {
       users.push({
         id: +key.replace(/_/, ""),
-        avatar: data[key]?.avatar?.thumbnailUrl || "/img/avatars/100-ON.png"
+        avatar: data[key]?.avatar?.thumbnailUrl || "/img/avatars/100-ON.png",
+        specialRanks: data[key]?.specialRanks || []
       });
     }
     

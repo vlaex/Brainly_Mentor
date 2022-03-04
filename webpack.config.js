@@ -3,34 +3,15 @@ const webpack = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
-const { GetFiles, ExtractFolder } = require("./scripts/getFiles");
-
-function MakeEntries(
-  pattern, 
-  outputFolder,
-  bundleFileName,
-  withFolder = true
-) {
-  let files = GetFiles(pattern);
-  let entries = {};
-
-  for(let file of files) {
-    let bundleFile = `${outputFolder}`;
-    if (withFolder) bundleFile += `/${ExtractFolder(file)}`;
-    bundleFile += `/${bundleFileName}`;
-
-    if(!entries[bundleFile]) entries[bundleFile] = [];
-    entries[bundleFile].push(file);
-  }
-
-  return entries;
-}
+const MakeEntries = require("./scripts/makeEntries");
 
 /** @type {webpack.Configuration} */
-module.exports = {
+const config = {
   entry: {
     ...MakeEntries("./src/views/*/*(*.ts|*.tsx|*.js|*.jsx)", "content-scripts", "index", true),
-    ...MakeEntries("./src/views/Inject.ts", "content-scripts", "contentScript", false)
+    ...MakeEntries("./src/views/Inject.ts", "content-scripts", "contentScript"),
+    ...MakeEntries("./src/background/*.ts", "background", "serviceWorker"),
+    ...MakeEntries("./src/assets/styleguide-icons.ts", "assets", "styleguide-icons")
   },
   output: {
     path: path.resolve(__dirname, "build"),
@@ -42,12 +23,6 @@ module.exports = {
       exclude: /node_modules/
     }],
   },
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({ extractComments: false })
-    ],
-  },
   resolve: {
     extensions: [".ts", ".js", ".tsx"],
     plugins: [
@@ -57,3 +32,14 @@ module.exports = {
   target: "web",
   devtool: "inline-cheap-source-map"
 };
+
+if (process.env.NODE_ENV === "production") {
+  config.optimization = {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({ extractComments: false })
+    ]
+  }
+}
+
+module.exports = config;

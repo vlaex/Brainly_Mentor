@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React from "react";
 import {
   Flex,
   Button,
@@ -8,12 +8,11 @@ import {
 
 import BrainlyApi from "@lib/BrainlyApi";
 import _API from "@lib/Api";
-import { Action } from "@typings";
+import { Action, ActionFilters } from "@typings";
 import locales from "@locales";
 
-import AppAside from "./components/AppAside";
 import ActionContainer from "./components/ActionContainer";
-import AppPagination from "./components/AppPagination";
+import AppHeader from "./components/AppHeader";
 
 type AppState = {
   userId: number;
@@ -25,35 +24,37 @@ type AppState = {
   hasMore: boolean;
 }
 
-export default class App extends Component {
+export default class App extends React.Component {
   state: AppState = {
     userId: +window.location.href.match(/(?<=view_moderator\/)\d+/),
-    currentPageId: 1,
+    currentPageId: +window.location.href.match(/(?<=\/page:)\d+$/) || 1,
     nextPageId: null,
     actions: [],
     error: null,
     loading: true,
-    hasMore: true,
+    hasMore: true
   };
 
+  componentDidMount() {
+    this.FetchActions();
+  }
+
   private async FetchActions(pageId?: number) {
-    if(!pageId) pageId = this.state.currentPageId;
+    if (!pageId) pageId = this.state.currentPageId;
 
     this.setState({ error: null, loading: true, actions: [] });
 
     try {
       const data = await _API.GetActions(this.state.userId, pageId);
-      if(data.actions.length < 1)
-        throw Error(locales.errors.noActions);
 
       this.setState({ 
-        hasMore: data.pagination.hasMore,
-        nextPageId: data.pagination.nextPage,
+        hasMore: data.hasMore,
+        nextPageId: pageId + 1,
         actions: data.actions,
-        currentPageId: pageId
+        currentPageId: pageId,
       });
 
-      await this.UpdateUserAvatars();
+      await this.UpdateUsers();
     } catch(err) {
       this.setState({ error: err.message });
     }
@@ -61,21 +62,20 @@ export default class App extends Component {
     this.setState({ loading: false });
   }
 
-  private async UpdateUserAvatars() {
+  private async UpdateUsers() {
     let actions = this.state.actions;
-    let users = await BrainlyApi.GetUserAvatars(actions.map(action => action.user.id));
+    let users = await BrainlyApi.GetUsers(actions.map(action => action.user.id));
 
     for(let user of users) {
-      actions.find(action => action.user.id === user.id).user.avatar = user.avatar;
+      let thisAction = actions.find(action => action.user.id === user.id);
+
+      thisAction.user.avatar = user.avatar;
+      thisAction.isModerator = !!user.specialRanks.length;
     }
 
     this.setState({ actions });
   }
-
-  componentDidMount() {
-    this.FetchActions();
-  }
-
+  
   render() {
     if(this.state.error) {
       return (
@@ -88,22 +88,26 @@ export default class App extends Component {
 
     return (
       <div className="layout">
-        <AppAside />
         {this.state.loading ? 
           <Flex className="js-react-loading-container" alignItems="center">
             <Spinner color="yellow-40" />
             <Headline size="medium">{locales.messages.loading}</Headline>
           </Flex> :
           <Flex direction="column">
-            <AppPagination 
+            <AppHeader 
               onChange={(pageId) => this.FetchActions(pageId)} 
               loading={this.state.loading} 
               pageId={this.state.currentPageId}
               hasNextPage={this.state.hasMore}
             />
-            <div className="actions">{this.state.actions.map(
-              data => <ActionContainer key={data.hash} data={data} />
-            )}</div>
+            {!this.state.actions.length ? 
+              <Headline className="js-react-no-actions-container" size="medium" color="text-yellow-60">
+                {locales.messages.noActionsMatchingFilters}
+              </Headline> :
+              <div className="actions">{this.state.actions.map(
+                data => <ActionContainer key={data.hash} data={data} />
+              )}</div>
+            }
           </Flex>
         }
       </div>
