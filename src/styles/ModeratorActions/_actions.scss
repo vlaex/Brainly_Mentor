@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #cbcbcb;
-  transition-duration: .3s;
+  transition-duration: .2s;
 
   & .action-content {
     font-size: 14px;
@@ -57,7 +57,7 @@
     margin-left: auto;
   }
 
-  &.action-disapproved, &.action-approved {
+  &.Action-ReviewStatus-DISAPPROVED, &.Action-ReviewStatus-APPROVED {
     .action-operations .sg-button:not(.revert-action) {
       display: none;
     }
@@ -67,7 +67,7 @@
     transform: scale(-1, 1);
   }
 
-  &:not(.action-disapproved):not(.action-approved) .action-operations .revert-action {
+  &:not(.Action-ReviewStatus-DISAPPROVED):not(.Action-ReviewStatus-APPROVED) .action-operations .revert-action {
     display: none;
   }
 

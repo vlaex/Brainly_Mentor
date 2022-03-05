@@ -16,21 +16,23 @@
   }
 }
 
-.js-react-loading-container > .sg-spinner {
-  width: 100px;
-  height: 100px;
-  border-width: 3px;
-}
-
 .layout {
   width: 100%;
   height: 100vh;
   display: grid;
   overflow: hidden;
 
-  & > .sg-flex:last-child:not(.js-react-loading-container) {
+  & > .sg-flex {
     background: #f5f8fa;
+
+		& > .sg-spinner {
+			margin: auto;
+			border-bottom-color: #ff9632;
+			border-left-color: #ff9632;
+		}
+
   }
+
 }
 
 .js-react-no-actions-container {
@@ -48,6 +50,17 @@
 
   & > .actions-pagination {
     gap: 10px;
+
+		&[disabled] {
+			opacity: 0.7;
+    	pointer-events: none;
+		}
+
   }
+
+	& .sg-home-button > .sg-home-button__logo-big {
+		width: auto;
+    height: 30px;
+	}
 
 }

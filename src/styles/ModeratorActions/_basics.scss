@@ -18,10 +18,9 @@
   position: relative !important;
 }
 
-.flash-messages {
+.flash-messages-container {
   position: fixed;
   z-index: 10000;
   top: 4rem;
-  left: 3.9rem;
-  right: 0;
+  width: 100%;
 }

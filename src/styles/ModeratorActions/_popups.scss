@@ -1,6 +1,6 @@
 .action-relative-tooltip {
   position: absolute;
-  border-radius: 15px;
+  border-radius: 8px;
   z-index: 10;
   font-size: 14px;
   line-height: 1.1;
@@ -8,9 +8,10 @@
   transition-duration: .3s;
   opacity: 1;
   pointer-events: all;
-  background: #fbfbfb;
+  background: white;
   padding: 15px;
-  border: 1px solid #cbcbcb;
+  border: 1px solid #e5e5e5;
+	box-shadow: 0 4px 16px 0 rgb(50 60 69 / 20%);
 
   &.tooltip-hidden {
     opacity: 0;
