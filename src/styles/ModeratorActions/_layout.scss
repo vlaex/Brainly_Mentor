@@ -1,3 +1,5 @@
+@import "./mixins";
+
 #app, 
 #app > div:first-child.js-react-loading-container {
   display: flex;
@@ -5,7 +7,6 @@
   min-height: 100vh;
 }
 
-.js-react-loading-container,
 .js-react-error-container {
   margin: auto;
   align-items: center;
@@ -35,32 +36,26 @@
 
 }
 
-.js-react-no-actions-container {
-  margin: auto;
-}
-
 .actions-header {
   padding: 15px 22px;
   border-bottom: 2px solid #e1eaf1;
+  width: 100vw;
 
   &[disabled] {
-    pointer-events: none;
-    opacity: 0.6;
+    @include disabled($opacity: 0.6);
   }
 
   & > .actions-pagination {
     gap: 10px;
-
-		&[disabled] {
-			opacity: 0.7;
-    	pointer-events: none;
-		}
-
   }
 
-	& .sg-home-button > .sg-home-button__logo-big {
-		width: auto;
-    height: 30px;
-	}
+	& .sg-home-button {
+    @include scale;
+
+    > .sg-home-button__logo-big {
+      width: auto;
+      height: 30px;
+    }
+  }
 
 }

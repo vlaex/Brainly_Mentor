@@ -1,0 +1,16 @@
+@mixin shadow {
+  box-shadow: 0 4px 16px 0 rgb(50 60 69 / 20%);
+}
+
+@mixin disabled($opacity: 0) {
+  pointer-events: none;
+  opacity: $opacity;
+}
+
+@mixin scale {
+  transition-duration: .3s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}

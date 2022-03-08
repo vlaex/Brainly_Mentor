@@ -7,39 +7,39 @@ const MakeEntries = require("./scripts/makeEntries");
 
 /** @type {webpack.Configuration} */
 const config = {
-	entry: {
-		...MakeEntries("./src/views/*/*(*.ts|*.tsx|*.js|*.jsx)", "content-scripts", "index", true),
-		...MakeEntries("./src/views/Inject.ts", "content-scripts", "contentScript"),
-		...MakeEntries("./src/background/*.ts", "background", "serviceWorker"),
-		...MakeEntries("./src/assets/styleguide-icons.ts", "assets", "styleguide-icons")
-	},
-	output: {
-		path: path.resolve(__dirname, "build"),
-	},
-	module: {
-		rules: [{
-			test: /\.tsx?$/,
-			use: "ts-loader",
-			exclude: /node_modules/
-		}],
-	},
-	resolve: {
-		extensions: [".ts", ".js", ".tsx"],
-		plugins: [
-			new TsconfigPathsPlugin()
-		]
-	},
-	target: "web",
-	devtool: "inline-cheap-source-map"
+  entry: {
+    ...MakeEntries("./src/views/*/*(*.ts|*.tsx|*.js|*.jsx)", "content-scripts", "index", true),
+    ...MakeEntries("./src/views/Inject.ts", "content-scripts", "contentScript"),
+    ...MakeEntries("./src/background/*.ts", "background", "serviceWorker"),
+    ...MakeEntries("./src/assets/styleguide-icons.ts", "assets", "styleguide-icons")
+  },
+  output: {
+    path: path.resolve(__dirname, "build"),
+  },
+  module: {
+    rules: [{
+      test: /\.tsx?$/,
+      use: "ts-loader",
+      exclude: /node_modules/
+    }],
+  },
+  resolve: {
+    extensions: [".ts", ".js", ".tsx"],
+    plugins: [
+      new TsconfigPathsPlugin()
+    ]
+  },
+  target: "web",
+  devtool: "inline-cheap-source-map"
 };
 
 if (process.env.NODE_ENV === "production") {
-	config.optimization = {
-		minimize: true,
-		minimizer: [
-			new TerserPlugin({ extractComments: false })
-		]
-	};
+  config.optimization = {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({ extractComments: false })
+    ]
+  };
 }
 
 module.exports = config;

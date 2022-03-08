@@ -45,9 +45,3 @@ export type Mentee = {
     id: string;
   }[]
 }
-
-export type ActionFilters = {
-  hideComments?: boolean;
-  contentType?: string;
-  type?: string;
-}

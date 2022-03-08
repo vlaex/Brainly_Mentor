@@ -1,0 +1,30 @@
+@import "./mixins";
+
+.filters {
+  & > .filters-box {
+    transition-duration: .3s;
+    right: 10px;
+    top: 50px;
+    position: absolute;
+    border-radius: 10px;
+    background: #fff;
+    padding: 24px;
+    z-index: 12;
+    width: max-content;
+
+    & > .sg-flex {
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    & .sg-select, & .sg-input:not([type="date"]) {
+      width: 50%;
+    }
+    
+    @include shadow;
+  }
+
+}

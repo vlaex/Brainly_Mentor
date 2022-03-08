@@ -1,3 +1,5 @@
+@import "./mixins";
+
 .actions {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -75,6 +77,10 @@
     width: -webkit-fill-available;
     font-weight: bold;
     margin-left: 10px;
+  }
+
+  & .user.sg-flex > .sg-avatar {
+    @include scale;
   }
 
 }

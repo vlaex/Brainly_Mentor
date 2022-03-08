@@ -1,94 +1,94 @@
 import ext from "webextension-polyfill";
 
 class Core {
-	private markets = ["brainly.com", "znanija.com"];
-	private market = window.location.hostname;
-	private path = window.location.href;
+  private markets = ["brainly.com", "znanija.com"];
+  private market = window.location.hostname;
+  private path = window.location.href;
 
-	private Path(pattern: RegExp): boolean {
-		if (!this.markets.includes(this.market)) return;
-		
-		return pattern.test(this.path);
-	}
+  private Path(pattern: RegExp): boolean {
+    if (!this.markets.includes(this.market)) return;
+    
+    return pattern.test(this.path);
+  }
 
-	constructor() {
-		this.Init();
-	}
+  constructor() {
+    this.Init();
+  }
 
-	private async Init() {
-		await this.CheckIfUserIsAuthed();
-		
-		this.InjectScripts();
-	}
+  private async Init() {
+    await this.CheckIfUserIsAuthed();
+    
+    this.InjectScripts();
+  }
 
-	private async CheckIfUserIsAuthed() {
-		let userToken = "testAuthToken"; // await storage.get("authToken");
-		if (!userToken) throw Error("Not authorized");
-	}
+  private async CheckIfUserIsAuthed() {
+    let userToken = "testAuthToken"; // await storage.get("authToken");
+    if (!userToken) throw Error("Not authorized");
+  }
 
-	private InjectScripts() {
-		if (this.Path(/\/moderation_new\/view_moderator\/\d+/)) {
-			this.InjectFiles([
-				"content-scripts/ModeratorActions/index.js",
-				"styles/ModeratorActions/styles.css"
-			], { oldPage: true, cleanBody: true });
-		}
+  private InjectScripts() {
+    if (this.Path(/\/moderation_new\/view_moderator\/\d+/)) {
+      this.InjectFiles([
+        "content-scripts/ModeratorActions/index.js",
+        "styles/ModeratorActions/styles.css"
+      ], { oldPage: true, cleanBody: true });
+    }
 
-		if (this.Path(/(\/$)|(\/question\/\d+)|(\/subject\/\w+)/)) {
-			this.InjectFiles([
-				"content-scripts/MenteesDashboard/index.js",
-				"styles/MenteesDashboard/styles.css"
-			]);
-		}
+    if (this.Path(/(\/$)|(\/question\/\d+)|(\/subject\/\w+)/)) {
+      this.InjectFiles([
+        "content-scripts/MenteesDashboard/index.js",
+        "styles/MenteesDashboard/styles.css"
+      ]);
+    }
 
-	}
+  }
 
-	private InjectFiles(
-		paths: string[],
-		options: {
-			cleanBody: boolean;
-			oldPage: boolean;
-		} = {oldPage: false, cleanBody: false}
-	) {
-		window.addEventListener("load", () => {
-			if (options.cleanBody) document.body.innerHTML = "";
-			if (options.oldPage) {
-				import("@assets/styleguide-icons");
-				document.head.innerHTML += `<link data-brainly-mentor="true" href="https://styleguide.brainly.com/208.2.3/style-guide.css" rel="stylesheet" />`;
-				document.body.innerHTML += `<div class="flash-messages-container"></div>`;
-			}
+  private InjectFiles(
+    paths: string[],
+    options: {
+      cleanBody: boolean;
+      oldPage: boolean;
+    } = {oldPage: false, cleanBody: false}
+  ) {
+    window.addEventListener("load", () => {
+      if (options.cleanBody) document.body.innerHTML = "";
+      if (options.oldPage) {
+        import("@assets/styleguide-icons");
+        document.head.innerHTML += `<link data-brainly-mentor="true" href="https://styleguide.brainly.com/208.2.3/style-guide.css" rel="stylesheet" />`;
+        document.body.innerHTML += `<div class="flash-messages-container"></div>`;
+      }
 
-			paths.forEach(this.InjectFile);
-			console.info("[Brainly Mentor] Extension scripts and styles have been injected into DOM!");
-		});
-	}
+      paths.forEach(this.InjectFile);
+      console.info("[Brainly Mentor] Extension scripts and styles have been injected into DOM!");
+    });
+  }
 
-	private InjectFile(
-		filePath: string,
-	) {
-		let fileExtension = filePath.split(".").pop();
-		let path = ext.runtime.getURL(filePath);
+  private InjectFile(
+    filePath: string,
+  ) {
+    let fileExtension = filePath.split(".").pop();
+    let path = ext.runtime.getURL(filePath);
 
-		if (fileExtension === "js") {
-			let script: HTMLScriptElement = document.createElement("script");
+    if (fileExtension === "js") {
+      let script: HTMLScriptElement = document.createElement("script");
 
-			script.src = path;
-			script.type = "text/javascript";
-			script.dataset.brainlyMentor = "true";
+      script.src = path;
+      script.type = "text/javascript";
+      script.dataset.brainlyMentor = "true";
 
-			document.body.insertAdjacentElement("beforeend", script);
-		} else if (fileExtension === "css") {
-			let link: HTMLLinkElement = document.createElement("link");
+      document.body.insertAdjacentElement("beforeend", script);
+    } else if (fileExtension === "css") {
+      let link: HTMLLinkElement = document.createElement("link");
 
-			link.href = path;
-			link.type = "text/css";
-			link.rel = "stylesheet";
-			link.dataset.brainlyMentor = "true";
+      link.href = path;
+      link.type = "text/css";
+      link.rel = "stylesheet";
+      link.dataset.brainlyMentor = "true";
 
-			document.head.appendChild(link);
-		}
+      document.head.appendChild(link);
+    }
 
-	}
+  }
 }
 
 new Core();

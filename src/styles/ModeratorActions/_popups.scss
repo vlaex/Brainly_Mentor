@@ -1,3 +1,5 @@
+@import "./mixins";
+
 .action-relative-tooltip {
   position: absolute;
   border-radius: 8px;
@@ -11,11 +13,11 @@
   background: white;
   padding: 15px;
   border: 1px solid #e5e5e5;
-	box-shadow: 0 4px 16px 0 rgb(50 60 69 / 20%);
 
   &.tooltip-hidden {
-    opacity: 0;
-    pointer-events: none;
+    @include disabled();
   }
+  
+  @include shadow;
 
 }
