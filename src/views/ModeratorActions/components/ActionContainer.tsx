@@ -7,15 +7,16 @@ import {
   Icon,
   Box,
   Avatar,
-  IconType
 } from "brainly-style-guide";
 
 import Tooltip from "./Tooltip";
-import { Action } from "@typings";
 import locales from "@locales";
 import _API from "@lib/Api";
 import { Flash } from "@utils/Flashes";
 import BeautifyISO from "@utils/BeautifyISODate";
+
+import type { IconPropsType, IconType } from "brainly-style-guide";
+import type { Action } from "@typings";
 
 export default class ActionContainer extends React.Component<{
   data: Action,
@@ -34,7 +35,7 @@ export default class ActionContainer extends React.Component<{
     await _API.ReviewAction({
       userId: this.props.moderator,
       pageId: this.props.page,
-      hash: this.props.data.hash,
+      id: this.props.data.id,
       status
     })
       .then(() => this.setState({ reviewStatus: status }))
@@ -50,8 +51,9 @@ export default class ActionContainer extends React.Component<{
   render() {
     const action = this.props.data;
 
-    const iconColor = action.type === "ACCEPTED" ? "icon-green-50" :
-      action.type === "REPORTED_FOR_CORRECTION" ? "icon-blue-50" : "icon-red-50";
+    const iconColor: IconPropsType["color"] = action.type === "ACCEPTED" ? "icon-green-50" :
+      action.type === "REPORTED_FOR_CORRECTION" ? "icon-blue-50" : 
+      `icon-${action.contentType === "answer" ? "blue" : "indigo"}-50`;
 
     return (
       <Box color="white" padding="s" className={
@@ -63,7 +65,7 @@ export default class ActionContainer extends React.Component<{
       }>
         <Flex alignItems="center" className="sg-flex--relative">
           <Link href={action.taskLink} target="_blank">
-            <Icon title={action.localizedType} type={action.frontIcon as IconType} size={32} color={iconColor}></Icon>
+            <Icon title={action.localizedType} type={action.frontIcon as IconType} size={24} color={iconColor}></Icon>
           </Link>
           <Link 
             onMouseEnter={() => this.setState({ reasonTooltipVisible: true })} 

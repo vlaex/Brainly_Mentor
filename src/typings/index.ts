@@ -8,7 +8,7 @@ export enum Market {
 }
 
 export type Action = {
-  hash: string;
+  id: string;
   taskId: number;
   taskLink: string;
   content: string;

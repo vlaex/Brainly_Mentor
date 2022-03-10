@@ -54,7 +54,10 @@ class Core {
       if (options.cleanBody) document.body.innerHTML = "";
       if (options.oldPage) {
         import("@assets/styleguide-icons");
-        document.head.innerHTML += `<link data-brainly-mentor="true" href="https://styleguide.brainly.com/208.2.3/style-guide.css" rel="stylesheet" />`;
+        
+        document.head.innerHTML += `
+          <link data-brainly-mentor="true" href="https://styleguide.brainly.com/208.2.3/style-guide.css" rel="stylesheet" />
+        `;
         document.body.innerHTML += `<div class="flash-messages-container"></div>`;
       }
 

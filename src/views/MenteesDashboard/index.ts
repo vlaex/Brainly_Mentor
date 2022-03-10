@@ -11,7 +11,7 @@ document.body.insertAdjacentHTML("beforeend", `
   <div id="mentees-dashboard-overlay" style="display: none !important"></div>
 `);
 
-const openDashboardButton: HTMLButtonElement = document.querySelector("#open-mentees-dashboard-btn");
+const openDashboardButton = document.querySelector("#open-mentees-dashboard-btn");
 const modPanelContent = document.querySelector(".brn-moderation-panel__content");
 
 if (modPanelContent) {

@@ -1,6 +1,6 @@
 @import "./mixins";
 
-#app, 
+#app,
 #app > div:first-child.js-react-loading-container {
   display: flex;
   flex-direction: column;
@@ -26,20 +26,21 @@
   & > .sg-flex {
     background: #f5f8fa;
 
-		& > .sg-spinner {
-			margin: auto;
-			border-bottom-color: #ff9632;
-			border-left-color: #ff9632;
-		}
+    & > .sg-spinner {
+      $orange: #ff9632;
 
+      margin: auto;
+      border-bottom-color: $orange;
+      border-left-color: $orange;
+    }
   }
-
 }
 
 .actions-header {
   padding: 15px 22px;
   border-bottom: 2px solid #e1eaf1;
   width: 100vw;
+  background: #fff;
 
   &[disabled] {
     @include disabled($opacity: 0.6);
@@ -49,13 +50,13 @@
     gap: 10px;
   }
 
-	& .sg-home-button {
+  & .sg-home-button {
     @include scale;
 
+    /* stylelint-disable-next-line selector-class-pattern */
     > .sg-home-button__logo-big {
       width: auto;
       height: 30px;
     }
   }
-
 }

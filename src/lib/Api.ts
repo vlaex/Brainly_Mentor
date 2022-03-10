@@ -7,9 +7,7 @@ import {
 import locales from "@locales";
 
 class Api {
-  private extApiURL = process.env.NODE_ENV === "development" ?
-    "http://localhost:8080" :
-    "https://mentors.br-helper.com";
+  private extApiURL = "https://mentors.br-helper.com";
 
   private market: string = locales.market;
   private authToken = "test";
@@ -40,7 +38,6 @@ class Api {
     if (!res.ok) throw Error(locales.errors.internalError);
     
     const resData = await res.json();
-
     if (resData.error) {
       let errorMessage = locales.errors[resData.error] || locales.errors.internalError;
       throw Error(errorMessage);
@@ -85,7 +82,7 @@ class Api {
   public async ReviewAction(data: {
     userId: number;
     pageId: number;
-    hash: string;
+    id: string;
     status: Action["reviewStatus"];
   }): Promise<BasicSuccessResponse> {
     return await this.Request("POST", "actions/review", data);

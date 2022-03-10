@@ -3,6 +3,7 @@ const { src, task, dest, series, watch } = require("gulp");
 const gulpChange = require("gulp-change");
 const mergeDeep = require("merge-deep");
 const sass = require("gulp-dart-sass");
+const zip = require("gulp-zip");
 
 const { GetFiles, ExtractFolder } = require("./scripts/files");
 
@@ -53,4 +54,10 @@ task("watch", () => {
   watch(["./src/styles/*/*.scss"], series("sass"));
 });
 
-exports.default = series("manifest", "assets", "sass", "watch");
+task("zip", () => {
+  return src(`${BUILD_FOLDER}/**`)
+    .pipe(zip("build.zip"))
+    .pipe(dest("./dist"));
+});
+
+exports.default = series("manifest", "assets", "sass", "watch", "zip");

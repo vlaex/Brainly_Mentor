@@ -3,7 +3,7 @@ import { Button, Flex, Icon, Checkbox, Text, Input, Select } from "brainly-style
 
 import locales from "@locales";
 import { HideElement, ShowElement } from "@utils/ElementsVisibility";
-import { Action } from "@typings";
+import type { Action } from "@typings";
 
 type FiltersState = {
   filtersHidden: boolean;
@@ -56,7 +56,8 @@ export default class Filters extends React.Component {
   private Filter(element: HTMLDivElement) {
     ShowElement(element);
 
-    let hideComments = this.state.hideComments && element.classList.contains("Action-ContentType-comment");
+    let hideComments = this.state.hideComments && 
+      element.classList.contains("Action-ContentType-comment");
 
     let userNickMatch = true;
     try {

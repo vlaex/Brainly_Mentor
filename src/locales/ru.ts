@@ -80,6 +80,7 @@ export default {
     "invalidHash": "Неверный хеш акции",
     "actionAlreadyReviewed": "Акция уже проверена",
     "actionNotReviewed": "Акция не проверена",
+    "cannotReviewYourActions": "Вы не можете проверять свои акции"
   },
   "dateTimeFormat": "DD.MM.YYYY, hh:mm:ss",
   "dateFormat": "DD.MM.YYYY",

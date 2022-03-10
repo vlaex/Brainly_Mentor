@@ -3,7 +3,7 @@ import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
 import BrainlyApi from "@lib/BrainlyApi";
 import _API from "@lib/Api";
-import { Action } from "@typings";
+import type { Action } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
@@ -93,7 +93,7 @@ export default class App extends React.Component {
           {(!this.state.actions.length && !this.state.nextPageId) ? 
             <Spinner /> :
             <div className="actions">{this.state.actions.map(data => 
-              <ActionContainer key={data.hash} data={data} moderator={this.state.userId} page={this.state.currentPageId} />
+              <ActionContainer key={data.id} data={data} moderator={this.state.userId} page={this.state.currentPageId} />
             )}</div>
           }
         </Flex>

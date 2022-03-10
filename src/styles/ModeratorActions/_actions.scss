@@ -7,26 +7,30 @@
   width: 100%;
   overflow: auto;
   max-height: calc(100vh - 65px);
-  padding: 20px 25px 25px 25px;
+  padding: 20px 25px 25px;
 }
 
 .action {
   display: flex;
   flex-direction: column;
-  border: 1px solid #cbcbcb;
-  transition-duration: .2s;
+  border: 2px solid #ebf2f7;
+  transition-duration: 0.2s;
+
+  &:hover {
+    border-color: #e1eaf1;
+  }
 
   & .action-content {
     font-size: 14px;
     line-height: 1.2;
-    margin: 8px 0 12px 0;
+    margin: 8px 0 12px;
     height: 105px;
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    
+
     & > div {
       cursor: pointer;
 
@@ -34,11 +38,16 @@
         text-decoration: underline;
       }
     }
-    
   }
 
   & .user-is-moderator.sg-flex {
-    background: linear-gradient(90deg,hsl(72deg 100% 75% / 68%) 100%,hsl(78deg 100% 71% / 24%) 50%,hsl(0deg 0% 100%) 80%);
+    background:
+      linear-gradient(
+        90deg,
+        hsl(72deg 100% 75% / 68%) 100%,
+        hsl(78deg 100% 71% / 24%) 50%,
+        hsl(0deg 0% 100%) 80%
+      );
     animation-timing-function: linear;
     animation-duration: 11s;
     border-radius: 25px;
@@ -47,19 +56,21 @@
   }
 
   &.Action-ReviewStatus-APPROVED {
-    background-color: #c3ffe1 !important;
-    border-color: #60d399 !important;
+    background-color: #c3ffe1;
+    border-color: #60d399;
   }
+
   &.Action-ReviewStatus-DISAPPROVED {
-    background-color: #ffd4ce !important;
-    border-color: #ff7968 !important;
+    background-color: #ffd4ce;
+    border-color: #ff7968;
   }
 
   & .action-operations {
     margin-left: auto;
   }
 
-  &.Action-ReviewStatus-DISAPPROVED, &.Action-ReviewStatus-APPROVED {
+  &.Action-ReviewStatus-DISAPPROVED,
+  &.Action-ReviewStatus-APPROVED {
     .action-operations .sg-button:not(.revert-action) {
       display: none;
     }
@@ -82,5 +93,4 @@
   & .user.sg-flex > .sg-avatar {
     @include scale;
   }
-
 }

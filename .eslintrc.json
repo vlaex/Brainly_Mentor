@@ -1,4 +1,4 @@
-module.exports = {
+{
   "env": {
     "browser": true,
     "es2021": true,
@@ -27,18 +27,42 @@ module.exports = {
     "indent": "off",
     "linebreak-style": ["error", "windows"],
     "semi": ["error", "always"],
-    "quotes": "off",
     "no-console": [
       "warn", { 
         "allow": ["info", "error"]
       }
     ],
+    "max-len": ["error", { 
+      "code": 100,
+      "ignorePattern": "^\\s*<[A-Za-z].+>" // Ignores JSX
+    }],
+    "no-multi-spaces": "error",
+    "space-infix-ops": "error",
+    "no-await-in-loop": "error",
+    "space-before-blocks": "error",
+    "camelcase": "error",
+    "jsx-quotes": "error",
+    "quotes": ["error", "double", {
+      "allowTemplateLiterals": true
+    }],
+    "array-bracket-newline": ["error", "consistent"],
+    "space-in-parens": ["error", "never"],
+    "array-bracket-spacing": ["error", "never"],
+    "brace-style": ["error", "1tbs"],
+    "function-call-argument-newline": ["error", "consistent"],
+    "max-lines": ["warn", { 
+      "max": 250,
+      "skipBlankLines": true,
+      "skipComments": true  
+    }],
+    "max-params": ["warn", 4],
+    "max-depth": ["warn", 4],
 
     // React
     "react/react-in-jsx-scope": "off",
 
     // TypeScript
     "@typescript-eslint/no-var-requires": "warn",
-    "@typescript-eslint/quotes": "off",
+    "@typescript-eslint/quotes": "off"
   }
-};
+}

@@ -15,7 +15,7 @@ export function Flash(data: {
     flash.innerHTML = `
       <div class="sg-flash__message sg-flash__message--${data.type}">
         <div class="sg-text sg-text--small sg-text--bold sg-text--to-center">
-          [Brainly Mentor] ${data.text}
+          ${data.text}
         </div>
       </div>
     `;

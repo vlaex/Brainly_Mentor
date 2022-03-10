@@ -37,7 +37,12 @@ if (process.env.NODE_ENV === "production") {
   config.optimization = {
     minimize: true,
     minimizer: [
-      new TerserPlugin({ extractComments: false })
+      new TerserPlugin({ 
+        extractComments: false,
+        terserOptions: {
+          format: { comments: false }
+        }
+      })
     ]
   };
 }

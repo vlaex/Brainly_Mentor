@@ -7,17 +7,16 @@
   font-size: 14px;
   line-height: 1.1;
   top: 100%;
-  transition-duration: .3s;
-  opacity: 1;
-  pointer-events: all;
-  background: white;
+  transition-duration: 0.3s;
+  background: #fff;
   padding: 15px;
   border: 1px solid #e5e5e5;
+  opacity: 1;
+  pointer-events: all;
 
-  &.tooltip-hidden {
-    @include disabled();
+  &[data-tooltip-hidden="true"] {
+    @include disabled;
   }
-  
-  @include shadow;
 
+  @include shadow;
 }
