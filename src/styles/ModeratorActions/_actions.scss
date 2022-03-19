@@ -1,25 +1,12 @@
-@import "./mixins";
+@import "../mixins";
 
-.actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 10px;
-  width: 100%;
-  overflow: auto;
-  max-height: calc(100vh - 65px);
-  padding: 20px 25px 25px;
+.actions.grid-items-container {
+  @include mobile {
+    grid-template-columns: auto;
+  }
 }
 
 .action {
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #ebf2f7;
-  transition-duration: 0.2s;
-
-  &:hover {
-    border-color: #e1eaf1;
-  }
-
   & .action-content {
     font-size: 14px;
     line-height: 1.2;
@@ -30,14 +17,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    & > div {
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 
   & .user-is-moderator.sg-flex {
@@ -48,8 +27,6 @@
         hsl(78deg 100% 71% / 24%) 50%,
         hsl(0deg 0% 100%) 80%
       );
-    animation-timing-function: linear;
-    animation-duration: 11s;
     border-radius: 25px;
     padding: 3px 10px 3px 4px;
     border: 1px solid #b1d32f;
@@ -67,6 +44,10 @@
 
   & .action-operations {
     margin-left: auto;
+
+    &[disabled] {
+      @include disabled(0.7);
+    }
   }
 
   &.Action-ReviewStatus-DISAPPROVED,

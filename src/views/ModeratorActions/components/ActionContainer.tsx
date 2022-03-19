@@ -6,17 +6,16 @@ import {
   Text,
   Icon,
   Box,
-  Avatar,
+  Avatar
 } from "brainly-style-guide";
 
 import Tooltip from "./Tooltip";
-import locales from "@locales";
 import _API from "@lib/Api";
 import { Flash } from "@utils/Flashes";
 import BeautifyISO from "@utils/BeautifyISODate";
 
-import type { IconPropsType, IconType } from "brainly-style-guide";
 import type { Action } from "@typings";
+import InspectionMode from "./InspectionMode/Box";
 
 export default class ActionContainer extends React.Component<{
   data: Action,
@@ -26,18 +25,16 @@ export default class ActionContainer extends React.Component<{
   state = {
     reviewStatus: this.props.data.reviewStatus,
     loading: false,
-    reasonTooltipVisible: false
-  }
+    reasonTooltipVisible: false,
+    inspectionMode: false
+  };
 
   private async ReviewAction(status: Action["reviewStatus"]) {
     this.setState({ loading: true });
 
-    await _API.ReviewAction({
-      userId: this.props.moderator,
-      pageId: this.props.page,
-      id: this.props.data.id,
-      status
-    })
+    let hash = this.props.data.hash;
+
+    await _API.ReviewActions(hash, this.props.moderator, status)
       .then(() => this.setState({ reviewStatus: status }))
       .catch(err => {
         Flash({
@@ -48,44 +45,52 @@ export default class ActionContainer extends React.Component<{
       .finally(() => this.setState({ loading: false }));
   }
 
-  render() {
-    const action = this.props.data;
+  private EnableInspectionMode() {
+    this.setState({ inspectionMode: true });
+  }
 
-    const iconColor: IconPropsType["color"] = action.type === "ACCEPTED" ? "icon-green-50" :
-      action.type === "REPORTED_FOR_CORRECTION" ? "icon-blue-50" : 
-      `icon-${action.contentType === "answer" ? "blue" : "indigo"}-50`;
+  render() {
+    let action = this.props.data;
+
+    let boxClasses = [
+      "grid-item", "action",
+      `Action-ReviewStatus-${this.state.reviewStatus}`,
+      `Action-ContentType-${action.contentType}`,
+      `Action-Type-${action.type}`,
+      `Action-DeleteReason-${action.reason.id}`
+    ];
 
     return (
-      <Box color="white" padding="s" className={
-        "action " +
-        `Action-ReviewStatus-${this.state.reviewStatus} ` +
-        `Action-ContentType-${action.contentType} ` +
-        `Action-Type-${action.type} ` + 
-        `Action-DeleteReason-${action.reason.id}`
-      }>
+      <Box color="white" padding="s" className={boxClasses.join(" ")}>
         <Flex alignItems="center" className="sg-flex--relative">
-          <Link href={action.taskLink} target="_blank">
-            <Icon title={action.localizedType} type={action.frontIcon as IconType} size={24} color={iconColor}></Icon>
+          <Link href={action.task.link} target="_blank">
+            <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor}></Icon>
           </Link>
           <Link 
             onMouseEnter={() => this.setState({ reasonTooltipVisible: true })} 
             onMouseLeave={() => this.setState({ reasonTooltipVisible: false })} 
-            href={action.taskLink} 
+            href={action.task.link} 
             target="_blank"
             className="action-type">{action.localizedType}
           </Link>
+          
+          {action.reason.fullText && 
+            <Tooltip visible={this.state.reasonTooltipVisible}>
+              <span>{action.reason.fullText}</span>
+            </Tooltip>
+          }
+          {this.state.inspectionMode && 
+            <InspectionMode 
+              taskId={action.task.id} 
+              onClose={this.setState.bind(this, { inspectionMode: false })} 
+            />
+          }
 
-          <Tooltip visible={this.state.reasonTooltipVisible}>
-            {action.reason.fullText ?
-              <span>{action.reason.fullText}</span> :
-              <i>{locales.common.noReason}</i>
-            }
-          </Tooltip>
-
-          <Flex className="action-operations">
-            <Button loading={this.state.loading} onClick={() => this.ReviewAction("APPROVED")} className="approve-action" title={locales.common.approveAction} type="transparent" iconOnly icon={<Icon type="thumb_up" color="icon-green-50" size={24} />}></Button>
-            <Button loading={this.state.loading} onClick={() => this.ReviewAction("DISAPPROVED")} className="disapprove-action" title={locales.common.disapproveAction} type="transparent" iconOnly icon={<Icon type="thumb_down" color="icon-red-50" size={24} />}></Button>
-            <Button loading={this.state.loading} onClick={() => this.ReviewAction("NONE")} className="revert-action" title={locales.common.revertAction} type="solid-inverted" iconOnly icon={<Icon type="reload" color="icon-black" size={24} />}></Button>
+          <Flex className="action-operations" disabled={this.state.loading}>
+            <Button onClick={this.ReviewAction.bind(this, "APPROVED")} className="approve-action" type="transparent" iconOnly icon={<Icon type="thumb_up" color="icon-green-50" size={24} />} />
+            <Button onClick={this.EnableInspectionMode.bind(this)} type="transparent" iconOnly icon={<Icon type="seen" size={24} color="icon-gray-70" />} />
+            <Button onClick={this.ReviewAction.bind(this, "DISAPPROVED")} className="disapprove-action" type="transparent" iconOnly icon={<Icon type="thumb_down" color="icon-red-50" size={24} />} />
+            <Button onClick={this.ReviewAction.bind(this, "NONE")} className="revert-action" type="solid-inverted" iconOnly icon={<Icon type="reload" color="icon-black" size={24} />} />
           </Flex>
         </Flex>
         <div className="action-content">
@@ -93,7 +98,7 @@ export default class ActionContainer extends React.Component<{
         </div>
         <Flex justifyContent="space-between" alignItems="center" className="sg-flex--margin-top-auto">
           <Link href={`/users/redirect_user/${action.user.id}`} target="_blank">
-            <Flex alignItems="center" className={action.isModerator ? "user-is-moderator user" : "user"}>
+            <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>
               <Avatar imgSrc={action.user.avatar} size="xs" />
               <Text size="small" weight="bold" className="sg-flex--margin-left-xs">{action.user.nick}</Text>
             </Flex>

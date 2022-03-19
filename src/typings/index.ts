@@ -1,47 +1,60 @@
+import type { IconPropsType, IconType } from "brainly-style-guide";
+
 export type BasicSuccessResponse = {
   success: true;
 }
 
-export enum Market {
-  ru = "ru",
-  us = "us"
-}
+export type Market = "us";
 
-export type Action = {
-  id: string;
-  taskId: number;
-  taskLink: string;
+export interface Action {
+  task: {
+    id: number;
+    link: string;
+  };
   content: string;
   user: {
     nick: string;
     id: number;
+    link: string;
+    isModerator?: boolean;
     avatar?: string;
   };
   date: string;
-  reviewStatus: "APPROVED" | "DISAPPROVED" | "NONE";
-  contentType: "answer" | "question" | "comment" | "attachment" | "unknown";
-  type: "DELETED" | "ACCEPTED" | "REPORTED_FOR_CORRECTION" | "UNKNOWN";
-  localizedType: string;
-  frontIcon: string;
   reason: {
+    id: number;
     fullText: string;
     shortReason: string;
-    id: number;
   };
-
-  /** client only fields */
-  isModerator?: boolean;
+  reviewStatus: "APPROVED" | "DISAPPROVED" | "NONE";
+  contentType: "answer" | "question" | "comment" | "attachment" | "unknown";
+  type: "DELETED" | "ACCEPTED" | "REPORTED_FOR_CORRECTION";
+  icon: IconType;
+  iconColor: IconPropsType["color"];
+  localizedType: string;
+  hash: string;
 }
 
-export type Mentee = {
+type MenteeCharts = {
+  count: number;
+  dataset: number[];
+}
+
+export interface Mentee {
   id: number;
   market: Market;
   mentorId: number;
   nick: string;
   note: string;
-  avatar?: string;
-  specialRanks?: {
-    name: string;
-    id: string;
-  }[]
+  avatar: string;
+  rank: string;
+  charts: {
+    [T in keyof {"daily", "weekly", "monthly"}]: MenteeCharts;
+  };
+}
+
+export interface Mentor {
+  id: number;
+  nick: string;
+  senior: boolean;
+  market: Market;
 }

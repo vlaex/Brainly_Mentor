@@ -1,27 +1,46 @@
-import storage from "@lib/storage";
+import type { 
+  BackgroundMessage
+} from "@typings/extension";
 import ext from "webextension-polyfill";
 
-class Background {
+class BackgroundListener {
+  private tabId: number;
+  private messageData;
+
   constructor() {
-    this.Init();
+    this.BindListeners();
   }
 
-  private async Init() {
-    await this.CheckIfAuthed();
+  private BindListeners() {
+    this.BindListener("InjectStyles", this.InjectStyles);
+    this.BindListener("InjectScripts", this.InjectScripts);
   }
 
-  private async CheckIfAuthed() {
-    const userToken = await storage.get("authToken");
+  private BindListener(type: string, func: () => Promise<unknown>) {
+    ext.runtime.onMessage.addListener((message: BackgroundMessage, sender) => {
+      if (message.type !== type) return;
 
-    if (!userToken) {
-      await ext.action.setBadgeBackgroundColor({ color: "#ff2828" });
-      await ext.action.setBadgeText({ text: "!" });
-
-      //throw Error("Could not find auth token");
-    }
-
+      this.messageData = message.data;
+      this.tabId = sender.tab.id;
+    
+      return func.bind(this)();
+    });
   }
-  
+
+  private async InjectStyles() {
+    return await ext.scripting.insertCSS({ 
+      files: this.messageData, 
+      target: {tabId: this.tabId}
+    });
+  }
+
+  private async InjectScripts() {
+    return await ext.scripting.executeScript({ 
+      files: this.messageData, 
+      target: {tabId: this.tabId} 
+    });
+  }
+
 }
 
-new Background();
+new BackgroundListener();

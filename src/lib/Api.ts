@@ -1,91 +1,107 @@
-import {
+import type {
   Action,
-  Market, 
   Mentee, 
-  BasicSuccessResponse
+  BasicSuccessResponse,
+  Mentor
 } from "@typings";
 import locales from "@locales";
+import storage from "./storage";
 
 class Api {
   private extApiURL = "https://mentors.br-helper.com";
-
   private market: string = locales.market;
-  private authToken = "test";
-
-  get Market() {
-    return this.market;
-  }
-
-  set SetMarket(market: Market) {
-    this.market = market;
-  }
 
   private async Request(
     method: "GET" | "POST" | "PUT" | "DELETE",
     apiMethod: string,
-    data?: unknown
+    body?
   ) {
-    const url = `${this.extApiURL}/${this.market}/${apiMethod}`;
+    const authToken = await storage.get("authToken");
+    if (!authToken) throw Error(locales.errors.notAuthed);
+
+    let url = `${this.extApiURL}/${this.market}/${apiMethod}`;
+    let headers = {
+      "Authorization": `Bearer ${authToken}`
+    };
     
-    const res = await fetch(url, {
-      method: method,
-      body: data ? JSON.stringify(data) : null,
-      headers: {
-        "Authorization": `Bearer ${this.authToken}`
-      }
-    });
+    if (body) {
+      body = JSON.stringify(body);
+      headers["Content-Type"] = "application/json; charset=utf-8";
+    }
+
+    const res = await fetch(url, { method, body, headers }).then(r => r.json());
     
-    if (!res.ok) throw Error(locales.errors.internalError);
-    
-    const resData = await res.json();
-    if (resData.error) {
-      let errorMessage = locales.errors[resData.error] || locales.errors.internalError;
+    if (res.error) {
+      let errorMessage = locales.errors[res.error] || locales.errors.internalError;
       throw Error(errorMessage);
     }
 
-    return resData;
+    return res;
   }
 
-  public async GetActions(
-    userId: number, 
-    pageId: number
-  ): Promise<{
-    actions: Action[],
-    hasMore: boolean;
-  }> {
-    return await this.Request("GET", `actions/${userId}/${pageId}`);
+  async ReviewActions(
+    hash: string | string[],
+    moderatorId: number,
+    status: Action["reviewStatus"]
+  ) {
+    let hashList = hash as string[];
+
+    if (typeof hash === "string")
+      hashList = [hash];
+
+    return await this.Request("PUT", "actions/review", { 
+      hashList, 
+      status, 
+      moderatorId 
+    });
   }
 
-  public async GetMentees(): Promise<{
+  async GetMentees(mentorId: number): Promise<{
     mentees: Mentee[];
   }> {
-    return await this.Request("GET", "mentees");
+    return await this.Request("GET", `mentees/${mentorId}`);
   }
 
-  public async AddMentee(userId: number): Promise<{
+  async AddMentee(userId: number): Promise<{
     mentee: Mentee;
   }> {
     return await this.Request("POST", "mentees", { id: userId });
   }
   
-  public async EditMentee(userId: number, data: {
-    nick: string;
+  async EditMentee(mentorId: number, menteeId: number, data: {
     note: string;
   }): Promise<BasicSuccessResponse> {
-    return await this.Request("PUT", `mentees/${userId}`, data);
+    return await this.Request("PUT", `mentees/${mentorId}/${menteeId}`, data);
   }
 
-  public async DeleteMentee(userId: number): Promise<BasicSuccessResponse> {
-    return await this.Request("DELETE", `mentees/${userId}`);
+  async DeleteMentee(mentorId: number, userId: number): Promise<BasicSuccessResponse> {
+    return await this.Request("DELETE", `mentees/${mentorId}/${userId}`);
   }
 
-  public async ReviewAction(data: {
-    userId: number;
-    pageId: number;
-    id: string;
-    status: Action["reviewStatus"];
+  async GetMentors(): Promise<{
+    mentors: Mentor[]
+  }> {
+    return await this.Request("GET", "mentors");
+  }
+
+  async AddMentor(data: {
+    mentorId: boolean;
+    senior: boolean;
+  }): Promise<{
+    mentor: Mentor
+  }> {
+    return await this.Request("POST", "mentors", data);
+  }
+
+  async DeleteMentor(mentorId: number): Promise<BasicSuccessResponse> {
+    return await this.Request("DELETE", `mentors/${mentorId}`);
+  }
+
+  async EditMentor(mentorId: number, data: {
+    nick: string;
+    senior: boolean;
   }): Promise<BasicSuccessResponse> {
-    return await this.Request("POST", "actions/review", data);
+    return await this.Request("PUT", `mentors/${mentorId}`, data);
   }
 
 }

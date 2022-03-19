@@ -1,4 +1,4 @@
-@import "./mixins";
+@import "../mixins";
 
 #app,
 #app > div:first-child.js-react-loading-container {
@@ -11,6 +11,13 @@
   margin: auto;
   align-items: center;
   flex-direction: column;
+
+  & > h1.sg-headline {
+    @include mobile {
+      text-align: center;
+      margin: auto 15px;
+    }
+  }
 
   > *:last-child {
     margin-top: 10px;

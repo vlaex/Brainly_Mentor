@@ -1,0 +1,64 @@
+@import "../mixins";
+
+.open-mentees-dashboard.sg-button {
+  position: fixed;
+  top: 8rem;
+  right: 3.5rem;
+  transition: 0.5s ease;
+
+  &.to-bottom {
+    transform: translate(2.6rem, 2.5rem);
+  }
+}
+
+.mentees-dashboard {
+  & > div:not(.sg-spinner) {
+    height: 100%;
+    position: relative;
+
+    @include flex(column);
+
+    &::after {
+      height: 25px;
+      background: linear-gradient(180deg, #fff0 0, #fff);
+      position: absolute;
+      display: block;
+      width: 100%;
+      content: "";
+      bottom: 0;
+    }
+  }
+
+  & .mentees-dashboard-header {
+    padding-bottom: 10px;
+
+    & h1.sg-text-bit {
+      font-size: 34px;
+    }
+
+    & > .sg-flex {
+      gap: 10px;
+      align-items: center;
+      margin-right: 4%;
+    }
+  }
+
+  & .grid-items-container {
+    padding: 10px 15px 15px 0;
+
+    @include modern-overflow;
+  }
+
+  & .add-mentee-box {
+    padding: 20px;
+    border: 2px solid #32bd77;
+    border-radius: 8px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    margin: auto;
+  }
+}

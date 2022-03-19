@@ -29,12 +29,12 @@
     "semi": ["error", "always"],
     "no-console": [
       "warn", { 
-        "allow": ["info", "error"]
+        "allow": ["debug", "error"]
       }
     ],
     "max-len": ["error", { 
       "code": 100,
-      "ignorePattern": "^\\s*<[A-Za-z].+>" // Ignores JSX
+      "ignorePattern": "^\\s*<[A-Za-z].+>"
     }],
     "no-multi-spaces": "error",
     "space-infix-ops": "error",

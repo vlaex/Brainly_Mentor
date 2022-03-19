@@ -1,11 +1,7 @@
 export async function PreparePage() {
-  document.body.insertAdjacentHTML("afterbegin", `<div id="app"></div>`);
-
-  let brainlyLinks = document.querySelectorAll(`
-    script[src*="zadanium"], 
-    script[src*="chat/bind"], 
-    link:not([data-brainly-mentor])[rel="stylesheet"]
+  document.body.insertAdjacentHTML("afterbegin", `
+    <div id="app"></div>
+    <div id="inspection-mode-modal-container"></div>
   `);
-
-  brainlyLinks.forEach(e => e.remove());
+  document.body.id = "brainly-mentor";
 }

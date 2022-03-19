@@ -23,13 +23,11 @@ task("manifest", () => {
 });
 
 task("assets", () => {
-  const assets = [{
-    src: "./src/icons/**/*",
-    buildDir: "icons"
-  }, {
-    src: "./src/_locales/**/*",
-    buildDir: "_locales"
-  }];
+  const assets = [
+    {src: "./src/icons/**/*", buildDir: "icons"}, 
+    {src: "./src/_locales/**/*", buildDir: "_locales"},
+    {src: "./src/assets/*.(gif|png)", buildDir: "assets"}
+  ];
 
   assets.forEach(asset => {
     src(asset.src).pipe(dest(`${BUILD_FOLDER}/${asset.buildDir}`));
@@ -51,7 +49,7 @@ task("sass", () => {
 });
 
 task("watch", () => {
-  watch(["./src/styles/*/*.scss"], series("sass"));
+  watch(["./src/styles/**/*.scss"], series("sass"));
 });
 
 task("zip", () => {

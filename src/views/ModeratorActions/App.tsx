@@ -1,13 +1,13 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import BrainlyApi from "@lib/BrainlyApi";
-import _API from "@lib/Api";
+//import _API from "@lib/Api";
 import type { Action } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
 import AppHeader from "./components/AppHeader";
+import GetActions from "@lib/GetActions";
 
 type AppState = {
   userId: number;
@@ -40,7 +40,8 @@ export default class App extends React.Component {
     this.setState({ error: null, loading: true });
 
     try {
-      const data = await _API.GetActions(this.state.userId, pageId);
+      const moderatorId = this.state.userId;
+      const data = await GetActions(moderatorId, pageId);
 
       this.setState({ 
         currentPageId: pageId,
@@ -48,27 +49,16 @@ export default class App extends React.Component {
         nextPageId: pageId + 1,
         actions: data.actions,
       });
+      
+      const newURL = `/moderation_new/view_moderator/${moderatorId}/page:${pageId}`;
+      window.history.pushState(null, null, newURL);
 
-      await this.GetExtraData();
     } catch (err) {
+      console.error(err);
       this.setState({ error: err.message });
+    } finally {
+      this.setState({ loading: false });
     }
-
-    this.setState({ loading: false });
-  }
-
-  private async GetExtraData() {
-    let actions = this.state.actions;
-    let users = await BrainlyApi.GetUsers(actions.map(action => action.user.id));
-
-    for (let user of users) {
-      let thisAction = actions.find(action => action.user.id === user.id);
-
-      thisAction.user.avatar = user.avatar;
-      thisAction.isModerator = !!user.specialRanks.length;
-    }
-
-    this.setState({ actions });
   }
   
   render() {
@@ -76,7 +66,7 @@ export default class App extends React.Component {
       return (
         <Flex className="js-react-error-container">
           <Headline color="text-red-60" extraBold size="medium">{this.state.error}</Headline>
-          <Button onClick={() => this.FetchActions()} type="outline">{locales.common.tryAgain}</Button>
+          <Button onClick={this.FetchActions.bind(this)} type="outline">{locales.common.tryAgain}</Button>
         </Flex>
       );
     }
@@ -92,8 +82,13 @@ export default class App extends React.Component {
           />
           {(!this.state.actions.length && !this.state.nextPageId) ? 
             <Spinner /> :
-            <div className="actions">{this.state.actions.map(data => 
-              <ActionContainer key={data.id} data={data} moderator={this.state.userId} page={this.state.currentPageId} />
+            <div className="actions grid-items-container">{this.state.actions.map(action => 
+              <ActionContainer 
+                key={action.hash} 
+                data={action} 
+                moderator={this.state.userId} 
+                page={this.state.currentPageId} 
+              />
             )}</div>
           }
         </Flex>

@@ -1,5 +1,7 @@
-@import "./basics";
+@import "../basics";
+@import "../grid";
+@import "../tooltips";
+@import "../overlay";
 @import "./layout";
 @import "./actions";
-@import "./tooltips";
 @import "./filters";

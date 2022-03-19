@@ -1,10 +1,30 @@
 import locales from "@locales";
+import type { 
+  GetConversationResponse, 
+  GetTaskDataResponseWithExtraData,
+  GetMessagesResponse
+} from "@typings/brainly";
 
 class BrainlyApi {
   private graphqlURL = `https://brainly.com/graphql/${locales.market}`;
   private legacyApiURL = `https://${locales.marketHost}/api/28`;
 
-  private async GQL(
+  private async LegacyApiReq(
+    method: "GET" | "POST",
+    apiMethod: string,
+    body?
+  ) {
+    const res = await fetch(`${this.legacyApiURL}/${apiMethod}`, {
+      method,
+      body: method === "GET" ? null : JSON.stringify(body)
+    }).then(data => data.json());
+
+    if (!res.success) throw Error(res.message || locales.errors.brainlyError);
+
+    return res.data;
+  }
+
+  public async GQL(
     query: string, 
     variables?: unknown
   ) {
@@ -17,41 +37,21 @@ class BrainlyApi {
     }).then(data => data.json());
   }
 
-  public async GetUsers(userIds: number[]): Promise<{
-    id: number;
-    avatar: string;
-    specialRanks: {
-      name: string;
-      id: string;
-    }[];
-  }[]> {
-    if (!userIds.length) return [];
+  /* eslint-disable */
+  public async GetDM(userId: number): Promise<GetMessagesResponse> {
+    const conversation: GetConversationResponse = await this.LegacyApiReq(
+      "POST", 
+      "api_messages/check", 
+      {
+        user_id: userId
+      }
+    );
 
-    let query = "";
+    return await this.LegacyApiReq("GET", `api_messages/get_messages/${conversation.conversation_id}`);
+  }
 
-    userIds.forEach(id => {
-      let userGlobalId = btoa(`user:${id}`);
-
-      query += `_${id}: user(id: "${userGlobalId}") {
-        avatar {thumbnailUrl}
-        specialRanks {name id}
-      } `;
-    });
-
-    let data = await this.GQL(`{ ${query} }`);
-    data = data.data;
-
-    let users = [];
-    
-    for (let key of Object.keys(data)) {
-      users.push({
-        id: +key.replace(/_/, ""),
-        avatar: data[key]?.avatar?.thumbnailUrl || "",
-        specialRanks: data[key]?.specialRanks || []
-      });
-    }
-    
-    return users;
+  public async GetTask(id: number): Promise<GetTaskDataResponseWithExtraData> {
+    return await this.LegacyApiReq("GET", `api_tasks/main_view/${id}`);
   }
   
 }

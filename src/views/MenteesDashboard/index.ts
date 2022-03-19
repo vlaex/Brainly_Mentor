@@ -1,26 +1,55 @@
-document.body.insertAdjacentHTML("beforeend", `
-  <button id="open-mentees-dashboard-btn" class="sg-button sg-button--solid-blue sg-button--s sg-button--icon-only">
-    <span class="sg-button__icon">
-      <div class="sg-icon sg-icon--adaptive sg-icon--x16">
-        <svg class="sg-icon__svg" role="img" focusable="false">
-          <use xlink:href="#icon-academic_cap" aria-hidden="true"></use>
-        </svg>
-      </div>
-    </span>
-  </button>
-  <div id="mentees-dashboard-overlay" style="display: none !important"></div>
-`);
+import $ from "@utils/InjectElements";
+import RenderApp from "./RenderApp";
 
-const openDashboardButton = document.querySelector("#open-mentees-dashboard-btn");
-const modPanelContent = document.querySelector(".brn-moderation-panel__content");
+class MenteesDashboard {
+  private openDashboardButton: HTMLButtonElement;
+  private dashboardOverlay: HTMLDivElement;
+  private body = document.body;
 
-if (modPanelContent) {
-  if (modPanelContent.classList.contains("js-hidden")) {
-    openDashboardButton.classList.add("to-bottom");
+  constructor() {
+    this.Build();
   }
 
-  const observer = new MutationObserver(() => {
-    openDashboardButton.classList.toggle("to-bottom");
-  });
-  observer.observe(modPanelContent, { attributes: true });
+  private async Build() {
+    await this.InsertButtons();
+    await this.BindButtonListener();
+  }
+
+  private async InsertButtons() {
+    $("body", "beforeend", `
+      <button class="open-mentees-dashboard sg-button sg-button--solid-blue sg-button--s sg-button--icon-only">
+        <span class="sg-button__icon">
+          <div class="sg-icon sg-icon--adaptive sg-icon--x16">
+            <svg class="sg-icon__svg" role="img" focusable="false"><use xlink:href="#icon-academic_cap" aria-hidden="true"></use></svg>
+          </div>
+        </span>
+      </button>
+      <div class="overlay hidden"></div>
+    `);
+
+    this.openDashboardButton = document.querySelector(".open-mentees-dashboard");
+    this.dashboardOverlay = document.querySelector(".overlay");
+
+    const modPanelContent = document.querySelector(".brn-moderation-panel__content");
+
+    if (!modPanelContent) return;
+    if (modPanelContent.classList.contains("js-hidden")) 
+      this.openDashboardButton.classList.add("to-bottom");
+
+    const observer = new MutationObserver(() =>
+      this.openDashboardButton.classList.toggle("to-bottom")
+    );
+    observer.observe(modPanelContent, { attributes: true });
+  }
+
+  private async BindButtonListener() {
+    this.openDashboardButton.onclick = () => {
+      this.dashboardOverlay.classList.remove("hidden");
+      this.body.style.overflow = "hidden";
+
+      if (!this.dashboardOverlay.children.length) return RenderApp();
+    };
+  }
 }
+
+new MenteesDashboard();
