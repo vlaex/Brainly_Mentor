@@ -1,7 +1,6 @@
 import locales from "@locales";
 import type { 
-  GetConversationResponse, 
-  GetTaskDataResponseWithExtraData,
+  GetConversationResponse,
   GetMessagesResponse
 } from "@typings/brainly";
 
@@ -48,10 +47,6 @@ class BrainlyApi {
     );
 
     return await this.LegacyApiReq("GET", `api_messages/get_messages/${conversation.conversation_id}`);
-  }
-
-  public async GetTask(id: number): Promise<GetTaskDataResponseWithExtraData> {
-    return await this.LegacyApiReq("GET", `api_tasks/main_view/${id}`);
   }
   
 }

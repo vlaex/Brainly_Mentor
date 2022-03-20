@@ -6,6 +6,16 @@ export type BasicSuccessResponse = {
 
 export type Market = "us";
 
+export type GetActionsDataType = {
+  actions: Action[];
+  hasMore: boolean;
+}
+
+export type GetReviewedActionsDataType = {
+  approved: string[];
+  disapproved: string[];
+}
+
 export interface Action {
   task: {
     id: number;

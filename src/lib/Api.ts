@@ -39,6 +39,13 @@ class Api {
     return res;
   }
 
+  async GetReviewedActions(mentorId: number): Promise<{
+    approved: string[];
+    disapproved: string[];
+  }> {
+    return await this.Request("GET", `actions/reviewed/${mentorId}`);
+  }
+
   async ReviewActions(
     hash: string | string[],
     moderatorId: number,

@@ -23,7 +23,7 @@ class Core {
       ], { oldPage: true, cleanBody: true });
     }
 
-    if (this.Path(/(\/$)|(\/question\/\d+)|(\/subject\/\w+)/)) {
+    if (this.Path(/(\/$)|(\/(question|task)\/\d+)|(\/subject\/\w+)/)) {
       this.InjectFiles([
         "content-scripts/Core/index.js",
         "content-scripts/MenteesDashboard/index.js",

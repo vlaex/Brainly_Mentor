@@ -1,0 +1,10 @@
+{
+  "name": {
+    "message": "Znanija Наставник",
+    "description": "The name of the extension"
+  },
+  "description": {
+    "message": "Расширение для наставников znanija.com с полезными функциями и возможностями",
+    "description": "The description"
+  }
+}
