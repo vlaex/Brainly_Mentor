@@ -6,14 +6,10 @@ import {
   HeaderContent,
   HeaderLeft, HeaderRight,
   Spinner,
-  TopLayer,
   Flex,
-  Headline,
   Icon,
   Text,
   Button,
-  ContentBox,
-  Media,
   Avatar,
   Link, HeaderMiddle, Box, SeparatorHorizontal
 } from "brainly-style-guide";
@@ -67,27 +63,32 @@ export default class InspectionMode extends React.Component<
     this.props.onClose();
   }
 
+  private findUserById(userId) {
+    return this.data["users_data"].find(user => user.id === userId);
+  }
+
   private renderTaskSection() {
+    console.log(this.data);
     return <Box padding="s">
-      {InspectionMode.renderViewProfileBox(this.data["users_data"][0])}
-      <Box className="task-content">{this.data["data"]["task"]["content"]}</Box>
+      {InspectionMode.renderViewProfileBox(this.findUserById(this.data["data"]["task"]["user_id"]))}
+      <Box className="task-content"><div dangerouslySetInnerHTML={{__html: this.data["data"]["task"]["content"]}}/></Box>
     </Box>;
   }
 
   private renderAnswerSection(answer) {
-    return <><SeparatorHorizontal/><Text weight="bold">Ответ ▪ опубликован Сегодня, 20:01:53</Text><SeparatorHorizontal/><Box
+    return <><SeparatorHorizontal/><Text weight="bold">Ответ ▪ опубликован {new Date(answer["created"]).toLocaleString()}</Text><SeparatorHorizontal/><Box
         padding="s">
-      {InspectionMode.renderViewProfileBox(this.data["users_data"][1])}
-      <Box className="task-content">{answer["content"]}</Box>
+      {InspectionMode.renderViewProfileBox(this.findUserById(answer["user_id"]))}
+      <Box className="task-content"><div dangerouslySetInnerHTML={{__html: answer["content"]}}/></Box>
     </Box></>;
   }
 
   private static renderViewProfileBox(user) {
     return <Flex justifyContent="space-between" alignItems="center" className="sg-flex--margin-top-auto">
       <Flex alignItems="center">
-        <Avatar imgSrc={user["avatar"]["64"]} size="m" />
+        <Avatar imgSrc={user["avatars"]["64"]} size="m" />
         <div className="user-data">
-          <Link href={`/users/redirect_user/${user["id"]}`} target="_blank"><Text size="small" weight="bold" className="sg-flex--margin-left-xs">{user["nick"]}</Text></Link>
+          <Link href={`/users/redirect_user/${user["id"]}`} target="_blank"><Text size="small" weight="bold" style={{color: user["ranks"]["color"]}} className="sg-flex--margin-left-xs">{user["nick"]}</Text></Link>
           <Text size="small" className="sg-flex--margin-left-xs">Предупреджений: 1</Text>
         </div>
       </Flex>
@@ -105,7 +106,6 @@ export default class InspectionMode extends React.Component<
         modalRoot
       );
     }
-    console.log(this.data);
 
     return createPortal(
       <OverlayContainer>
@@ -113,16 +113,16 @@ export default class InspectionMode extends React.Component<
           <HeaderContainer>
             <HeaderContent autoHeight>
               <HeaderLeft><Text>Вопрос <Link as="a" target="_blank" href={"/task/" + this.data["data"]["task"]["id"]}>#{this.data["data"]["task"]["id"]}</Link></Text></HeaderLeft>
-              <HeaderMiddle><Text>Геометрия ▪ задан Сегодня, 20:01:53</Text></HeaderMiddle>
+              <HeaderMiddle><Text>Геометрия ▪ 5 - 9 классы</Text></HeaderMiddle>
               <HeaderRight><Button className="close-modal-button" onClick={this.CloseModal.bind(this)} type="solid" size="s" iconOnly icon={<Icon type="close" />} /></HeaderRight>
             </HeaderContent>
             </HeaderContainer>
         </Header>
         <SeparatorHorizontal/>
-        <Text weight="bold">Вопрос</Text>
+        <Text weight="bold">Вопрос ▪ задан {new Date(this.data["data"]["task"]["created"]).toLocaleString()}</Text>
         <SeparatorHorizontal/>
         {this.renderTaskSection()}
-        {this.renderAnswerSection(this.data["data"]["responses"][0])}
+        {this.data["data"]["responses"].map(a => this.renderAnswerSection(a))}
       </OverlayContainer>,
       modalRoot
     );
