@@ -21,6 +21,7 @@
     padding: 24px;
     border-radius: 8px;
     display: flex;
+    flex-direction: column;
 
     & > .sg-flex.sg-flex--column {
       overflow: auto;
@@ -36,6 +37,10 @@
 
     & .error-container > .sg-button {
       margin-top: 10px;
+    }
+
+    & .task-content{
+      padding: 13px 5px;
     }
 
     & > .close-modal-button.sg-button {

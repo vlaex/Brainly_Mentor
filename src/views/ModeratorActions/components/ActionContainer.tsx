@@ -64,7 +64,7 @@ export default class ActionContainer extends React.Component<{
       <Box color="white" padding="s" className={boxClasses.join(" ")}>
         <Flex alignItems="center" className="sg-flex--relative">
           <Link href={action.task.link} target="_blank">
-            <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor}></Icon>
+            <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor}/>
           </Link>
           <Link 
             onMouseEnter={() => this.setState({ reasonTooltipVisible: true })} 

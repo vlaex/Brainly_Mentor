@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "brainly-style-guide": "^210.0.0",
+    "browser-polyfill": "^3.20.2",
     "chart.js": "^3.7.1",
     "md5": "^2.3.0",
     "moment": "^2.29.1",

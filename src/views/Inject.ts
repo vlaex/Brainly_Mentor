@@ -7,7 +7,6 @@ class Core {
 
   private Path(pattern: RegExp): boolean {
     if (!this.markets.includes(this.market)) return;
-    
     return pattern.test(this.path);
   }
 
@@ -16,6 +15,7 @@ class Core {
   }
 
   private async InjectContent() {
+
     if (this.Path(/\/moderation_new\/view_moderator\/\d+/)) {
       this.InjectFiles([
         "content-scripts/ModeratorActions/index.js",
@@ -30,7 +30,6 @@ class Core {
         "styles/MenteesDashboard/styles.css"
       ]);
     }
-
   }
 
   private async InjectFiles(
@@ -41,6 +40,7 @@ class Core {
     } = { oldPage: false, cleanBody: false }
   ) {
     const cssFiles = files.filter(file => file.match(/\.css$/));
+
     if (cssFiles.length) ToBackground("InjectStyles", cssFiles);
 
     window.addEventListener("load", async function() {
@@ -55,7 +55,6 @@ class Core {
 
         brainlyLinks.forEach(e => e.remove());
       }
-
       if (options.oldPage) {
         import("@assets/styleguide-icons");
         
@@ -64,15 +63,12 @@ class Core {
         `;
         document.body.innerHTML += `<div class="flash-messages-container"></div>`;
       }
-
       return await ToBackground(
         "InjectScripts", 
         files.filter(file => file.match(/\.js$/))
       );
     });
-
   }
-
 }
 
 new Core();
