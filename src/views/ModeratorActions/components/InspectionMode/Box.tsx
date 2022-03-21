@@ -11,13 +11,16 @@ import {
   Text,
   Button,
   Avatar,
-  Link, HeaderMiddle, Box, SeparatorHorizontal
+  Link,
+  HeaderMiddle,
+  Box,
+  SeparatorHorizontal
 } from "brainly-style-guide";
 
 import { createPortal } from "react-dom";
 import { runtime } from "webextension-polyfill";
 
-
+import BrainlyApi from "@lib/BrainlyApi";
 import OverlayContainer from "./OverlayContainer";
 import BeautifyISO from "@utils/BeautifyISODate";
 
@@ -84,6 +87,8 @@ export default class InspectionMode extends React.Component<
   }
 
   private static renderViewProfileBox(user) {
+
+
     return <Flex justifyContent="space-between" alignItems="center" className="sg-flex--margin-top-auto">
       <Flex alignItems="center">
         <Avatar imgSrc={user["avatars"]["64"]} size="m" />
