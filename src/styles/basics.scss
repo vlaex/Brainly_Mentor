@@ -13,7 +13,7 @@ body.mint:not(#brainly-mentor),
 .sg-button {
   flex-shrink: 0;
 
-  &:not(.sg-button--loading)[disabled] {
+  body#brainly-mentor &:not(.sg-button--loading)[disabled] {
     opacity: 0.1;
   }
 }

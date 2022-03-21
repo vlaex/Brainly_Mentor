@@ -4,6 +4,8 @@ export default {
   "marketHost": "brainly.com",
   "marketName": "brainly",
   "common": {
+    "pts": "pts",
+    "question": "Question",
     "areYouSureToDeleteMentee": "Are you sure to delete this mentee?\nAll data, including statistics, approved and disapproved actions, will be permanently deleted.",
     "deleteMentee": "Delete mentee",
     "youHaveBeenAuthorized": "You have been successfully authorized in the extension!",

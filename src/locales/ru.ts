@@ -4,6 +4,8 @@ export default {
   "marketHost": "znanija.com",
   "marketName": "znanija",
   "common": {
+    "pts": "бал.",
+    "question": "Вопрос",
     "areYouSureToDeleteMentee": "Вы уверены, что хотите удалить этого ученика?\nВсе данные, в том числе статистика, проверенные акции, будут утрачены.",
     "deleteMentee": "Удалить ученика",
     "youHaveBeenAuthorized": "Вы авторизованы в расширении Znanija Наставник!",

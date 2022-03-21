@@ -15,7 +15,7 @@ import { Flash } from "@utils/Flashes";
 import BeautifyISO from "@utils/BeautifyISODate";
 
 import type { Action } from "@typings";
-import InspectionMode from "./InspectionMode/Box";
+import QuestionPreview from "./QuestionPreview/Box";
 
 export default class ActionContainer extends React.Component<{
   data: Action,
@@ -26,7 +26,7 @@ export default class ActionContainer extends React.Component<{
     reviewStatus: this.props.data.reviewStatus,
     loading: false,
     reasonTooltipVisible: false,
-    inspectionMode: false
+    showQuestionPreview: false
   };
 
   private async ReviewAction(status: Action["reviewStatus"]) {
@@ -45,8 +45,8 @@ export default class ActionContainer extends React.Component<{
       .finally(() => this.setState({ loading: false }));
   }
 
-  private EnableInspectionMode() {
-    this.setState({ inspectionMode: true });
+  private ShowQuestionPreview() {
+    this.setState({ showQuestionPreview: true });
   }
 
   render() {
@@ -79,16 +79,16 @@ export default class ActionContainer extends React.Component<{
               <span>{action.reason.fullText}</span>
             </Tooltip>
           }
-          {this.state.inspectionMode && 
-            <InspectionMode 
+          {this.state.showQuestionPreview && 
+            <QuestionPreview
               taskId={action.task.id} 
-              onClose={this.setState.bind(this, { inspectionMode: false })} 
+              onClose={this.setState.bind(this, { showQuestionPreview: false })} 
             />
           }
 
           <Flex className="action-operations" disabled={this.state.loading}>
             <Button onClick={this.ReviewAction.bind(this, "APPROVED")} className="approve-action" type="transparent" iconOnly icon={<Icon type="thumb_up" color="icon-green-50" size={24} />} />
-            <Button onClick={this.EnableInspectionMode.bind(this)} type="transparent" iconOnly icon={<Icon type="seen" size={24} color="icon-gray-70" />} />
+            <Button onClick={this.ShowQuestionPreview.bind(this)} type="transparent" iconOnly icon={<Icon type="seen" size={24} color="icon-gray-70" />} />
             <Button onClick={this.ReviewAction.bind(this, "DISAPPROVED")} className="disapprove-action" type="transparent" iconOnly icon={<Icon type="thumb_down" color="icon-red-50" size={24} />} />
             <Button onClick={this.ReviewAction.bind(this, "NONE")} className="revert-action" type="solid-inverted" iconOnly icon={<Icon type="reload" color="icon-black" size={24} />} />
           </Flex>

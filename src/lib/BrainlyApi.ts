@@ -7,6 +7,16 @@ import type {
 class BrainlyApi {
   private graphqlURL = `https://brainly.com/graphql/${locales.market}`;
   private legacyApiURL = `https://${locales.marketHost}/api/28`;
+  private tokenLong: string;
+
+  constructor() {
+    this.SetAuthToken();
+  }
+
+  private SetAuthToken() {
+    let cookie = document.cookie.split("; ").find(cookie => /\[Token\]\[Long\]/i.test(cookie));
+    this.tokenLong = cookie?.split("=")?.pop();
+  }
 
   private async LegacyApiReq(
     method: "GET" | "POST",
@@ -25,18 +35,19 @@ class BrainlyApi {
 
   public async GQL(
     query: string, 
-    variables?: unknown
+    variables?
   ) {
     return await fetch(this.graphqlURL, {
       method: "POST",
       body: JSON.stringify({ query, variables }),
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        "X-B-Token-Long": this.tokenLong
       }
     }).then(data => data.json());
   }
 
-  /* eslint-disable */
+  /* eslint-disable camelcase, max-len */
   public async GetDM(userId: number): Promise<GetMessagesResponse> {
     const conversation: GetConversationResponse = await this.LegacyApiReq(
       "POST", 
