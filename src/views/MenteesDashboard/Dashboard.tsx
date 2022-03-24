@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Flex, Icon, TextBit, Spinner, Headline } from "brainly-style-guide";
 
-import _API from "@lib/Api";
+import _API from "@lib/api/extension";
 import type { Mentee } from "@typings";
 
 import Overlay from "./components/Overlay";
@@ -48,10 +48,6 @@ export default class Dashboard extends React.Component {
     }
   }
 
-  private CloseDashboard() {
-    document.querySelector(".overlay").classList.add("hidden");
-  }
-
   private ToggleAddMenteeBoxVisibility() {
     this.setState({ addMenteeBoxVisible: !this.state.addMenteeBoxVisible });
   }
@@ -70,7 +66,6 @@ export default class Dashboard extends React.Component {
 
     return (
       <Overlay>
-        <Button className="close-modal-button" title={locales.common.close} onClick={this.CloseDashboard} icon={<Icon type="close" size={24} />} type="transparent" iconOnly />
         {this.state.loading ? <Spinner /> : (
           <Flex direction="column" fullWidth>
             <Flex justifyContent="space-between" alignItems="center" className="mentees-dashboard-header">

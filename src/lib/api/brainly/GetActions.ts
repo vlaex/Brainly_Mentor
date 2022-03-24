@@ -1,9 +1,9 @@
-import BrainlyApi from "./BrainlyApi";
+import BrainlyApi from ".";
 import type {
   GetActionsDataType,
   GetReviewedActionsDataType
 } from "@typings";
-import _API from "./Api";
+import _API from "../extension";
 import GetBrainlyActions from "./GetBrainlyActions";
 
 export default async function GetActions(moderatorId: number, pageId: number): Promise<

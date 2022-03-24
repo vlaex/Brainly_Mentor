@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Headline, Button, Input, Text } from "brainly-style-guide";
 import locales from "@locales";
 import type { Mentee } from "@typings";
-import _API from "@lib/Api";
+import _API from "@lib/api/extension";
 
 type AddMenteeBoxState = {
   error?: string;

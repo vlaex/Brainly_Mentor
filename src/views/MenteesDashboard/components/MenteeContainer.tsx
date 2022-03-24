@@ -6,7 +6,7 @@ import {
 import { LineChart } from "./Charts";
 import locales from "@locales";
 import type { Mentee } from "@typings";
-import _API from "@lib/Api";
+import _API from "@lib/api/extension";
 
 const MENTEE_CHART_TYPES = ["daily", "weekly", "monthly"] as const;
 type MenteeChartsType = typeof MENTEE_CHART_TYPES[number];

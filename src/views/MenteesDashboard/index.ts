@@ -1,4 +1,4 @@
-import $ from "@utils/InjectElements";
+import { ShowElement } from "@utils/ElementsVisibility";
 import RenderApp from "./RenderApp";
 
 class MenteesDashboard {
@@ -16,7 +16,7 @@ class MenteesDashboard {
   }
 
   private async InsertButtons() {
-    $("body", "beforeend", `
+    document.body.insertAdjacentHTML("beforeend", `
       <button class="open-mentees-dashboard sg-button sg-button--solid-blue sg-button--s sg-button--icon-only">
         <span class="sg-button__icon">
           <div class="sg-icon sg-icon--adaptive sg-icon--x16">
@@ -44,7 +44,7 @@ class MenteesDashboard {
 
   private async BindButtonListener() {
     this.openDashboardButton.onclick = () => {
-      this.dashboardOverlay.classList.remove("hidden");
+      ShowElement(this.dashboardOverlay);
       this.body.style.overflow = "hidden";
 
       if (!this.dashboardOverlay.children.length) return RenderApp();

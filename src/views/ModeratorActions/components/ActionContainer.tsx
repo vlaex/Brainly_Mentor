@@ -10,12 +10,14 @@ import {
 } from "brainly-style-guide";
 
 import Tooltip from "./Tooltip";
-import _API from "@lib/Api";
+import _API from "@lib/api/extension";
 import { Flash } from "@utils/Flashes";
 import BeautifyISO from "@utils/BeautifyISODate";
 
 import type { Action } from "@typings";
-import QuestionPreview from "./QuestionPreview/Box";
+import ReplaceLatexWithURL from "@utils/ReplaceLatexWithURL";
+
+import QuestionPreview from "./QuestionPreview";
 import Warns from "./Warns";
 
 export default class ActionContainer extends React.Component<{
@@ -96,9 +98,11 @@ export default class ActionContainer extends React.Component<{
           </Flex>
         </Flex>
         <div className="action-content">
-          <Text size="small" type="div" breakWords={true}>{action.content}</Text>
+          <Text size="small" type="div" breakWords={true} dangerouslySetInnerHTML={{
+            __html: ReplaceLatexWithURL(action.content)
+          }} />
         </div>
-        {this.state.warnsVisible && <Warns userId={action.user.id}/>}
+        {this.state.warnsVisible && <Warns userId={action.user.id} />}
         <Flex justifyContent="space-between" alignItems="center" className="sg-flex--margin-top-auto">
           <Link onMouseEnter={() => this.setState({ warnsVisible: true })} href={`/users/redirect_user/${action.user.id}`} target="_blank">
             <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>

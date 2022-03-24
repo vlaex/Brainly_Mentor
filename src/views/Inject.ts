@@ -1,12 +1,13 @@
 import ToBackground from "@lib/ToBackground";
 
+const MARKETS = ["brainly.com", "znanija.com"];
+
 class Core {
-  private markets = ["brainly.com", "znanija.com"];
   private market = window.location.hostname;
   private path = window.location.href;
 
   private Path(pattern: RegExp): boolean {
-    if (!this.markets.includes(this.market)) return;
+    if (!MARKETS.includes(this.market)) return;
     return pattern.test(this.path);
   }
 
@@ -15,7 +16,6 @@ class Core {
   }
 
   private async InjectContent() {
-
     if (this.Path(/\/moderation_new\/view_moderator\/\d+/)) {
       this.InjectFiles([
         "content-scripts/ModeratorActions/index.js",
@@ -28,6 +28,13 @@ class Core {
         "content-scripts/Core/index.js",
         "content-scripts/MenteesDashboard/index.js",
         "styles/MenteesDashboard/styles.css"
+      ]);
+    }
+
+    if (this.market === "znanija.com" && this.Path(/\/profil\/[A-Za-z0-9]+-\d+/)) {
+      this.InjectFiles([
+        "content-scripts/UserProfile/index.js",
+        "styles/UserProfile/styles.css"
       ]);
     }
   }
@@ -55,6 +62,7 @@ class Core {
 
         brainlyLinks.forEach(e => e.remove());
       }
+
       if (options.oldPage) {
         import("@assets/styleguide-icons");
         
@@ -63,6 +71,7 @@ class Core {
         `;
         document.body.innerHTML += `<div class="flash-messages-container"></div>`;
       }
+
       return await ToBackground(
         "InjectScripts", 
         files.filter(file => file.match(/\.js$/))

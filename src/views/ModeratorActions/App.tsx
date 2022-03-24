@@ -7,7 +7,7 @@ import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
 import AppHeader from "./components/AppHeader";
-import GetActions from "@lib/GetActions";
+import GetActions from "@lib/api/brainly/GetActions";
 
 type AppState = {
   userId: number;
@@ -30,8 +30,34 @@ export default class App extends React.Component {
     hasMore: true
   };
 
+  constructor(props) {
+    super(props);
+
+    this.SetPageSwitcher();
+  }
+
   componentDidMount() {
     this.FetchActions();
+  }
+
+  private SetPageSwitcher() {
+    document.addEventListener("keyup", (event: KeyboardEvent) => {
+      if (this.state.loading) return;
+
+      let pageId = this.state.currentPageId;
+
+      if (
+        pageId > 1 &&
+        (event.code === "ArrowLeft" || event.code === "KeyA")
+      )
+        this.FetchActions(--pageId);
+      else if (
+        this.state.hasMore &&
+        (event.code === "ArrowRight" || event.code === "KeyD")
+      )
+        this.FetchActions(++pageId);
+
+    });
   }
 
   private async FetchActions(pageId?: number) {

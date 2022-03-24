@@ -2,10 +2,13 @@ import type {
   Action,
   Mentee, 
   BasicSuccessResponse,
-  Mentor
+  Mentor,
+  Candidate
 } from "@typings";
 import locales from "@locales";
-import storage from "./storage";
+import storage from "@lib/storage";
+
+const ERRORS = locales.errors;
 
 class Api {
   private extApiURL = "https://mentors.br-helper.com";
@@ -17,7 +20,7 @@ class Api {
     body?
   ) {
     const authToken = await storage.get("authToken");
-    if (!authToken) throw Error(locales.errors.notAuthed);
+    if (!authToken) throw Error(ERRORS.notAuthed);
 
     let url = `${this.extApiURL}/${this.market}/${apiMethod}`;
     let headers = {
@@ -32,7 +35,8 @@ class Api {
     const res = await fetch(url, { method, body, headers }).then(r => r.json());
     
     if (res.error) {
-      let errorMessage = locales.errors[res.error] || locales.errors.internalError;
+      let errorMessage = ERRORS[res.error || "internalError"];
+
       throw Error(errorMessage);
     }
 
@@ -109,6 +113,15 @@ class Api {
     senior: boolean;
   }): Promise<BasicSuccessResponse> {
     return await this.Request("PUT", `mentors/${mentorId}`, data);
+  }
+
+  async GetCandidates(id?: number): Promise<{
+    candidates: Candidate[];
+  }> {
+    let path = "candidates";
+    if (id) path += `?id=${id}`;
+
+    return await this.Request("GET", path);
   }
 
 }

@@ -82,3 +82,9 @@ export interface Mentor {
   senior: boolean;
   market: Market;
 }
+
+export interface Candidate {
+  id: number;
+  link: string;
+  status: string;
+}

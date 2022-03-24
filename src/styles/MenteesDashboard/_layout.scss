@@ -11,7 +11,12 @@
   }
 }
 
-.mentees-dashboard {
+.mentees-dashboard.overlay-container {
+  width: 80vw;
+  min-width: unset;
+  max-width: unset;
+  overflow: auto;
+
   & > div:not(.sg-spinner) {
     height: 100%;
     position: relative;

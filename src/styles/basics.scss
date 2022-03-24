@@ -34,3 +34,8 @@ body.mint:not(#brainly-mentor),
     gap: $val;
   }
 }
+
+.latex {
+  display: block;
+  margin: 8px 0;
+}

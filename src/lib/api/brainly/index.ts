@@ -1,7 +1,10 @@
 import locales from "@locales";
 import type { 
+  CommonResponse,
   GetConversationResponse,
-  GetMessagesResponse
+  GetMessagesResponse,
+  GetQuestionLogResponse,
+  GetQuestionResponse
 } from "@typings/brainly";
 
 class BrainlyApi {
@@ -18,11 +21,11 @@ class BrainlyApi {
     this.tokenLong = cookie?.split("=")?.pop();
   }
 
-  private async LegacyApiReq(
+  private async LegacyApiReq<T>(
     method: "GET" | "POST",
     apiMethod: string,
     body?
-  ) {
+  ): Promise<CommonResponse<T>> {
     const res = await fetch(`${this.legacyApiURL}/${apiMethod}`, {
       method,
       body: method === "GET" ? null : JSON.stringify(body)
@@ -30,7 +33,7 @@ class BrainlyApi {
 
     if (!res.success) throw Error(res.message || locales.errors.brainlyError);
 
-    return res.data;
+    return res;
   }
 
   public async GQL(
@@ -52,14 +55,22 @@ class BrainlyApi {
     const conversation: GetConversationResponse = await this.LegacyApiReq(
       "POST", 
       "api_messages/check", 
-      {
-        user_id: userId
-      }
+      { user_id: userId }
     );
 
-    return await this.LegacyApiReq("GET", `api_messages/get_messages/${conversation.conversation_id}`);
+    return await this.LegacyApiReq(
+      "GET", 
+      `api_messages/get_messages/${conversation.data.conversation_id}`
+    );
   }
-  
+
+  public async GetQuestion(id: number): Promise<GetQuestionResponse> {
+    return await this.LegacyApiReq("GET", `api_tasks/main_view/${id}`);
+  }
+
+  public async GetQuestionLog(id: number): Promise<GetQuestionLogResponse> {
+    return await this.LegacyApiReq("GET", `api_task_lines/big/${id}`);
+  }
 }
 
 export default new BrainlyApi();

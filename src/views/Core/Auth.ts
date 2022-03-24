@@ -1,4 +1,4 @@
-import BrainlyApi from "@lib/BrainlyApi";
+import BrainlyApi from "@lib/api/brainly";
 import storage from "@lib/storage";
 import locales from "@locales";
 import { Flash } from "@utils/Flashes";
@@ -9,7 +9,7 @@ storage.get("authToken").then(async function(token) {
   try {
     const userConversation = await BrainlyApi.GetDM(locales.botUserId);
 
-    const lastMessage = userConversation.messages
+    const lastMessage = userConversation.data.messages
       .reverse()
       .find(message => message.user_id === locales.botUserId);
     
