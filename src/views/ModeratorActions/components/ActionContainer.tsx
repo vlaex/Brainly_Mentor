@@ -16,6 +16,7 @@ import BeautifyISO from "@utils/BeautifyISODate";
 
 import type { Action } from "@typings";
 import QuestionPreview from "./QuestionPreview/Box";
+import Warns from "./Warns";
 
 export default class ActionContainer extends React.Component<{
   data: Action,
@@ -26,6 +27,7 @@ export default class ActionContainer extends React.Component<{
     reviewStatus: this.props.data.reviewStatus,
     loading: false,
     reasonTooltipVisible: false,
+    warnsVisible: false,
     showQuestionPreview: false
   };
 
@@ -66,23 +68,23 @@ export default class ActionContainer extends React.Component<{
           <Link href={action.task.link} target="_blank">
             <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor}/>
           </Link>
-          <Link 
-            onMouseEnter={() => this.setState({ reasonTooltipVisible: true })} 
-            onMouseLeave={() => this.setState({ reasonTooltipVisible: false })} 
-            href={action.task.link} 
+          <Link
+            onMouseEnter={() => this.setState({ reasonTooltipVisible: true })}
+            onMouseLeave={() => this.setState({ reasonTooltipVisible: false })}
+            href={action.task.link}
             target="_blank"
             className="action-type">{action.localizedType}
           </Link>
-          
-          {action.reason.fullText && 
+
+          {action.reason.fullText &&
             <Tooltip visible={this.state.reasonTooltipVisible}>
               <span>{action.reason.fullText}</span>
             </Tooltip>
           }
-          {this.state.showQuestionPreview && 
+          {this.state.showQuestionPreview &&
             <QuestionPreview
-              taskId={action.task.id} 
-              onClose={this.setState.bind(this, { showQuestionPreview: false })} 
+              taskId={action.task.id}
+              onClose={this.setState.bind(this, { showQuestionPreview: false })}
             />
           }
 
@@ -96,8 +98,9 @@ export default class ActionContainer extends React.Component<{
         <div className="action-content">
           <Text size="small" type="div" breakWords={true}>{action.content}</Text>
         </div>
+        {this.state.warnsVisible && <Warns userId={action.user.id}/>}
         <Flex justifyContent="space-between" alignItems="center" className="sg-flex--margin-top-auto">
-          <Link href={`/users/redirect_user/${action.user.id}`} target="_blank">
+          <Link onMouseEnter={() => this.setState({ warnsVisible: true })} href={`/users/redirect_user/${action.user.id}`} target="_blank">
             <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>
               <Avatar imgSrc={action.user.avatar} size="xs" />
               <Text size="small" weight="bold" className="sg-flex--margin-left-xs">{action.user.nick}</Text>

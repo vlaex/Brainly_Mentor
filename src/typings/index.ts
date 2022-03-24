@@ -11,6 +11,11 @@ export type GetActionsDataType = {
   hasMore: boolean;
 }
 
+export type GetWarnsType = {
+  warns: Action[];
+  hasMore: boolean;
+}
+
 export type GetReviewedActionsDataType = {
   approved: string[];
   disapproved: string[];
@@ -47,6 +52,15 @@ export interface Action {
 type MenteeCharts = {
   count: number;
   dataset: number[];
+}
+
+export type Warn = {
+  time: string;
+  reason: string;
+  content: string;
+  taskId: number;
+  warner: string;
+  active: boolean;
 }
 
 export interface Mentee {
