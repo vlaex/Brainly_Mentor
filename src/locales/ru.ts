@@ -6,6 +6,7 @@ export default {
   "common": {
     "withWarn": "с предупреждением",
     "as": "как",
+    "noWarns": "Нет предупреждений",
     "questionLog": "История вопроса",
     "pts": "бал.",
     "question": "Вопрос",

@@ -8,6 +8,7 @@ export default {
     "as": "as",
     "questionLog": "Log",
     "pts": "pts",
+    "noWarns": "No warnings",
     "question": "Question",
     "answer": "Answer",
     "areYouSureToDeleteMentee": "Are you sure to delete this mentee?\nAll data, including statistics, approved and disapproved actions, will be permanently deleted.",

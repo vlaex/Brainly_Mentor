@@ -2,20 +2,21 @@
 import React from "react";
 import {
   Spinner,
-  Flex,
-  Button,
-  Headline,
   Box,
   Accordion,
   AccordionItem,
   SeparatorHorizontal,
-  Bubble
+  Bubble,
+  Flex,
+  Headline,
+  Text
 } from "brainly-style-guide";
 
 import locales from "@locales";
 import { Warn } from "@typings";
 import GetWarns from "@lib/GetWarns";
 import { GetShortDeleteReason } from "@lib/GetShortDeleteReason";
+import md5 from "md5";
 
 
 type WarnsProps = {
@@ -23,7 +24,6 @@ type WarnsProps = {
 }
 
 type WarnsState = {
-  error?: string;
   loading: boolean;
   warns?: Warn[];
 }
@@ -42,45 +42,42 @@ export default class Warns extends React.Component<WarnsProps & React.HTMLAttrib
     try {
       const data = await GetWarns(this.props.userId);
       this.setState({ warns: data });
-    } catch (err) {
-      this.setState({ error: err.message });
     } finally {
       this.setState({ loading: false });
     }
   }
 
   render() {
-    const { warns } = this.state;
+    const { warns, loading } = this.state;
 
-    if (!warns) {
+    if (loading) {
       return (
         <Bubble direction="left" className="warnsBox">
-          {this.state.loading ?
-            <Spinner/> :
-            <Flex direction="column" className="error-container">
-              <Headline>{this.state.error}</Headline>
-              <Button type="outline" toggle="blue">{locales.common.close}</Button>
-            </Flex>
-          }
+          <Spinner />
         </Bubble>
       );
     }
 
     return (
       <Bubble direction="left" className="warnsBox">
-        <Accordion spacing="none" allowMultiple>{warns.map(warn => {
+        {warns?.length < 1 && <Flex direction="column">
+          <Headline color="text-red-60" size="small" align="to-center">{locales.common.noWarns}</Headline>
+        </Flex>}
+        <Accordion spacing="none" allowMultiple>{warns?.map(warn => {
           let beautifiedReason = GetShortDeleteReason(warn.reason)?.name.toLowerCase();
           return (
             <AccordionItem
-              key={warn.time}
+              key={`${md5(warn.reason + warn.time + warn.content + warn.taskId)}`}
               padding="xxs"
               title={beautifiedReason + " | " + warn.time + " | " + warn.warner}
               titleSize="small"
             >
-              <Box padding="xs">{warn.reason}</Box>
+              <Box padding="xs">
+                <Text size="small">{warn.reason}</Text>
+              </Box>
               <SeparatorHorizontal/>
               <Box padding="xs">
-                <div dangerouslySetInnerHTML={{ __html: warn.content }}/>
+                <Text size="small">{warn.content}</Text>
               </Box>
             </AccordionItem>
           );

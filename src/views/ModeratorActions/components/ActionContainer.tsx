@@ -102,20 +102,26 @@ export default class ActionContainer extends React.Component<{
             __html: ReplaceLatexWithURL(action.content)
           }} />
         </div>
-        <Flex justifyContent="space-between" alignItems="center" className="sg-flex--margin-top-auto">
+        <Flex 
+          justifyContent="space-between" 
+          alignItems="center" 
+          className="sg-flex--margin-top-auto sg-flex--relative"
+          onMouseEnter={() => this.setState({ warnsVisible: true })}
+          onMouseLeave={() => this.setState({ warnsVisible: false })}
+        >
           <Link
-              onMouseEnter={() => this.setState({ warnsVisible: true })}
-              href={`/users/redirect_user/${action.user.id}`} target="_blank">
+            href={`/users/redirect_user/${action.user.id}`} target="_blank">
             <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>
               <Avatar imgSrc={action.user.avatar} size="xs" />
               <Text size="small" weight="bold" className="sg-flex--margin-left-xs">{action.user.nick}</Text>
             </Flex>
           </Link>
 
-            {this.state.warnsVisible && <Warns
-                key={action.hash}
-                onMouseLeave={() => this.setState({ warnsVisible: false })}
-                userId={action.user.id}/>}
+          {this.state.warnsVisible && <Warns
+            key={action.hash}
+            onMouseEnter={() => this.setState({ warnsVisible: true })}
+            onMouseOut={() => this.setState({ warnsVisible: false })}
+            userId={action.user.id} />}
 
           <Flex alignItems="center" className="action-date-container">
             <Icon type="counter" color="icon-gray-50" size={16} />
