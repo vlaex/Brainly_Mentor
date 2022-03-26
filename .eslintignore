@@ -3,3 +3,4 @@ src/locales/*
 src/assets/*
 src/typings/*.d.ts
 gulpfile.js
+scripts/*.js

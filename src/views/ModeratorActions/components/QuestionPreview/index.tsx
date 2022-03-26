@@ -36,7 +36,7 @@ export default class QuestionPreview extends React.Component<
   constructor(props: QuestionPreviewProps) {
     super(props);
 
-    this.state = {loading: true};
+    this.state = { loading: true };
     this.RenderTask();
   }
 

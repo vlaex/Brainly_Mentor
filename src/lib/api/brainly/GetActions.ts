@@ -41,8 +41,8 @@ export default async function GetActions(moderatorId: number, pageId: number): P
     action.reviewStatus = data[1].approved.includes(action.hash) ? 
       "APPROVED" :
       data[1].disapproved.includes(action.hash) ? 
-      "DISAPPROVED" : 
-      "NONE";
+        "DISAPPROVED" : 
+        "NONE";
 
     let userData = users.find(user => user.id === action.user.id);
 

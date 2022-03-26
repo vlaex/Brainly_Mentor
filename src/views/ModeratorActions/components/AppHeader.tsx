@@ -2,30 +2,36 @@ import React from "react";
 import {
   Flex,
   Button,
-  Text,
   Icon,
   HomeButton,
-  LogoType
+  LogoType,
+  Text
 } from "brainly-style-guide";
 
 import locales from "@locales";
 import Filters from "./Filters";
 
-export default class AppHeader extends React.Component {
-  props: {
-    onChange: (number) => Promise<void>;
-    pageId: number;
-    loading: boolean;
-    hasNextPage: boolean;
-  } = this.props;
+type AppHeaderProps = {
+  onChange: (number) => Promise<void>;
+  pageId: number;
+  loading: boolean;
+  hasNextPage: boolean;
+}
+
+export default class AppHeader extends React.Component<AppHeaderProps> {
+  constructor(props: AppHeaderProps) {
+    super(props);
+  }
 
   private UpdatePage(
-    page: "previous" | "next" | "current"
+    page: "previous" | "next" | "current" | number
   ) {
     let pageId = this.props.pageId;
 
-    if (page !== "current") {
-      pageId = page === "previous" ? pageId - 1 : pageId + 1;
+    if (typeof page === "number") {
+      pageId = page;
+    } else if (page !== "current") {
+      pageId = page === "previous" ? --pageId : ++pageId;
     }
 
     this.props.onChange(pageId);
@@ -37,7 +43,7 @@ export default class AppHeader extends React.Component {
         <HomeButton type={locales.marketName as LogoType} href="/" />
         <Flex alignItems="center" className="actions-pagination">
           <Button disabled={this.props.pageId === 1} onClick={() => this.UpdatePage("previous")} title={locales.common.previousPage} type="transparent" iconOnly icon={<Icon type="arrow_left" color="icon-black" size={24} />} size="s" />
-          <Text weight="bold" size="small">{this.props.pageId}</Text>
+          <Text weight="bold" type="span" size="small" className="actions-pagination-number">{this.props.pageId}</Text>
           <Button disabled={!this.props.hasNextPage} onClick={() => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
         <Filters />

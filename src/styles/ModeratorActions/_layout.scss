@@ -55,12 +55,18 @@
 
   & > .actions-pagination {
     gap: 10px;
+
+    > .actions-pagination-number {
+      border: none;
+      text-align: center;
+      font-weight: bold;
+      outline: none;
+    }
   }
 
   & .sg-home-button {
     @include scale;
 
-    /* stylelint-disable-next-line selector-class-pattern */
     > .sg-home-button__logo-big {
       width: auto;
       height: 30px;

@@ -31,7 +31,7 @@ export default class LogEntry extends React.Component<{
   entry: QuestionLogEntry,
   usersData: User[] 
 }> {
-  state: {detailsVisible: boolean} = {detailsVisible: false};
+  state: {detailsVisible: boolean} = { detailsVisible: false };
 
   get EntryText() {
     let entry = this.props.entry;

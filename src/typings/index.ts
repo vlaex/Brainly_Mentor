@@ -9,6 +9,7 @@ export type Market = "us";
 export type GetActionsDataType = {
   actions: Action[];
   hasMore: boolean;
+  pageId: number;
 }
 
 export type GetWarnsType = {

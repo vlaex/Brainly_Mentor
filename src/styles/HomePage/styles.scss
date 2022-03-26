@@ -1,0 +1,56 @@
+[data-test="ranking-box"] {
+  & .sg-content-box.sg-content-box--full {
+    margin-left: 5px;
+  }
+
+  & .sg-actions-list__hole > .review-candidate.sg-button {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    margin-top: -30px;
+    margin-left: -28px;
+
+    .sg-icon {
+      fill: black;
+    }
+
+    $red: #ff8787;
+    $green: #7dd1a7;
+
+    &.good-candidate {
+      background-color: $green;
+
+      :hover,
+      :focus {
+        background: $green;
+      }
+    }
+
+    &.bad-candidate {
+      background-color: $red;
+
+      :hover,
+      :focus {
+        background: $red;
+      }
+    }
+  }
+}
+
+.candidate-label {
+  border: 2px solid #55ab80;
+  background: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  margin-top: -16px;
+  margin-left: 15px;
+  position: absolute;
+  font-size: 12px;
+}

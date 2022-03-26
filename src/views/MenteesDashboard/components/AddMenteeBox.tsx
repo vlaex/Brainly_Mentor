@@ -21,7 +21,7 @@ export class AddMenteeBox extends React.Component<
   constructor(props: AddMenteeBoxProps) {
     super(props);
 
-    this.state = {loading: false};
+    this.state = { loading: false };
   }
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {

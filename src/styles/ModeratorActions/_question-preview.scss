@@ -68,6 +68,10 @@ $overlay-width: 545px;
   & > .question-preview-content-box-content {
     padding: 20px;
 
+    > .sg-text {
+      word-break: break-word;
+    }
+
     &[data-is-deleted="true"] {
       background: #ffc7bf;
       margin: 10px;

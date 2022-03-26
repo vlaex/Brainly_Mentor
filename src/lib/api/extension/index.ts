@@ -32,7 +32,11 @@ class Api {
       headers["Content-Type"] = "application/json; charset=utf-8";
     }
 
-    const res = await fetch(url, { method, body, headers }).then(r => r.json());
+    const res = await fetch(url, {
+      method, 
+      body, 
+      headers 
+    }).then(r => r.json());
     
     if (res.error) {
       let errorMessage = ERRORS[res.error || "internalError"];
@@ -122,6 +126,10 @@ class Api {
     if (id) path += `?id=${id}`;
 
     return await this.Request("GET", path);
+  }
+
+  async ReviewCandidate(id: number): Promise<{ warnings: string[] }> {
+    return await this.Request("POST", `candidates/review/${id}`);
   }
 
 }

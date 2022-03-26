@@ -98,7 +98,7 @@ export default async function GetBrainlyActions(userId: number, pageId: number):
 
     action.iconColor = action.type === "ACCEPTED" ? "icon-green-50" :
       action.type === "REPORTED_FOR_CORRECTION" ? "icon-blue-50" : 
-      `icon-${action.contentType === "answer" ? "blue" : "indigo"}-50`;
+        `icon-${action.contentType === "answer" ? "blue" : "indigo"}-50`;
 
     action.hash = md5(action.content + action.user.id + action.date + action.task.id);
 
@@ -107,8 +107,11 @@ export default async function GetBrainlyActions(userId: number, pageId: number):
 
   if (!actions.length) throw Error(ERRORS.noActions);
 
+  let currentPage = doc.querySelector("span.current");
+
   return {
     actions,
-    hasMore: !!doc.querySelector("span.current")?.nextElementSibling
+    hasMore: !!currentPage?.nextElementSibling,
+    pageId: +currentPage?.textContent
   };
 }

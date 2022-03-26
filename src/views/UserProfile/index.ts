@@ -1,3 +1,6 @@
+import _API from "@lib/api/extension";
+
+const helpedInfoSelector = document.querySelector(".helped_info");
 const nickSelector: HTMLLinkElement = document.querySelector(".info .info_top > .ranking > h2 > a");
 
 const user = {
@@ -5,55 +8,56 @@ const user = {
   id: +nickSelector.href.match(/\d+$/)
 };
 
-console.debug(user);
-
-/*let nickElement = document.querySelector('.info .info_top > .ranking > h2 > a');
-let userNick = nickElement.innerText.trim();
-let userId = nickElement.href.match(/\d+$/)?.[0];
-
 (async function() {
-  if(!userId || !userNick || userNick === 'Аккаунт удален') return;
+  if (
+    !user.id || 
+    !user.nick || 
+    !document.getElementById("UserBanAddForm")
+  ) return;
 
-  let data = await api.getCandidate(userNick, userId);
-  if(data.error) throw Error(data.error);
+  const data = await _API.GetCandidates(user.id);
+  const candidates = data.candidates;
 
-  let candidate = data.data;
-
-  let helpedInfo = document.querySelector('.helped_info');
-  if(candidate) {
-    helpedInfo.insertAdjacentHTML('beforebegin', `<div title="Кандидат" class="candidate-label">
-      <span>K</span>
-      <span>${candidate.status.toLowerCase()}</span>
-    </div>`);
-  } else {
-    helpedInfo.insertAdjacentHTML('beforebegin', `
-      <button class="check-candidate">Кандидат?</button>
-      <div class="check-candidate-results hidden"></div>
+  if (candidates.length) {
+    helpedInfoSelector.insertAdjacentHTML("beforebegin", `
+      <div title="Кандидат" class="candidate-label">
+        <span>K</span>
+        <span>${candidates[0].status}</span>
+      </div>
     `);
-
-    document.querySelector('.check-candidate').onclick = async function() {
-      this.disabled = true;
-      this.innerText = 'Проверяю...';
-
-      let res = await api.checkCandidate(userId);
-
-      let errors = res.data.errors;
-      let candidateResults = document.querySelector('.check-candidate-results');
-
-      candidateResults.innerHTML = res.data.errors.map(
-        validationError => `<div>
-          <svg class="sg-icon__svg" role="img" focusable="false"><use xlink:href="#icon-close" aria-hidden="true"></use></svg>
-          <span>${validationError}</span>
-        </div>`
-      );
-      if(!errors.length) candidateResults.innerHTML = `
-        <span>Успешно проверено!</span>
-      `;
-
-      candidateResults.classList.remove('hidden');
-
-      this.disabled = false;
-      this.innerText = 'Кандидат?';
-    }
+    
+    return;
   }
-})();*/
+
+  helpedInfoSelector.insertAdjacentHTML("beforebegin", `
+    <button class="review-candidate">Кандидат?</button>
+    <div class="review-candidate-results" hidden></div>
+  `);
+
+  const reviewCandidateButton = document.querySelector(".review-candidate") as HTMLButtonElement;
+  const reviewCandidateResults = document.querySelector(".review-candidate-results") as HTMLElement;
+
+  reviewCandidateButton.onclick = async () => {
+    reviewCandidateButton.disabled = true;
+    reviewCandidateButton.innerText = "Проверяю...";
+    reviewCandidateResults.classList.remove("success");
+
+    const data = await _API.ReviewCandidate(user.id);
+
+    reviewCandidateResults.innerHTML = data.warnings.map(warn => `
+      <div>
+        <svg class="sg-icon__svg" role="img" focusable="false"><use xlink:href="#icon-close" aria-hidden="true"></use></svg>
+        <span>${warn}</span>
+      </div>
+    `).join("");
+
+    if (!data.warnings.length) {
+      reviewCandidateResults.innerHTML = `<span>Успешно проверено!</span>`;
+      reviewCandidateResults.classList.add("success");
+    }
+
+    reviewCandidateResults.hidden = false;
+    reviewCandidateButton.disabled = false;
+    reviewCandidateButton.innerText = "Кандидат?";
+  };
+})();

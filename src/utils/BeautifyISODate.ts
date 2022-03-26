@@ -17,8 +17,8 @@ export default function BeautifyISO (isoDate: string): string {
   } else if (daysDifference < 7) {
     beautifiedDate = `
       ${locales.common.nDaysAgo.
-        replace("%{days}", String(daysDifference))
-      },
+    replace("%{days}", String(daysDifference))
+},
     `;
   } else {
     beautifiedDate = date.format(locales.dateFormat);

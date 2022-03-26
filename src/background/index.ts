@@ -30,14 +30,14 @@ class BackgroundListener {
   private async InjectStyles() {
     return await ext.scripting.insertCSS({ 
       files: this.messageData, 
-      target: {tabId: this.tabId}
+      target: { tabId: this.tabId }
     });
   }
 
   private async InjectScripts() {
     return await ext.scripting.executeScript({ 
       files: this.messageData, 
-      target: {tabId: this.tabId} 
+      target: { tabId: this.tabId } 
     });
   }
 

@@ -39,10 +39,10 @@ export const LineChart = (props: MenteeChartsProps) => {
   let options: ChartOptions<"line"> = {
     scales: {
       x: { 
-        ticks: { font: {...fontOptions, size: 10} }
+        ticks: { font: { ...fontOptions, size: 10 } }
       },
       y: { 
-        ticks: { font: {...fontOptions, size: 11, weight: "bold"} }
+        ticks: { font: { ...fontOptions, size: 11, weight: "bold" } }
       } 
     },
     plugins: {

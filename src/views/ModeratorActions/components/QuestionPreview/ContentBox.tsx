@@ -63,7 +63,7 @@ export default class ContentBox extends React.Component<ContentBoxProps> {
               <Link target="_blank" href={`/users/redirect_user/${user.id}`} weight="bold" size="small" color="text-black">{user.nick}</Link>
               <Flex direction="column">
                 {user.ranks.names.map((rank, i) => 
-                  <Text key={i} size="small" type="span" style={{color: user.ranks.color}}>{rank}</Text>
+                  <Text key={i} size="small" type="span" style={{ color: user.ranks.color }}>{rank}</Text>
                 )}
               </Flex>
             </Flex>
@@ -73,7 +73,7 @@ export default class ContentBox extends React.Component<ContentBoxProps> {
           }} />
           {!!data.attachments.length &&
             <Flex marginTop="s" alignItems="center" className="question-preview-content-box-attachments">
-              <a target="_blank" href={data.attachments[0].full} rel="noreferrer" style={{margin: "auto"}}>
+              <a target="_blank" href={data.attachments[0].full} rel="noreferrer" style={{ margin: "auto" }}>
                 <img src={data.attachments[0].full} style={{ width: "200px", height: "auto" }} />
               </a>
             </Flex>

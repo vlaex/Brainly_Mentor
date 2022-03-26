@@ -25,7 +25,7 @@ export default class EntriesSection extends React.Component<
   EntriesSectionProps, 
   EntriesSectionState
 > {
-  state: EntriesSectionState = {visible: true};
+  state: EntriesSectionState = { visible: true };
 
   private ToggleVisibility() {
     this.setState({ visible: !this.state.visible });

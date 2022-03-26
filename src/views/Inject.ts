@@ -31,12 +31,23 @@ class Core {
       ]);
     }
 
-    if (this.market === "znanija.com" && this.Path(/\/profil\/[A-Za-z0-9]+-\d+/)) {
-      this.InjectFiles([
-        "content-scripts/UserProfile/index.js",
-        "styles/UserProfile/styles.css"
-      ]);
+    // For znanija.com market only
+    if (this.market === "znanija.com") {
+      if (this.Path(/\/profil\/[A-Za-z0-9]+-\d+/)) {
+        this.InjectFiles([
+          "content-scripts/UserProfile/index.js",
+          "styles/UserProfile/styles.css"
+        ]);
+      }
+
+      if (this.Path(/\/$|\/(subject|predmet)\//)) {
+        this.InjectFiles([
+          "content-scripts/HomePage/index.js",
+          "styles/HomePage/styles.css"
+        ]);
+      }
     }
+
   }
 
   private async InjectFiles(

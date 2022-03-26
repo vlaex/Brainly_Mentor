@@ -70,7 +70,7 @@ export default class App extends React.Component {
       const data = await GetActions(moderatorId, pageId);
 
       this.setState({ 
-        currentPageId: pageId,
+        currentPageId: data.pageId,
         hasMore: data.hasMore,
         nextPageId: pageId + 1,
         actions: data.actions,

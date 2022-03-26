@@ -28,7 +28,7 @@ export default class MenteeContainer extends React.Component<
   constructor(props: MenteeContainerProps) {
     super(props);
 
-    this.state = {chartsType: "daily"};
+    this.state = { chartsType: "daily" };
   }
 
   private async DeleteMentee() {

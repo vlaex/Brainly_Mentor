@@ -38,7 +38,7 @@ const SelectFilter = (props: {
 }) => {
   return (
     <Select options={[
-      {value: "ALL", text: locales.common.all},
+      { value: "ALL", text: locales.common.all },
       ...props.options
     ]} defaultValue="ALL" id={props.id} onChange={props.onChange} />
   );
