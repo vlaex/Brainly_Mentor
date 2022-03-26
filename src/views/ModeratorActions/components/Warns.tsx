@@ -58,14 +58,14 @@ export default class Warns extends React.Component<WarnsProps & React.HTMLAttrib
         if (!warns) {
             return (
                 <Bubble direction="left" className="warnsBox">
-                this.state.loading ?
+                    {this.state.loading ?
                     <Spinner/> :
                     <Flex direction="column" className="error-container">
                         <Headline>{this.state.error}</Headline>
                         <Button type="outline" toggle="blue">
                             {locales.common.close}
                         </Button>
-                    </Flex>
+                    </Flex> }
                 </Bubble>
             );
         }
