@@ -2,7 +2,7 @@ import type {
   Action,
   GetActionsDataType 
 } from "@typings";
-import { GetShortDeleteReason } from "../../GetShortDeleteReason";
+import { GetShortDeleteReason } from "@lib/GetShortDeleteReason";
 import locales from "@locales";
 import md5 from "md5";
 

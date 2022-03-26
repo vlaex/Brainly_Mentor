@@ -8,7 +8,8 @@ import {
     Box,
     Accordion,
     AccordionItem,
-    SeparatorHorizontal
+    SeparatorHorizontal,
+    Bubble
 } from "brainly-style-guide";
 
 import locales from "@locales";
@@ -27,7 +28,7 @@ type WarnsState = {
     warns?: Warn[];
 }
 
-export default class Warns extends React.Component<WarnsProps,
+export default class Warns extends React.Component<WarnsProps & React.HTMLAttributes<HTMLElement>,
     WarnsState> {
     constructor(props: WarnsProps) {
         super(props);
@@ -56,6 +57,7 @@ export default class Warns extends React.Component<WarnsProps,
 
         if (!warns) {
             return (
+                <Bubble direction="left" className="warnsBox">
                 this.state.loading ?
                     <Spinner/> :
                     <Flex direction="column" className="error-container">
@@ -64,21 +66,27 @@ export default class Warns extends React.Component<WarnsProps,
                             {locales.common.close}
                         </Button>
                     </Flex>
+                </Bubble>
             );
         }
 
-        return <Accordion spacing="none" allowMultiple>{
-            warns.map(warn => {
-                let beautifiedReason = GetShortDeleteReason(warn.reason)?.name.toLowerCase();
-                return <AccordionItem
-                    padding="xxs"
-                    title={beautifiedReason + " | " + warn.time + " | от " + warn.warner}
-                    titleSize="small">
-                    <Box padding="xs">{warn.reason}</Box>
-                    <SeparatorHorizontal />
-                    <Box padding="xs"><div dangerouslySetInnerHTML={{__html: warn.content}}/></Box>
-                </AccordionItem>;
-            })
-        }</Accordion>;
+        return <Bubble direction="left" className="warnsBox" >
+            <Accordion spacing="none" allowMultiple>{
+                warns.map(warn => {
+                    let beautifiedReason = GetShortDeleteReason(warn.reason)?.name.toLowerCase();
+                    return <AccordionItem
+                        key={warn.time}
+                        padding="xxs"
+                        title={beautifiedReason + " | " + warn.time + " | от " + warn.warner}
+                        titleSize="small">
+                        <Box padding="xs">{warn.reason}</Box>
+                        <SeparatorHorizontal/>
+                        <Box padding="xs">
+                            <div dangerouslySetInnerHTML={{__html: warn.content}}/>
+                        </Box>
+                    </AccordionItem>;
+                })
+            }</Accordion>
+        </Bubble>;
     }
 }
