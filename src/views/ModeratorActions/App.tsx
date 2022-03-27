@@ -1,7 +1,6 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-//import _API from "@lib/Api";
 import type { Action } from "@typings";
 import locales from "@locales";
 

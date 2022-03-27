@@ -39,3 +39,12 @@ body.mint:not(#brainly-mentor),
   display: block;
   margin: 8px 0;
 }
+
+.blue-bold-link {
+  font-weight: bold;
+  color: #2c98e1;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -42,9 +42,9 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
       <Flex className="actions-header" alignItems="center" justifyContent="space-between" disabled={this.props.loading}>
         <HomeButton type={locales.marketName as LogoType} href="/" />
         <Flex alignItems="center" className="actions-pagination">
-          <Button disabled={this.props.pageId === 1} onClick={() => this.UpdatePage("previous")} title={locales.common.previousPage} type="transparent" iconOnly icon={<Icon type="arrow_left" color="icon-black" size={24} />} size="s" />
+          <Button disabled={this.props.pageId === 1} onClick={_ => this.UpdatePage("previous")} title={locales.common.previousPage} type="transparent" iconOnly icon={<Icon type="arrow_left" color="icon-black" size={24} />} size="s" />
           <Text weight="bold" type="span" size="small" className="actions-pagination-number">{this.props.pageId}</Text>
-          <Button disabled={!this.props.hasNextPage} onClick={() => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
+          <Button disabled={!this.props.hasNextPage} onClick={_ => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
         <Filters />
       </Flex>

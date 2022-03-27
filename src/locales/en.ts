@@ -70,6 +70,7 @@ export default {
     "linkToUserProfile": "Link to user profile"
   },
   "errors": {
+    "accountDeleted": "Account deleted",
     "couldNotLoadActions": "We could not load moderator actions :(",
     "notAuthorizedToUseExtension": "You are not authorized to use this extension",
     "couldNotAuthorizeYou": "Could not authorize you",

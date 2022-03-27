@@ -11,8 +11,12 @@ import storage from "@lib/storage";
 const ERRORS = locales.errors;
 
 class Api {
-  private extApiURL = "https://mentors.br-helper.com";
+  private serverUrl = "https://mentors.br-helper.com";
   private market: string = locales.market;
+
+  get serverURL() {
+    return this.serverUrl;
+  }
 
   private async Request(
     method: "GET" | "POST" | "PUT" | "DELETE",
@@ -22,7 +26,7 @@ class Api {
     const authToken = await storage.get("authToken");
     if (!authToken) throw Error(ERRORS.notAuthed);
 
-    let url = `${this.extApiURL}/${this.market}/${apiMethod}`;
+    let url = `${this.serverURL}/${this.market}/${apiMethod}`;
     let headers = {
       "Authorization": `Bearer ${authToken}`
     };

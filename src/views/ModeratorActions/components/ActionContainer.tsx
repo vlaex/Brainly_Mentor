@@ -15,7 +15,7 @@ import { Flash } from "@utils/Flashes";
 import BeautifyISO from "@utils/BeautifyISODate";
 
 import type { Action } from "@typings";
-import ReplaceLatexWithURL from "@utils/ReplaceLatexWithURL";
+import ReplaceLatexWithURL from "@utils/ReplaceTextWithLinks";
 
 import QuestionPreview from "./QuestionPreview";
 import Warns from "./Warns";
@@ -71,8 +71,8 @@ export default class ActionContainer extends React.Component<{
             <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor}/>
           </Link>
           <Link
-            onMouseEnter={() => this.setState({ reasonTooltipVisible: true })}
-            onMouseLeave={() => this.setState({ reasonTooltipVisible: false })}
+            onMouseEnter={_ => this.setState({ reasonTooltipVisible: true })}
+            onMouseLeave={_ => this.setState({ reasonTooltipVisible: false })}
             href={action.task.link}
             target="_blank"
             className="action-type">{action.localizedType}
@@ -86,7 +86,7 @@ export default class ActionContainer extends React.Component<{
           {this.state.showQuestionPreview &&
             <QuestionPreview
               taskId={action.task.id}
-              onClose={this.setState.bind(this, { showQuestionPreview: false })}
+              onClose={() => this.setState({ showQuestionPreview: false })}
             />
           }
 
@@ -106,8 +106,8 @@ export default class ActionContainer extends React.Component<{
           justifyContent="space-between" 
           alignItems="center" 
           className="sg-flex--margin-top-auto sg-flex--relative"
-          onMouseEnter={() => this.setState({ warnsVisible: true })}
-          onMouseLeave={() => this.setState({ warnsVisible: false })}
+          onMouseEnter={_ => this.setState({ warnsVisible: true })}
+          onMouseLeave={_ => this.setState({ warnsVisible: false })}
         >
           <Link
             href={`/users/redirect_user/${action.user.id}`} target="_blank">
@@ -119,8 +119,8 @@ export default class ActionContainer extends React.Component<{
 
           {this.state.warnsVisible && <Warns
             key={action.hash}
-            onMouseEnter={() => this.setState({ warnsVisible: true })}
-            onMouseOut={() => this.setState({ warnsVisible: false })}
+            onMouseEnter={_ => this.setState({ warnsVisible: true })}
+            onMouseOut={_ => this.setState({ warnsVisible: false })}
             userId={action.user.id} />}
 
           <Flex alignItems="center" className="action-date-container">

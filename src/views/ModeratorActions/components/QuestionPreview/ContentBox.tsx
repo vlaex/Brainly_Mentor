@@ -12,7 +12,7 @@ import {
 
 import type { Response, Task, User } from "@typings/brainly";
 import locales from "@locales";
-import ReplaceLatexWithURL from "@utils/ReplaceLatexWithURL";
+import ReplaceLatexWithURL from "@utils/ReplaceTextWithLinks";
 
 type ContentBoxProps = {
   users: User[],

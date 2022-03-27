@@ -12,7 +12,7 @@ import {
 import type { QuestionLogEntry, User } from "@typings/brainly";
 import { GetShortDeleteReason } from "@lib/GetShortDeleteReason";
 import locales from "@locales";
-import ReplaceLatexWithURL from "@utils/ReplaceLatexWithURL";
+import ReplaceLatexWithURL from "@utils/ReplaceTextWithLinks";
 
 const ENTRY_ICONS: Record<QuestionLogEntry["class"], {
   color: IconPropsType["color"],
@@ -107,7 +107,7 @@ export default class LogEntry extends React.Component<{
           {entry.descriptions?.map((description, i) => 
             <Flex direction="column" key={i}>
               <Text size="small" weight="bold">{description.subject}</Text>
-              <Text size="small" dangerouslySetInnerHTML={{
+              <Text breakWords={true} size="small" dangerouslySetInnerHTML={{
                 __html: ReplaceLatexWithURL(description.text)
               }} />
             </Flex>

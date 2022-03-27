@@ -70,6 +70,7 @@ export default {
     "linkToUserProfile": "Ссылка на профиль пользователя"
   },
   "errors": {
+    "accountDeleted": "Аккаунт удалён",
     "couldNotLoadActions": "Нам не удалось загрузить акции :(",
     "notAuthorizedToUseExtension": "Вы не авторизованы, чтобы использовать расширение",
     "couldNotAuthorizeYou": "Мы не смогли вас авторизовать",
