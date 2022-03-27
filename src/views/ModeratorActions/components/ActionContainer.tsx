@@ -102,9 +102,9 @@ export default class ActionContainer extends React.Component<{
             __html: ReplaceLatexWithURL(action.content)
           }} />
         </div>
-        <Flex 
-          justifyContent="space-between" 
-          alignItems="center" 
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
           className="sg-flex--margin-top-auto sg-flex--relative"
           onMouseEnter={_ => this.setState({ warnsVisible: true })}
           onMouseLeave={_ => this.setState({ warnsVisible: false })}

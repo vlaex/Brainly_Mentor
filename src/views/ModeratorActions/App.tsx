@@ -1,12 +1,13 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action } from "@typings";
+import type { Action, Mentee } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
 import AppHeader from "./components/AppHeader";
 import GetActions from "@lib/api/brainly/GetActions";
+import _API from "@lib/api/extension";
 
 type AppState = {
   userId: number;
@@ -16,6 +17,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
+  mentees: Mentee[];
 }
 
 export default class App extends React.Component {
@@ -26,7 +28,8 @@ export default class App extends React.Component {
     actions: [],
     error: null,
     loading: true,
-    hasMore: true
+    hasMore: true,
+    mentees: []
   };
 
   constructor(props) {
@@ -67,12 +70,14 @@ export default class App extends React.Component {
     try {
       const moderatorId = this.state.userId;
       const data = await GetActions(moderatorId, pageId);
+      const mentees = await _API.GetMentees(moderatorId);
 
       this.setState({ 
         currentPageId: data.pageId,
         hasMore: data.hasMore,
         nextPageId: pageId + 1,
         actions: data.actions,
+        mentees: mentees.mentees,
       });
       
       const newURL = `/moderation_new/view_moderator/${moderatorId}/page:${pageId}`;
@@ -99,20 +104,22 @@ export default class App extends React.Component {
     return (
       <div className="layout">
         <Flex direction="column">
-          <AppHeader 
-            onChange={(pageId) => this.FetchActions(pageId)} 
-            loading={this.state.loading} 
+          <AppHeader
+            onChange={(pageId) => this.FetchActions(pageId)}
+            loading={this.state.loading}
             pageId={this.state.currentPageId}
             hasNextPage={this.state.hasMore}
+            mentees={this.state.mentees}
+            userId={this.state.userId}
           />
-          {(!this.state.actions.length && !this.state.nextPageId) ? 
+          {(!this.state.actions.length && !this.state.nextPageId) ?
             <Spinner /> :
-            <div className="actions grid-items-container">{this.state.actions.map(action => 
-              <ActionContainer 
-                key={action.hash} 
-                data={action} 
-                moderator={this.state.userId} 
-                page={this.state.currentPageId} 
+            <div className="actions grid-items-container">{this.state.actions.map(action =>
+              <ActionContainer
+                key={action.hash}
+                data={action}
+                moderator={this.state.userId}
+                page={this.state.currentPageId}
               />
             )}</div>
           }
