@@ -77,7 +77,7 @@ export default class Warns extends React.Component<WarnsProps & React.HTMLAttrib
               </Box>
               <SeparatorHorizontal/>
               <Box padding="xs">
-                <Text size="small">{warn.content}</Text>
+                <Text size="small"><div dangerouslySetInnerHTML={{ __html: warn.content }}/> </Text>
               </Box>
             </AccordionItem>
           );

@@ -5,17 +5,24 @@ import {
   Icon,
   HomeButton,
   LogoType,
-  Text
+  Text,
+  Select,
+  Avatar,
+  Dropdown
 } from "brainly-style-guide";
 
 import locales from "@locales";
 import Filters from "./Filters";
+import type { Mentee } from "@typings";
+import _API from "@lib/api/extension";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
   pageId: number;
   loading: boolean;
   hasNextPage: boolean;
+  mentees: Mentee[];
+  userId: number;
 }
 
 export default class AppHeader extends React.Component<AppHeaderProps> {
@@ -46,7 +53,17 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
           <Text weight="bold" type="span" size="small" className="actions-pagination-number">{this.props.pageId}</Text>
           <Button disabled={!this.props.hasNextPage} onClick={() => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
-        <Filters />
+        <Flex alignItems="center">
+          <Select value={this.props.userId.toString()} options={this.props.mentees.map(mentee => {
+            return { value: mentee.id.toString(), text: mentee.nick };
+          })}
+          onChange={(e) => {
+            const newURL = `/moderation_new/view_moderator/${e.target.value}/`;
+            window.location.href = newURL;
+          }}
+          />
+          <Filters />
+        </Flex>
       </Flex>
     );
   }
