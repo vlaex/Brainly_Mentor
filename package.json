@@ -8,7 +8,7 @@
     "watch:webpack": "webpack -w --mode=development",
     "watch:gulp": "gulp watch",
     "webpack:build": "webpack build --mode=production",
-    "gulp:common": "gulp manifest assets sass",
+    "gulp:common": "gulp manifest assets scss",
     "lint:ts": "eslint ./src --ext .ts,.tsx",
     "lint:scss": "stylelint ./src/**/*.scss"
   },
@@ -28,6 +28,7 @@
     "gulp": "^4.0.2",
     "gulp-change": "^1.0.2",
     "gulp-dart-sass": "^1.0.2",
+    "gulp-uglify": "^3.0.2",
     "gulp-zip": "^5.1.0",
     "merge-deep": "^3.0.3",
     "sass": "^1.49.8",

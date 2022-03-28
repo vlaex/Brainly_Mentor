@@ -1,3 +1,4 @@
+import { version as brainlyStyleGuideVersion } from "brainly-style-guide/package.json";
 import ToBackground from "@lib/ToBackground";
 
 const MARKETS = ["brainly.com", "znanija.com"];
@@ -57,6 +58,7 @@ class Core {
       oldPage: boolean;
     } = { oldPage: false, cleanBody: false }
   ) {
+    const jsFiles = files.filter(file => file.match(/\.js$/));
     const cssFiles = files.filter(file => file.match(/\.css$/));
 
     if (cssFiles.length) ToBackground("InjectStyles", cssFiles);
@@ -75,18 +77,15 @@ class Core {
       }
 
       if (options.oldPage) {
-        import("@assets/styleguide-icons");
+        import("@assets/styleguide-icons.js");
         
         document.head.innerHTML += `
-          <link href="https://styleguide.brainly.com/210.0.0/style-guide.css" rel="stylesheet"/>
+          <link href="https://styleguide.brainly.com/${brainlyStyleGuideVersion}/style-guide.css" rel="stylesheet" />
         `;
         document.body.innerHTML += `<div class="flash-messages-container"></div>`;
       }
 
-      return await ToBackground(
-        "InjectScripts", 
-        files.filter(file => file.match(/\.js$/))
-      );
+      return await ToBackground("InjectScripts", jsFiles);
     });
   }
 }

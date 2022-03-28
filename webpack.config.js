@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-unused-vars */
 
 const path = require("path");
 const webpack = require("webpack");
@@ -12,8 +12,7 @@ const config = {
   entry: {
     ...MakeEntries("./src/views/*/*(*.ts|*.tsx|*.js|*.jsx)", "content-scripts", "index", true),
     ...MakeEntries("./src/views/Inject.ts", "content-scripts", "contentScript"),
-    ...MakeEntries("./src/background/*.ts", "background", "serviceWorker"),
-    ...MakeEntries("./src/assets/styleguide-icons.ts", "assets", "styleguide-icons")
+    ...MakeEntries("./src/background/*.ts", "background", "serviceWorker")
   },
   output: {
     path: path.resolve(__dirname, "build"),
