@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action, Mentee } from "@typings";
+import type { Action } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
@@ -17,7 +17,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
-  mentees: Mentee[];
+  mentees: string[];
 }
 
 export default class App extends React.Component {
@@ -70,7 +70,7 @@ export default class App extends React.Component {
     try {
       const moderatorId = this.state.userId;
       const data = await GetActions(moderatorId, pageId);
-      const mentees = await _API.GetMentees();
+      const mentees = await _API.GetMenteesNicks();
 
       this.setState({ 
         currentPageId: data.pageId,

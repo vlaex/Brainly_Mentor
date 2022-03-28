@@ -11,14 +11,13 @@ import {
 
 import locales from "@locales";
 import Filters from "./Filters";
-import type { Mentee } from "@typings";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
   pageId: number;
   loading: boolean;
   hasNextPage: boolean;
-  mentees: Mentee[];
+  mentees: string[];
   userId: number;
 }
 
@@ -53,7 +52,7 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
         <Flex alignItems="center">
           {!!this.props.mentees.length && 
             <Select value={this.props.userId.toString()} options={this.props.mentees.map(mentee => {
-              return { value: mentee.id.toString(), text: mentee.nick };
+              return { value: mentee, text: mentee };
             })}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
               const newURL = `/moderation_new/view_moderator/${e.currentTarget.value}/`;

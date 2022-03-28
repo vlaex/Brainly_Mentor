@@ -18,11 +18,6 @@ class Api {
     return this.serverUrl;
   }
 
-  private OptionalParam(path: string, data: string | number, key?: string): string {
-    if (data) path += `?${key}=${data}`;
-    return path;
-  }
-
   private async Request(
     method: "GET" | "POST" | "PUT" | "DELETE",
     apiMethod: string,
@@ -83,9 +78,14 @@ class Api {
   async GetMentees(mentorId?: number): Promise<{
     mentees: Mentee[];
   }> {
-    return await this.Request("GET", 
-      this.OptionalParam("mentees", mentorId, "id")
-    );
+    let path = "mentees";
+    if (mentorId) path += `?id=${mentorId}`;
+
+    return await this.Request("GET", path);
+  }
+
+  async GetMenteesNicks(): Promise<{ mentees: string[] }> {
+    return await this.Request("GET", "mentees?nicksOnly=true");
   }
 
   async AddMentee(userId: number): Promise<{
@@ -133,9 +133,10 @@ class Api {
   async GetCandidates(id?: number): Promise<{
     candidates: Candidate[];
   }> {
-    return await this.Request("GET",
-      this.OptionalParam("candidates", id, "id")
-    );
+    let path = "candidates";
+    if (id) path += `?id=${id}`;
+
+    return await this.Request("GET", path);
   }
 
   async ReviewCandidate(id: number): Promise<{ warnings: string[] }> {
