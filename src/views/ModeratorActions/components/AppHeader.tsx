@@ -51,14 +51,16 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
           <Button disabled={!this.props.hasNextPage} onClick={_ => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
         <Flex alignItems="center">
-          <Select value={this.props.userId.toString()} options={this.props.mentees.map(mentee => {
-            return { value: mentee.id.toString(), text: mentee.nick };
-          })}
-          onChange={(e: React.FormEvent<HTMLSelectElement>) => {
-            const newURL = `/moderation_new/view_moderator/${e.currentTarget.value}/`;
-            window.location.href = newURL;
-          }}
-          />
+          {!!this.props.mentees.length && 
+            <Select value={this.props.userId.toString()} options={this.props.mentees.map(mentee => {
+              return { value: mentee.id.toString(), text: mentee.nick };
+            })}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const newURL = `/moderation_new/view_moderator/${e.currentTarget.value}/`;
+              window.location.href = newURL;
+            }}
+            />
+          }
           <Filters />
         </Flex>
       </Flex>

@@ -70,7 +70,7 @@ export default class App extends React.Component {
     try {
       const moderatorId = this.state.userId;
       const data = await GetActions(moderatorId, pageId);
-      const mentees = await _API.GetMentees(moderatorId);
+      const mentees = await _API.GetMentees();
 
       this.setState({ 
         currentPageId: data.pageId,

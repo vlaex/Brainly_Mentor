@@ -9,6 +9,10 @@ export default {
     "noWarns": "Нет предупреждений",
     "questionLog": "История вопроса",
     "pts": "бал.",
+    "hasNotStartedYet": "Ещё не начался",
+    "bans": "Баны",
+    "bans_LEFT": "До окончания",
+    "givenBy": "Выдан",
     "question": "Вопрос",
     "answer": "Ответ",
     "areYouSureToDeleteMentee": "Вы уверены, что хотите удалить этого ученика?\nВсе данные, в том числе статистика, проверенные акции, будут утрачены.",
@@ -102,6 +106,7 @@ export default {
     "accountDeactivated": "Аккаунт деактивирован",
     "menteeNotFound": "Ученик не найден"
   },
+  "profilePath": "/profil",
   "taskPath": "/task",
   "dateTimeFormat": "DD.MM.YYYY, hh:mm:ss",
   "dateFormat": "DD.MM.YYYY",

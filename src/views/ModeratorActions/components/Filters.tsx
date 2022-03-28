@@ -115,7 +115,7 @@ export default class Filters extends React.Component {
 
   render() {
     return (
-      <div className="sg-flex sg-flex--relative filters">
+      <Flex className="sg-flex--relative filters" marginLeft="s">
         <Button onClick={this.ToggleVisibility.bind(this)} title={locales.common.filters} type="solid-blue" icon={<Icon type="filters" color="adaptive" size={24} />} iconOnly />
         <Flex hidden={this.state.filtersHidden} direction="column" className="filters-box">
           <Flex>
@@ -139,11 +139,11 @@ export default class Filters extends React.Component {
             <Input type="date" onChange={this.handleFilterChange} id="dateNotBefore" />
             <Input type="date" onChange={this.handleFilterChange} id="dateNotAfter" />
           </Flex>
-          <Checkbox onChange={event => 
-            this.setState({ hideComments: (event.currentTarget as HTMLInputElement).checked })
+          <Checkbox onChange={(event: React.ChangeEvent<HTMLInputElement>) => 
+            this.setState({ hideComments: event.currentTarget.checked })
           }>{locales.common.hideComments}</Checkbox>
         </Flex>
-      </div>
+      </Flex>
     );
   }
 }

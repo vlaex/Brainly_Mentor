@@ -8,6 +8,10 @@ export default {
     "as": "as",
     "questionLog": "Log",
     "pts": "pts",
+    "hasNotStartedYet": "Hasn't started yet",
+    "bans": "Bans",
+    "bans_LEFT": "Left",
+    "givenBy": "Given by",
     "noWarns": "No warnings",
     "question": "Question",
     "answer": "Answer",
@@ -102,6 +106,7 @@ export default {
     "accountDeactivated": "Account has been deactivated",
     "menteeNotFound": "Mentee not found"
   },
+  "profilePath": "/profile",
   "taskPath": "/question",
   "dateTimeFormat": "MM/DD/YYYY hh:mm:ss",
   "dateFormat": "MM/DD/YYYY",
