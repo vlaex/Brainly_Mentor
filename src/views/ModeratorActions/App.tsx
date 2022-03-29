@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action, Mentee } from "@typings";
+import type { Action, Mentee, Mentor } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
@@ -18,6 +18,7 @@ type AppState = {
   loading: boolean;
   hasMore: boolean;
   mentees: Mentee[];
+  me: Mentor;
 }
 
 export default class App extends React.Component {
@@ -29,7 +30,8 @@ export default class App extends React.Component {
     error: null,
     loading: true,
     hasMore: true,
-    mentees: []
+    mentees: [],
+    me: null
   };
 
   constructor(props) {
@@ -71,6 +73,7 @@ export default class App extends React.Component {
       const moderatorId = this.state.userId;
       const data = await GetActions(moderatorId, pageId);
       const mentees = await _API.GetMentees();
+      const me = await _API.GetMe();
 
       this.setState({
         currentPageId: data.pageId,
@@ -78,6 +81,7 @@ export default class App extends React.Component {
         nextPageId: pageId + 1,
         actions: data.actions,
         mentees: mentees.mentees,
+        me: me.mentor,
       });
 
       const newURL = `/moderation_new/view_moderator/${moderatorId}/page:${pageId}`;
@@ -112,6 +116,7 @@ export default class App extends React.Component {
             hasNextPage={this.state.hasMore}
             mentees={this.state.mentees}
             userId={this.state.userId}
+            me={this.state.me}
           />
           {(!this.state.actions.length && !this.state.nextPageId) ?
             <Spinner/> :

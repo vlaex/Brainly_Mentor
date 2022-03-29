@@ -3,7 +3,7 @@ import { Button, Flex, HomeButton, Icon, LogoType, Select, Text } from "brainly-
 
 import locales from "@locales";
 import Filters from "./Filters";
-import { Mentee } from "@typings";
+import { Mentee, Mentor } from "@typings";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
@@ -12,6 +12,7 @@ type AppHeaderProps = {
   hasNextPage: boolean;
   mentees: Mentee[];
   userId: number;
+  me: Mentor;
 }
 
 export default class AppHeader extends React.Component<AppHeaderProps> {
@@ -34,6 +35,7 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
   }
 
   render() {
+    const me = this.props.me;
     return (
       <Flex className="actions-header" alignItems="center" justifyContent="space-between" disabled={this.props.loading}>
         <HomeButton type={locales.marketName as LogoType} href="/" />
@@ -44,9 +46,10 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
         </Flex>
         <Flex alignItems="center">
           {!!this.props.mentees.length && 
-            <Select value={this.props.userId.toString()} options={this.props.mentees.map(mentee => {
-              return { value: mentee.id.toString(), text: mentee.nick };
-            })}
+            <Select value={this.props.userId.toString()} options={
+              [{ value: me.id.toString(), text: me.nick }].concat(this.props.mentees.map(mentee => {
+                return { value: mentee.id.toString(), text: mentee.nick };
+              }))}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
               window.location.href = `/moderation_new/view_moderator/${e.currentTarget.value}/`;
             }}
