@@ -3,12 +3,11 @@
   "version": "3.0.0",
   "description": "A toolbox for Brainly mentors to make their life and work easier",
   "scripts": {
-    "production": "npm run gulp:common && npm run webpack:build && gulp zip",
-    "watch": "concurrently -n w: npm:watch:* npm:gulp:common",
+    "production": "gulp && npm run webpack:build && gulp zip",
+    "watch": "concurrently -n w: npm:watch:* gulp",
     "watch:webpack": "webpack -w --mode=development",
     "watch:gulp": "gulp watch",
     "webpack:build": "webpack build --mode=production",
-    "gulp:common": "gulp manifest assets scss",
     "lint:ts": "eslint ./src --ext .ts,.tsx",
     "lint:scss": "stylelint ./src/**/*.scss"
   },

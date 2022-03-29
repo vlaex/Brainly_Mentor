@@ -8,6 +8,7 @@ import ActionContainer from "./components/ActionContainer";
 import AppHeader from "./components/AppHeader";
 import GetActions from "@lib/api/brainly/GetActions";
 import _API from "@lib/api/extension";
+import { Flash } from "@utils/Flashes";
 
 type AppState = {
   userId: number;
@@ -39,6 +40,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    this.FetchMentees();
     this.FetchActions();
   }
 
@@ -62,6 +64,17 @@ export default class App extends React.Component {
     });
   }
 
+  private async FetchMentees() {
+    try {
+      const nicks = await _API.GetMenteesNicks();
+      this.setState({ mentees: nicks.mentees });
+    } catch (err) {
+      Flash({
+        type: "error", text: err.message
+      });
+    }
+  }
+
   private async FetchActions(pageId?: number) {
     if (!pageId) pageId = this.state.currentPageId;
 
@@ -70,14 +83,12 @@ export default class App extends React.Component {
     try {
       const moderatorId = this.state.userId;
       const data = await GetActions(moderatorId, pageId);
-      const mentees = await _API.GetMenteesNicks();
 
       this.setState({ 
         currentPageId: data.pageId,
         hasMore: data.hasMore,
         nextPageId: pageId + 1,
-        actions: data.actions,
-        mentees: mentees.mentees,
+        actions: data.actions
       });
       
       const newURL = `/moderation_new/view_moderator/${moderatorId}/page:${pageId}`;
