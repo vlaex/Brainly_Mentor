@@ -8,13 +8,13 @@ export default class Overlay extends React.Component<{ children: React.ReactNode
   render() {
     return (
       <Box color="white" border={false} shadow className="overlay-container mentees-dashboard">
-        <Button className="close-modal-button" title={locales.common.close} onClick={this.CloseOverlay} icon={<Icon type="close" size={24} />} type="transparent" iconOnly />
+        <Button className="close-modal-button" title={locales.common.close} onClick={Overlay.CloseOverlay} icon={<Icon type="close" size={24} />} type="transparent" iconOnly />
         {this.props.children}
       </Box>
     );
   }
 
-  private CloseOverlay() {
+  private static CloseOverlay() {
     HideElement(document.querySelector(".overlay"));
     document.body.style.overflow = "auto";
   }
