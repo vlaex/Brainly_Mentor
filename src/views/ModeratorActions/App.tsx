@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action } from "@typings";
+import type { Action, Mentee } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
@@ -17,7 +17,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
-  mentees: string[];
+  mentees: Mentee[];
 }
 
 export default class App extends React.Component {
@@ -70,16 +70,16 @@ export default class App extends React.Component {
     try {
       const moderatorId = this.state.userId;
       const data = await GetActions(moderatorId, pageId);
-      const mentees = await _API.GetMenteesNicks();
+      const mentees = await _API.GetMentees();
 
-      this.setState({ 
+      this.setState({
         currentPageId: data.pageId,
         hasMore: data.hasMore,
         nextPageId: pageId + 1,
         actions: data.actions,
         mentees: mentees.mentees,
       });
-      
+
       const newURL = `/moderation_new/view_moderator/${moderatorId}/page:${pageId}`;
       window.history.pushState(null, null, newURL);
 
@@ -90,13 +90,14 @@ export default class App extends React.Component {
       this.setState({ loading: false });
     }
   }
-  
+
   render() {
     if (this.state.error) {
       return (
         <Flex className="js-react-error-container">
           <Headline color="text-red-60" extraBold size="medium">{this.state.error}</Headline>
-          <Button onClick={this.FetchActions.bind(this)} type="outline">{locales.common.tryAgain}</Button>
+          <Button onClick={this.FetchActions.bind(this)}
+            type="outline">{locales.common.tryAgain}</Button>
         </Flex>
       );
     }
@@ -113,7 +114,7 @@ export default class App extends React.Component {
             userId={this.state.userId}
           />
           {(!this.state.actions.length && !this.state.nextPageId) ?
-            <Spinner /> :
+            <Spinner/> :
             <div className="actions grid-items-container">{this.state.actions.map(action =>
               <ActionContainer
                 key={action.hash}

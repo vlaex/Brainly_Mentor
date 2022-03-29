@@ -1,23 +1,16 @@
 import React from "react";
-import {
-  Flex,
-  Button,
-  Icon,
-  HomeButton,
-  LogoType,
-  Text,
-  Select
-} from "brainly-style-guide";
+import { Button, Flex, HomeButton, Icon, LogoType, Select, Text } from "brainly-style-guide";
 
 import locales from "@locales";
 import Filters from "./Filters";
+import { Mentee } from "@typings";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
   pageId: number;
   loading: boolean;
   hasNextPage: boolean;
-  mentees: string[];
+  mentees: Mentee[];
   userId: number;
 }
 
@@ -52,11 +45,10 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
         <Flex alignItems="center">
           {!!this.props.mentees.length && 
             <Select value={this.props.userId.toString()} options={this.props.mentees.map(mentee => {
-              return { value: mentee, text: mentee };
+              return { value: mentee.id.toString(), text: mentee.nick };
             })}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              const newURL = `/moderation_new/view_moderator/${e.currentTarget.value}/`;
-              window.location.href = newURL;
+              window.location.href = `/moderation_new/view_moderator/${e.currentTarget.value}/`;
             }}
             />
           }
