@@ -1,7 +1,7 @@
 import { ShowElement } from "@utils/ElementsVisibility";
 import RenderApp from "./RenderApp";
 
-class MenteesDashboard {
+class Dashboard {
   private openDashboardButton: HTMLButtonElement;
   private dashboardOverlay: HTMLDivElement;
   private body = document.body;
@@ -52,4 +52,4 @@ class MenteesDashboard {
   }
 }
 
-new MenteesDashboard();
+new Dashboard();

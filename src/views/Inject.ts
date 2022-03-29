@@ -27,8 +27,8 @@ class Core {
     if (this.Path(/(\/$)|(\/(question|task)\/\d+)|(\/subject\/\w+)/)) {
       this.InjectFiles([
         "content-scripts/Core/index.js",
-        "content-scripts/MenteesDashboard/index.js",
-        "styles/MenteesDashboard/styles.css"
+        "content-scripts/Dashboard/index.js",
+        "styles/Dashboard/styles.css"
       ]);
     }
 

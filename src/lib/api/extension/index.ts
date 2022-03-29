@@ -110,8 +110,14 @@ class Api {
     return await this.Request("GET", "mentors");
   }
 
+  async GetMe(): Promise<{
+    mentor: Mentor;
+  }> {
+    return await this.Request("GET", "mentors/me");
+  }
+
   async AddMentor(data: {
-    mentorId: boolean;
+    mentorId: number;
     senior: boolean;
   }): Promise<{
     mentor: Mentor
@@ -124,7 +130,6 @@ class Api {
   }
 
   async EditMentor(mentorId: number, data: {
-    nick: string;
     senior: boolean;
   }): Promise<BasicSuccessResponse> {
     return await this.Request("PUT", `mentors/${mentorId}`, data);

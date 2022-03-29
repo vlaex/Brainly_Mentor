@@ -4,17 +4,14 @@ export type BasicSuccessResponse = {
   success: true;
 }
 
+export type DashboardScreens = "MyMentees" | "Mentors" | "Mentees";
+
 export type Market = "us";
 
 export type GetActionsDataType = {
   actions: Action[];
   hasMore: boolean;
   pageId: number;
-}
-
-export type GetWarnsType = {
-  warns: Action[];
-  hasMore: boolean;
 }
 
 export type GetReviewedActionsDataType = {
@@ -82,6 +79,7 @@ export interface Mentor {
   nick: string;
   senior: boolean;
   market: Market;
+  mentees: Mentee[];
 }
 
 export interface Candidate {
