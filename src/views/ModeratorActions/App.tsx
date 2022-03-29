@@ -1,13 +1,14 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action, Mentee, Mentor } from "@typings";
+import type { Action, Mentor } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
 import AppHeader from "./components/AppHeader";
 import GetActions from "@lib/api/brainly/GetActions";
 import _API from "@lib/api/extension";
+import { Flash } from "@utils/Flashes";
 
 type AppState = {
   userId: number;
@@ -17,7 +18,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
-  mentees: Mentee[];
+  mentees: string[];
   me: Mentor;
 }
 
@@ -41,6 +42,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    this.FetchUsers();
     this.FetchActions();
   }
 
@@ -64,6 +66,25 @@ export default class App extends React.Component {
     });
   }
 
+  private async FetchUsers() {
+    try {
+      const [menteesData, meData] = await Promise.all([
+        _API.GetMenteesNicks(),
+        _API.GetMe()
+      ]);
+
+      this.setState({
+        mentees: menteesData.mentees,
+        me: meData.mentor,
+      });
+    } catch (err) {
+      Flash({
+        type: "error",
+        text: err.message
+      });
+    }
+  }
+
   private async FetchActions(pageId?: number) {
     if (!pageId) pageId = this.state.currentPageId;
 
@@ -72,16 +93,12 @@ export default class App extends React.Component {
     try {
       const moderatorId = this.state.userId;
       const data = await GetActions(moderatorId, pageId);
-      const mentees = await _API.GetMentees();
-      const me = await _API.GetMe();
 
       this.setState({
         currentPageId: data.pageId,
         hasMore: data.hasMore,
         nextPageId: pageId + 1,
-        actions: data.actions,
-        mentees: mentees.mentees,
-        me: me.mentor,
+        actions: data.actions
       });
 
       const newURL = `/moderation_new/view_moderator/${moderatorId}/page:${pageId}`;
