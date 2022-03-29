@@ -77,7 +77,7 @@ export default class MentorContainer extends React.Component<MentorContainerProp
           const key = mentee.id;
           return (
             <Media key={key} contentArray={[
-              <Link key={key} href={`/users/redirect_user/${mentor.id}`} color="text-gray-70">{mentee.nick}</Link>,
+              <Link key={key} href={`/users/redirect_user/${mentee.id}`} color="text-gray-70">{mentee.nick}</Link>,
               <span key={key}>{mentee.rank}</span>
             ]} aside={
               <Avatar imgSrc={mentee.avatar}/>}/>);
