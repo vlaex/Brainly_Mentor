@@ -1,16 +1,16 @@
 import React from "react";
-import { Button, Flex, HomeButton, Icon, LogoType, Select, Text } from "brainly-style-guide";
-
+import { Avatar, Button, Flex, HomeButton, Icon, Link, LogoType, Select, Text }
+  from "brainly-style-guide";
 import locales from "@locales";
 import Filters from "./Filters";
-import { Mentor } from "@typings";
+import { Mentee, Mentor } from "@typings";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
   pageId: number;
   loading: boolean;
   hasNextPage: boolean;
-  mentees: string[];
+  mentees: Mentee[];
   userId: number;
   me: Mentor;
 }
@@ -36,6 +36,13 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
 
   render() {
     const { me, mentees } = this.props;
+    let currentUserAvatar = mentees.find((mentee => mentee.id === this.props.userId))?.avatar;
+
+    if (typeof currentUserAvatar == "undefined")
+      // eslint-disable-next-line max-len
+      currentUserAvatar = "https://ru-static.z-dn.net/files/d8c/c718f17247be2cfa6b0b128d9acf41e9.jpg";
+      //TODO me.avatar
+      //currentUserAvatar = me.avatar;
 
     return (
       <Flex className="actions-header" alignItems="center" justifyContent="space-between" disabled={this.props.loading}>
@@ -46,15 +53,19 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
           <Button disabled={!this.props.hasNextPage} onClick={_ => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
         <Flex alignItems="center">
+          <Link href={`/moderation_new/view_moderator/${this.props.userId}/`}>
+            <Avatar imgSrc={currentUserAvatar}/>
+          </Link>
           {!!this.props.mentees.length && 
-            <Select value={this.props.userId.toString()} options={
-              [me.nick, ...mentees].map((user: string) => 
-                ({ value: user, text: user })
-              )
-            }
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              window.location.href = `/moderation_new/view_moderator/${e.currentTarget.value}/`;
-            }}
+            <Select className="sg-flex--margin-left-xs"
+              value={this.props.userId.toString()} options={
+                [{ value: me.id.toString(), text: me.nick }].concat(
+                  this.props.mentees.map(mentee => {
+                    return { value: mentee.id.toString(), text: mentee.nick };
+                  }))}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                window.location.href = `/moderation_new/view_moderator/${e.currentTarget.value}/`;
+              }}
             />
           }
           <Filters />

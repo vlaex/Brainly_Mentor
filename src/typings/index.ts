@@ -77,6 +77,7 @@ export interface Mentee {
 export interface Mentor {
   id: number;
   nick: string;
+  avatar: string;
   senior: boolean;
   market: Market;
   mentees: Mentee[];
