@@ -11,11 +11,11 @@ import locales from "@locales";
 import { DashboardScreens } from "@typings";
 
 type DashboardState = {
-    addMenteeBoxVisible: boolean;
-    mentees: Mentee[];
-    me: Mentor;
-    loading: boolean;
-    error?: string;
+  addMenteeBoxVisible: boolean;
+  mentees: Mentee[];
+  me: Mentor;
+  loading: boolean;
+  error?: string;
 }
 
 export default class MenteesDashboard extends React.Component
@@ -85,12 +85,15 @@ export default class MenteesDashboard extends React.Component
                     [{this.state.mentees.length}]
                   </TextBit>
                   {!this.props.mentor &&
-                      <Button onClick={this.ToggleAddMenteeBoxVisibility.bind(this)} type="solid-mint" icon={<Icon type="plus" />} iconOnly/>}
+                    <Button onClick={this.ToggleAddMenteeBoxVisibility.bind(this)} type="solid-mint" icon={<Icon type="plus" />} iconOnly/>}
                 </Flex>
                 <Flex>
-                  {this.state.me && <Button onClick={() => this.props.switchScreen("Mentors")}
-                    icon={<Icon type="friends" color="icon-black" size={24} />} 
-                    type="outline">{locales.common.toMentors}</Button> }
+                  {this.state.me?.senior && 
+                    <Button 
+                      onClick={() => this.props.switchScreen("Mentors")}
+                      icon={<Icon type="friends" color="icon-black" size={24} />} 
+                      type="outline">{locales.common.toMentors}</Button> 
+                  }
                   <Button title={locales.common.reload} onClick={this.RenderMentees.bind(this)} icon={<Icon type="reload" color="icon-black" size={24} />} iconOnly type="outline" />
                 </Flex>
               </Flex>
@@ -100,7 +103,7 @@ export default class MenteesDashboard extends React.Component
                 )}
               </div>
               {this.state.addMenteeBoxVisible &&
-        <AddMenteeBox handler={this.RenderMentees.bind(this)} />}
+                <AddMenteeBox handler={this.RenderMentees.bind(this)} />}
             </Flex>
           )}
         </Overlay>

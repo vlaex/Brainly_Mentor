@@ -21,7 +21,7 @@ export class AddMentorBox extends React.Component<
 > {
   constructor(props: AddMentorBoxProps) {
     super(props);
-    this.state = { loading: false };
+    this.state = { loading: false, senior: false };
   }
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -48,7 +48,10 @@ export class AddMentorBox extends React.Component<
     this.setState({ loading: true });
 
     try {
-      const data = await _API.AddMentor({ mentorId: this.state.userId, senior: this.state.senior });
+      const data = await _API.AddMentor({ 
+        mentorId: this.state.userId, 
+        senior: this.state.senior 
+      });
       this.props.handler(data.mentor);
     } catch (err) {
       this.setState({ error: err.message });
