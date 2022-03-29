@@ -39,7 +39,7 @@ export default class MenteesDashboard extends React.Component
         error: null,
         mentees: [],
         addMenteeBoxVisible: false,
-        me: null
+        me: null,
       });
 
       try {
