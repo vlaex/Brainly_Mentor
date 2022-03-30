@@ -18,7 +18,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
-  mentees: string[];
+  mentees: {id: number, nick: string}[];
   me: Mentor;
 }
 
@@ -69,7 +69,7 @@ export default class App extends React.Component {
   private async FetchUsers() {
     try {
       const [menteesData, meData] = await Promise.all([
-        _API.GetMenteesNicks(),
+        _API.GetMenteesWithoutStats(),
         _API.GetMe()
       ]);
 

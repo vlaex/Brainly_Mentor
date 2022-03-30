@@ -3,14 +3,14 @@ import { Button, Flex, HomeButton, Icon, LogoType, Select, Text } from "brainly-
 
 import locales from "@locales";
 import Filters from "./Filters";
-import { Mentor } from "@typings";
+import { MenteeCommonData, Mentor } from "@typings";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
   pageId: number;
   loading: boolean;
   hasNextPage: boolean;
-  mentees: string[];
+  mentees: MenteeCommonData[];
   userId: number;
   me: Mentor;
 }
@@ -48,8 +48,8 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
         <Flex alignItems="center">
           {!!this.props.mentees.length && 
             <Select value={this.props.userId.toString()} options={
-              [me.nick, ...mentees].map((user: string) => 
-                ({ value: user, text: user })
+              [me, ...mentees].map((user: MenteeCommonData) => 
+                ({ value: user.id.toString(), text: user.nick })
               )
             }
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
