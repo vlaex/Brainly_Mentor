@@ -6,4 +6,4 @@ exports.manifest = tasks.manifest;
 exports.scss = tasks.scss;
 exports.watch = tasks.watch;
 exports.zip = tasks.zip;
-exports.default = tasks.default;
+exports.build = tasks.build;

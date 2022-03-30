@@ -64,9 +64,15 @@
 
     // React
     "react/react-in-jsx-scope": "off",
-
-    // TypeScript
-    "@typescript-eslint/no-var-requires": "warn",
-    "@typescript-eslint/quotes": "off"
+    "react/jsx-tag-spacing": "error",
+    "react/jsx-boolean-value": "error",
+    "react/jsx-wrap-multilines": ["error", {
+      "return": "parens",
+      "arrow": "ignore"
+    }],
+    "react/self-closing-comp": "error",
+    "react/jsx-no-bind": ["error", {
+      "allowArrowFunctions": true
+    }]
   }
 }

@@ -27,11 +27,23 @@ const ENTRY_ICONS: Record<QuestionLogEntry["class"], {
   "reported": { color: "icon-red-50", type: "report_flag" }
 };
 
-export default class LogEntry extends React.Component<{ 
-  entry: QuestionLogEntry,
-  usersData: User[] 
-}> {
-  state: {detailsVisible: boolean} = { detailsVisible: false };
+type LogEntryProps = {
+  entry: QuestionLogEntry;
+  usersData: User[];
+}
+
+type LogEntryState = {
+  detailsVisible: boolean;
+}
+
+export default class LogEntry extends React.Component<LogEntryProps, LogEntryState> {
+  constructor(props) {
+    super(props);
+
+    this.state = { detailsVisible: false };
+    this.ToggleDetailsVisibility = this.ToggleDetailsVisibility.bind(this);
+  }
+  //state: LogEntryProps = { detailsVisible: false };
 
   get EntryText() {
     let entry = this.props.entry;
@@ -99,15 +111,15 @@ export default class LogEntry extends React.Component<{
               <Icon type={this.state.detailsVisible ? "arrow_up" : "more"} color="icon-black" size={16} />
             } 
             iconOnly
-            onClick={this.ToggleDetailsVisibility.bind(this)}
+            onClick={this.ToggleDetailsVisibility}
             className={!!entry.descriptions === false ? "opacity-0" : ""}
           />
         </div>
         <Flex hidden={!this.state.detailsVisible} direction="column" marginTop="xs" marginBottom="s">
-          {entry.descriptions?.map((description, i) => 
+          {entry.descriptions?.map((description, i) =>
             <Flex direction="column" key={i}>
               <Text size="small" weight="bold">{description.subject}</Text>
-              <Text breakWords={true} size="small" dangerouslySetInnerHTML={{
+              <Text breakWords size="small" dangerouslySetInnerHTML={{
                 __html: ReplaceLatexWithURL(description.text)
               }} />
             </Flex>

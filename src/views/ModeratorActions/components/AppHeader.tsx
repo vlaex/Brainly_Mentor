@@ -1,10 +1,20 @@
 import React from "react";
-import { Avatar, Button, Flex, HomeButton, Icon, LogoType, Select, Text, Link }
-  from "brainly-style-guide";
+import { 
+  Button, 
+  Flex, 
+  HomeButton, 
+  Icon, 
+  LogoType, 
+  Select, 
+  Text ,
+  Link,
+  Avatar
+} from "brainly-style-guide";
 
 import locales from "@locales";
 import Filters from "./Filters";
 import { MenteeCommonData, Mentor } from "@typings";
+import _API from "@lib/api/extension";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
@@ -36,12 +46,11 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
   }
 
   render() {
-    const { me, mentees } = this.props;
-    let currentUserAvatar = mentees.find((mentee => mentee.id === this.props.userId))?.avatar;
-
-    if (typeof currentUserAvatar == "undefined")
-      // eslint-disable-next-line max-len
-      currentUserAvatar = "https://mentors.br-helper.com/static/travolta.gif";
+    const { me, mentees, userId } = this.props;
+    
+    let currentUserAvatar = mentees.find(mentee => mentee.id === userId)?.avatar;
+    if (!currentUserAvatar)
+      currentUserAvatar = `${_API.serverURL}/static/travolta.gif`;
 
     return (
       <Flex className="actions-header" alignItems="center" justifyContent="space-between" disabled={this.props.loading}>
@@ -52,12 +61,12 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
           <Button disabled={!this.props.hasNextPage} onClick={_ => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
         <Flex alignItems="center">
-          <Link href={`/users/redirect_user/${this.props.userId}/`}>
-            <Avatar imgSrc={currentUserAvatar}/>
+          <Link target="_blank">
+            <Avatar size="m" imgSrc={currentUserAvatar} alt="user avatar" className="current-user-avatar" />
           </Link>
-          {!!this.props.mentees.length &&
+          {!!this.props.mentees.length && 
             <Select value={this.props.userId.toString()} options={
-              [me, ...mentees].map((user: MenteeCommonData) =>
+              [me, ...mentees].map((user: MenteeCommonData) => 
                 ({ value: user.id.toString(), text: user.nick })
               )
             }

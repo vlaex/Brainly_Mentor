@@ -25,7 +25,7 @@ export default class Dashboard extends React.Component {
     case "Mentees":
       return <MenteesDashboard mentor={this.state.mentor} switchScreen={this.switchScreen} />;
     default:
-      return <MentorsDashboard switchScreen={this.switchScreen}/>;
+      return <MentorsDashboard switchScreen={this.switchScreen} />;
     }
   }
 }

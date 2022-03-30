@@ -18,12 +18,12 @@ type MentorContainerState = {
 
 export default class MentorContainer extends React.Component<MentorContainerProps,
   MentorContainerState> {
-  state = {
-    error: null
-  };
 
   constructor(props: MentorContainerProps) {
     super(props);
+
+    this.state = { error: null };
+    this.DeleteMentor = this.DeleteMentor.bind(this);
   }
 
   private async DeleteMentor() {
@@ -62,16 +62,16 @@ export default class MentorContainer extends React.Component<MentorContainerProp
           </Flex>
           <Flex justifyContent="space-between">
             <Flex className="sg-flex--gap-xs">
-              <Button onClick={() => this.props.switchScreen("Mentees", mentor)} icon={<Icon type="seen" size={16}/>} size="s" iconOnly
-                type="solid-blue" title={locales.common.viewMentor}/>
-              <Button onClick={this.DeleteMentor.bind(this)}
-                icon={<Icon type="trash" color="adaptive" size={16}/>} size="s" iconOnly
-                toggle="peach" type="outline" title={locales.common.deleteMentor}/>
+              <Button onClick={() => this.props.switchScreen("Mentees", mentor)} icon={<Icon type="seen" size={16} />} size="s" iconOnly
+                type="solid-blue" title={locales.common.viewMentor} />
+              <Button onClick={this.DeleteMentor}
+                icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly
+                toggle="peach" type="outline" title={locales.common.deleteMentor} />
             </Flex>
           </Flex>
         </Flex>
         <Checkbox defaultChecked={mentor.senior} onChange={(e: ChangeEvent<HTMLInputElement>) => this.editSenior(e)}>{locales.common.senior}</Checkbox>
-        <SeparatorHorizontal className="sg-flex--margin-xs"/>
+        <SeparatorHorizontal className="sg-flex--margin-xs" />
         <Headline >{mentees.length ? locales.common.mentees : locales.common.noMentees }</Headline>
         {mentees.map(mentee => {
           const key = mentee.id;
@@ -80,17 +80,17 @@ export default class MentorContainer extends React.Component<MentorContainerProp
               <Link key={key} href={`/users/redirect_user/${mentee.id}`} target="_blank" color="text-gray-70">{mentee.nick}</Link>,
               <span key={key}>{mentee.rank}</span>
             ]} aside={
-              <Avatar imgSrc={mentee.avatar}/>}/>);
+              <Avatar imgSrc={mentee.avatar} />} />);
         })}
 
         {this.state.error && <Flex alignItems="center" className="mentee-container-bottom-error">
-          <Icon type="info" color="icon-red-50" size={24}/>
+          <Icon type="info" color="icon-red-50" size={24} />
           <Text size="small" weight="bold">{this.state.error}</Text>
           <Button
             onClick={() => this.setState({ error: null })}
             type="transparent"
             iconOnly
-            icon={<Icon type="close" size={16} color="icon-black"/>}
+            icon={<Icon type="close" size={16} color="icon-black" />}
             size="s"
           />
         </Flex>}

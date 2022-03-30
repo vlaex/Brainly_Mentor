@@ -20,18 +20,34 @@ import ReplaceLatexWithURL from "@utils/ReplaceTextWithLinks";
 import QuestionPreview from "./QuestionPreview";
 import Warns from "./Warns";
 
-export default class ActionContainer extends React.Component<{
+type ActionProps = {
   data: Action,
   moderator: number;
   page: number;
-}> {
-  state = {
-    reviewStatus: this.props.data.reviewStatus,
-    loading: false,
-    reasonTooltipVisible: false,
-    warnsVisible: false,
-    showQuestionPreview: false
-  };
+}
+
+type ActionState = {
+  reviewStatus: Action["reviewStatus"];
+  loading: boolean;
+  reasonTooltipVisible: boolean;
+  warnsVisible: boolean;
+  showQuestionPreview: boolean;
+}
+
+export default class ActionContainer extends React.Component<ActionProps, ActionState> {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      reviewStatus: this.props.data.reviewStatus,
+      loading: false,
+      reasonTooltipVisible: false,
+      warnsVisible: false,
+      showQuestionPreview: false
+    };
+
+    this.ShowQuestionPreview = this.ShowQuestionPreview.bind(this);
+  }
 
   private async ReviewAction(status: Action["reviewStatus"]) {
     this.setState({ loading: true });
@@ -68,7 +84,7 @@ export default class ActionContainer extends React.Component<{
       <Box color="white" padding="s" className={boxClasses.join(" ")}>
         <Flex alignItems="center" className="sg-flex--relative">
           <Link href={action.task.link} target="_blank">
-            <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor}/>
+            <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor} />
           </Link>
           <Link
             onMouseEnter={_ => this.setState({ reasonTooltipVisible: true })}
@@ -91,14 +107,14 @@ export default class ActionContainer extends React.Component<{
           }
 
           <Flex className="action-operations" disabled={this.state.loading}>
-            <Button onClick={this.ReviewAction.bind(this, "APPROVED")} className="approve-action" type="transparent" iconOnly icon={<Icon type="thumb_up" color="icon-green-50" size={24} />} />
-            <Button onClick={this.ShowQuestionPreview.bind(this)} type="transparent" iconOnly icon={<Icon type="seen" size={24} color="icon-gray-70" />} />
-            <Button onClick={this.ReviewAction.bind(this, "DISAPPROVED")} className="disapprove-action" type="transparent" iconOnly icon={<Icon type="thumb_down" color="icon-red-50" size={24} />} />
-            <Button onClick={this.ReviewAction.bind(this, "NONE")} className="revert-action" type="solid-inverted" iconOnly icon={<Icon type="reload" color="icon-black" size={24} />} />
+            <Button onClick={_ => this.ReviewAction("APPROVED")} className="approve-action" type="transparent" iconOnly icon={<Icon type="thumb_up" color="icon-green-50" size={24} />} />
+            <Button onClick={this.ShowQuestionPreview} type="transparent" iconOnly icon={<Icon type="seen" size={24} color="icon-gray-70" />} />
+            <Button onClick={_ => this.ReviewAction("DISAPPROVED")} className="disapprove-action" type="transparent" iconOnly icon={<Icon type="thumb_down" color="icon-red-50" size={24} />} />
+            <Button onClick={_ => this.ReviewAction("NONE")} className="revert-action" type="solid-inverted" iconOnly icon={<Icon type="reload" color="icon-black" size={24} />} />
           </Flex>
         </Flex>
         <div className="action-content">
-          <Text size="small" type="div" breakWords={true} dangerouslySetInnerHTML={{
+          <Text size="small" type="div" breakWords dangerouslySetInnerHTML={{
             __html: ReplaceLatexWithURL(action.content)
           }} />
         </div>

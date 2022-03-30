@@ -19,12 +19,20 @@ type DashboardState = {
 
 export default class MentorsDashboard extends React.Component
   <{ switchScreen: (screen: DashboardScreens) => void }, DashboardState> {
-  state: DashboardState = {
-    addMentorBoxVisible: false,
-    mentors: [],
-    loading: false,
-    error: null
-  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      addMentorBoxVisible: false,
+      mentors: [],
+      loading: false,
+      error: null
+    };
+
+    this.RenderMentors = this.RenderMentors.bind(this);
+    this.ToggleAddMentorBoxVisibility = this.ToggleAddMentorBoxVisibility.bind(this);
+  }
 
   componentDidMount() {
     this.RenderMentors();
@@ -60,7 +68,7 @@ export default class MentorsDashboard extends React.Component
         <Overlay>
           <Flex className="error-container" justifyContent="center">
             <Headline extraBold color="text-red-60">{this.state.error}</Headline>
-            <Button onClick={this.RenderMentors.bind(this)} type="outline"
+            <Button onClick={this.RenderMentors} type="outline"
               toggle="peach">{locales.common.tryAgain}</Button>
           </Flex>
         </Overlay>
@@ -69,25 +77,25 @@ export default class MentorsDashboard extends React.Component
 
     return (
       <Overlay>
-        {this.state.loading ? <Spinner/> : (
+        {this.state.loading ? <Spinner /> : (
           <Flex direction="column" fullWidth>
             <Flex justifyContent="space-between" alignItems="center"
               className="mentees-dashboard-header">
               <Flex>
                 <TextBit color="text-blue-60">{locales.common.mentors} [{this.state.mentors.length}]</TextBit>
-                <Button onClick={this.ToggleAddMentorBoxVisibility.bind(this)} type="solid-mint"
-                  icon={<Icon type="plus"/>} iconOnly/>
+                <Button onClick={this.ToggleAddMentorBoxVisibility} type="solid-mint"
+                  icon={<Icon type="plus" />} iconOnly />
               </Flex>
               <Flex>
                 <Button
                   onClick={() => this.props.switchScreen("MyMentees")}
-                  icon={<Icon type="friends" color="icon-black" size={24}/>}
+                  icon={<Icon type="friends" color="icon-black" size={24} />}
                   type="outline">
                   {locales.common.toUMentees}
                 </Button>
-                <Button title={locales.common.reload} onClick={this.RenderMentors.bind(this)}
-                  icon={<Icon type="reload" color="icon-black" size={24}/>} iconOnly
-                  type="outline"/>
+                <Button title={locales.common.reload} onClick={this.RenderMentors}
+                  icon={<Icon type="reload" color="icon-black" size={24} />} iconOnly
+                  type="outline" />
               </Flex>
             </Flex>
             <div className="grid-items-container">
@@ -96,11 +104,10 @@ export default class MentorsDashboard extends React.Component
                   mentor={mentor}
                   key={mentor.id}
                   switchScreen={this.props.switchScreen}
-                  deleteHandler={this.RenderMentors.bind(this)}/>
+                  deleteHandler={this.RenderMentors} />
               )}
             </div>
-            {this.state.addMentorBoxVisible &&
-                <AddMentorBox handler={this.RenderMentors.bind(this)}/>}
+            {this.state.addMentorBoxVisible && <AddMentorBox handler={this.RenderMentors} />}
           </Flex>
         )}
       </Overlay>

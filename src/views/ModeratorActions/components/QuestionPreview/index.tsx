@@ -37,6 +37,8 @@ export default class QuestionPreview extends React.Component<
     super(props);
 
     this.state = { loading: true };
+
+    this.CloseModal = this.CloseModal.bind(this);
     this.RenderTask();
   }
 
@@ -70,7 +72,7 @@ export default class QuestionPreview extends React.Component<
               <Spinner /> :
               <Flex direction="column" className="error-container">
                 <Headline>{this.state.error}</Headline>
-                <Button onClick={this.CloseModal.bind(this)} type="outline" toggle="blue">
+                <Button onClick={this.CloseModal} type="outline" toggle="blue">
                   {locales.common.close}
                 </Button>
               </Flex>
@@ -93,7 +95,7 @@ export default class QuestionPreview extends React.Component<
                   • {data.task.points.ptsForTask} {locales.common.pts}
                 </Text>
               </Flex>
-              <Button className="close-modal-button" onClick={this.CloseModal.bind(this)} type="transparent" iconOnly icon={<Icon color="icon-black" type="close" />} />
+              <Button className="close-modal-button" onClick={this.CloseModal} type="transparent" iconOnly icon={<Icon color="icon-black" type="close" />} />
             </Flex>
             <Flex direction="column">
               {[data.task, ...data.responses].map(x => 
