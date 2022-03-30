@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action, Mentor } from "@typings";
+import type { Action, MenteeCommonData, Mentor } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
@@ -18,7 +18,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
-  mentees: {id: number, nick: string}[];
+  mentees: MenteeCommonData[];
   me: Mentor;
 }
 

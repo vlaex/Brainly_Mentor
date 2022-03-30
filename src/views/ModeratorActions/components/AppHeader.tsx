@@ -1,5 +1,6 @@
 import React from "react";
-import { Avatar, Button, Flex, HomeButton, Icon, LogoType, Select, Text, Link } from "brainly-style-guide";
+import { Avatar, Button, Flex, HomeButton, Icon, LogoType, Select, Text, Link }
+  from "brainly-style-guide";
 
 import locales from "@locales";
 import Filters from "./Filters";
@@ -40,9 +41,7 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
 
     if (typeof currentUserAvatar == "undefined")
       // eslint-disable-next-line max-len
-      currentUserAvatar = "https://ru-static.z-dn.net/files/d8c/c718f17247be2cfa6b0b128d9acf41e9.jpg";
-      //TODO me.avatar
-      //currentUserAvatar = me.avatar;
+      currentUserAvatar = "https://mentors.br-helper.com/static/travolta.gif";
 
     return (
       <Flex className="actions-header" alignItems="center" justifyContent="space-between" disabled={this.props.loading}>
@@ -53,7 +52,7 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
           <Button disabled={!this.props.hasNextPage} onClick={_ => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
         <Flex alignItems="center">
-          <Link href={`/moderation_new/view_moderator/${this.props.userId}/`}>
+          <Link href={`/users/redirect_user/${this.props.userId}/`}>
             <Avatar imgSrc={currentUserAvatar}/>
           </Link>
           {!!this.props.mentees.length &&

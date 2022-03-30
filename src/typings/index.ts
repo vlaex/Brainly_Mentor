@@ -64,6 +64,7 @@ export type Warn = {
 export interface MenteeCommonData {
   id: number;
   nick: string;
+  avatar: string;
 }
 
 export interface Mentee extends MenteeCommonData {
