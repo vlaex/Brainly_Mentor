@@ -3,6 +3,7 @@ import type {
   Mentee, 
   BasicSuccessResponse,
   Mentor,
+  MenteeCommonData,
   Candidate
 } from "@typings";
 import locales from "@locales";
@@ -75,17 +76,19 @@ class Api {
     });
   }
 
+  async GetMenteesWithoutStats(): Promise<{
+    mentees: MenteeCommonData[];
+  }> {
+    return await this.Request("GET", "mentees?withoutStats=true");
+  }
+
   async GetMentees(mentorId?: number): Promise<{
     mentees: Mentee[];
   }> {
-    let path = "mentees";
+    let path = `mentees`;
     if (mentorId) path += `?id=${mentorId}`;
 
     return await this.Request("GET", path);
-  }
-
-  async GetMenteesNicks(): Promise<{ mentees: string[] }> {
-    return await this.Request("GET", "mentees?nicksOnly=true");
   }
 
   async AddMentee(userId: number): Promise<{

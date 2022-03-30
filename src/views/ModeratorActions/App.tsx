@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action, Mentee, Mentor } from "@typings";
+import type { Action, Mentor } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
@@ -18,7 +18,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
-  mentees: Mentee[];
+  mentees: {id: number, nick: string}[];
   me: Mentor;
 }
 
@@ -69,7 +69,7 @@ export default class App extends React.Component {
   private async FetchUsers() {
     try {
       const [menteesData, meData] = await Promise.all([
-        _API.GetMentees(),
+        _API.GetMenteesWithoutStats(),
         _API.GetMe()
       ]);
 

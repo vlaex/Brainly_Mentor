@@ -61,11 +61,14 @@ export type Warn = {
   active: boolean;
 }
 
-export interface Mentee {
+export interface MenteeCommonData {
   id: number;
+  nick: string;
+}
+
+export interface Mentee extends MenteeCommonData {
   market: Market;
   mentorId: number;
-  nick: string;
   note: string;
   avatar: string;
   rank: string;
