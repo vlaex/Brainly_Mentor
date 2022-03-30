@@ -4,6 +4,7 @@ import { Button, Flex, Icon, Checkbox, Text, Input, Select } from "brainly-style
 import locales from "@locales";
 import { HideElement, ShowElement } from "@utils/ElementsVisibility";
 import type { Action } from "@typings";
+import { Flash } from "@utils/Flashes";
 
 type FiltersState = {
   filtersHidden: boolean;
@@ -56,7 +57,7 @@ export default class Filters extends React.Component {
   private Filter(element: HTMLDivElement) {
     ShowElement(element);
 
-    let hideComments = this.state.hideComments && 
+    let hideComments = this.state.hideComments &&
       element.classList.contains("Action-ContentType-comment");
 
     let userNickMatch = true;
@@ -74,22 +75,22 @@ export default class Filters extends React.Component {
     );
 
     let { contentType, actionType, deletionReason } = this.state;
-      
+
     let contentTypeMatch = contentType === "ALL" ? true :
       element.classList.contains(`Action-ContentType-${contentType}`);
-        
-    let actionTypeMatch = actionType === "ALL" ? true : 
+
+    let actionTypeMatch = actionType === "ALL" ? true :
       element.classList.contains(`Action-Type-${actionType}`);
 
     let deletionReasonMatch = deletionReason === "ALL" ? true :
       element.classList.contains(`Action-DeleteReason-${deletionReason}`);
 
     if (
-      hideComments || 
+      hideComments ||
       !userNickMatch ||
       (
         actionTimestamp < +new Date(this.state.dateNotBefore) ||
-        actionTimestamp > +new Date(this.state.dateNotAfter) 
+        actionTimestamp > +new Date(this.state.dateNotAfter)
       ) ||
       !actionTypeMatch ||
       !contentTypeMatch ||
@@ -110,6 +111,7 @@ export default class Filters extends React.Component {
   }
 
   handleFilterChange = (event: FilterChangeEvent) => {
+    Flash({ type: "info", text: locales.common.nextPagesMayContainActions });
     this.setState({ [event.currentTarget.id]: event.currentTarget.value });
   }
 
@@ -139,7 +141,7 @@ export default class Filters extends React.Component {
             <Input type="date" onChange={this.handleFilterChange} id="dateNotBefore" />
             <Input type="date" onChange={this.handleFilterChange} id="dateNotAfter" />
           </Flex>
-          <Checkbox onChange={(event: React.ChangeEvent<HTMLInputElement>) => 
+          <Checkbox onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             this.setState({ hideComments: event.currentTarget.checked })
           }>{locales.common.hideComments}</Checkbox>
         </Flex>

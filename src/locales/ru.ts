@@ -61,6 +61,7 @@ export default {
     "noActionsMatchingFilters": "Нет акций, удовлетворяющие фильтрам",
     "noReason": "Нет причины",
     "hideComments": "Скрыть комментарии",
+    "nextPagesMayContainActions": "На следующих страницах могут быть акции удовлетворяющие фильтру",
     "actionFilters": {
       "contentTypes": [
         {"value": "answer", "text": "Ответы"},

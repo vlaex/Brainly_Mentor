@@ -61,6 +61,7 @@ export default {
     "noActionsMatchingFilters": "There are no actions matching your filters",
     "noReason": "No reason",
     "hideComments": "Hide comments",
+    "nextPagesMayContainActions": "The next pages can also contain actions matching your filters",
     "actionFilters": {
       "contentTypes": [
         {"value": "answer", "text": "Answers"},
