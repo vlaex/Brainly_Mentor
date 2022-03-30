@@ -21,7 +21,12 @@ export class AddMentorBox extends React.Component<
 > {
   constructor(props: AddMentorBoxProps) {
     super(props);
+
     this.state = { loading: false, senior: false };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeCheckBox = this.handleChangeCheckBox.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -66,13 +71,13 @@ export class AddMentorBox extends React.Component<
         <Headline extraBold color="text-green-60">{locales.common.addMentor}</Headline>
         <Flex marginTop="s" marginBottom="xs" alignItems="center" className="sg-flex--gap-s">
           <Input 
-            onChange={this.handleChange.bind(this)} 
+            onChange={this.handleChange} 
             placeholder={locales.common.linkToUserProfile} 
             fullWidth
             disabled={this.state.loading}
           />
-          <Checkbox onChange={this.handleChangeCheckBox.bind(this)} disabled={this.state.loading}>{locales.common.senior}</Checkbox>
-          <Button onClick={this.handleClick.bind(this)} loading={this.state.loading} type="solid-mint" size="s">OK</Button>
+          <Checkbox onChange={this.handleChangeCheckBox} disabled={this.state.loading}>{locales.common.senior}</Checkbox>
+          <Button onClick={this.handleClick} loading={this.state.loading} type="solid-mint" size="s">OK</Button>
         </Flex>
         {this.state.error && 
           <Text color="text-red-60" weight="bold" size="medium" align="to-center">{this.state.error}</Text>}

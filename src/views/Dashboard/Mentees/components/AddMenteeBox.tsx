@@ -22,6 +22,9 @@ export class AddMenteeBox extends React.Component<
     super(props);
 
     this.state = { loading: false };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -55,12 +58,12 @@ export class AddMenteeBox extends React.Component<
         <Headline extraBold color="text-green-60">{locales.common.addMentee}</Headline>
         <Flex marginTop="s" marginBottom="xs" alignItems="center" className="sg-flex--gap-s">
           <Input 
-            onChange={this.handleChange.bind(this)} 
+            onChange={this.handleChange} 
             placeholder={locales.common.linkToUserProfile} 
             fullWidth
             disabled={this.state.loading}
           />
-          <Button onClick={this.handleClick.bind(this)} loading={this.state.loading} type="solid-mint" size="s">OK</Button>
+          <Button onClick={this.handleClick} loading={this.state.loading} type="solid-mint" size="s">OK</Button>
         </Flex>
         {this.state.error && 
           <Text color="text-red-60" weight="bold" size="medium" align="to-center">{this.state.error}</Text>}

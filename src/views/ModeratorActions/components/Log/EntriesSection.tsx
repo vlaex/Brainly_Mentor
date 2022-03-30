@@ -25,7 +25,12 @@ export default class EntriesSection extends React.Component<
   EntriesSectionProps, 
   EntriesSectionState
 > {
-  state: EntriesSectionState = { visible: true };
+  constructor(props) {
+    super(props);
+
+    this.state = { visible: true };
+    this.ToggleVisibility = this.ToggleVisibility.bind(this);
+  }
 
   private ToggleVisibility() {
     this.setState({ visible: !this.state.visible });
@@ -45,7 +50,7 @@ export default class EntriesSection extends React.Component<
             iconOnly 
             size="s" 
             icon={<Icon type={this.state.visible ? "arrow_up" : "arrow_down"} size={16} />}
-            onClick={this.ToggleVisibility.bind(this)}
+            onClick={this.ToggleVisibility}
           />
         </Flex>
         <Flex direction="column" hidden={!this.state.visible}>

@@ -29,6 +29,9 @@ export default class MenteeContainer extends React.Component<
     super(props);
 
     this.state = { chartsType: "daily" };
+
+    this.DeleteMentee = this.DeleteMentee.bind(this);
+    this.EditNote = this.EditNote.bind(this);
   }
 
   private async DeleteMentee() {
@@ -74,7 +77,7 @@ export default class MenteeContainer extends React.Component<
                 <Headline key={rank} transform="uppercase" size="small" color="text-blue-60">{rank}</Headline>
               )}
             </Flex>
-            <input onBlur={this.EditNote.bind(this)} type="text" className="user-note" placeholder={locales.common.note} defaultValue={mentee.note} />
+            <input onBlur={this.EditNote} type="text" className="user-note" placeholder={locales.common.note} defaultValue={mentee.note} />
           </Flex>
         </Flex>
         <Flex justifyContent="space-between" marginTop="s">
@@ -84,7 +87,7 @@ export default class MenteeContainer extends React.Component<
               {MENTEE_CHART_TYPES.map((chartType: MenteeChartsType) => 
                 <Text 
                   key={chartType} 
-                  onClick={this.ChangeChartsType.bind(this, chartType)} 
+                  onClick={_ => this.ChangeChartsType(chartType)} 
                   size="small" 
                   weight={chartsType === chartType ? "bold" : "regular"}
                 >{chartType}</Text>
@@ -95,7 +98,7 @@ export default class MenteeContainer extends React.Component<
             <Link href={`/moderation_new/view_moderator/${mentee.id}`} target="_blank">
               <Button icon={<Icon type="open_in_new_tab" size={16} />} size="s" iconOnly type="solid-blue" title={locales.common.viewActions} />
             </Link>
-            <Button onClick={this.DeleteMentee.bind(this)} icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly toggle="peach" type="outline" title={locales.common.deleteMentee} />
+            <Button onClick={this.DeleteMentee} icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly toggle="peach" type="outline" title={locales.common.deleteMentee} />
           </Flex>
         </Flex>
         <LineChart dataset={mentee.charts[chartsType].dataset} type={chartsType} />

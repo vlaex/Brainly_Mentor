@@ -55,7 +55,10 @@ export default async function (userId: number): Promise<UserBanDetails> {
     banDetails.active = activeBanDetails;
   }
 
-  banDetails.banCount = +modPanel.querySelectorAll(".fright > .orange")?.[1]?.textContent;
+  let banCount = +modPanel.querySelectorAll(".fright > .orange")?.[1]?.textContent;
+  if (isNaN(banCount)) banCount = 0; // User is a moderator
+
+  banDetails.banCount = banCount;
 
   return banDetails;
 }

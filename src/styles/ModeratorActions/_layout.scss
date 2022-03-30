@@ -72,4 +72,10 @@
       height: 30px;
     }
   }
+
+  & .current-user-avatar {
+    margin-right: 10px;
+
+    @include scale;
+  }
 }

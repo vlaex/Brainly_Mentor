@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import type { Action, Mentor } from "@typings";
+import type { Action, MenteeCommonData, Mentor } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
@@ -18,7 +18,7 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
-  mentees: {id: number, nick: string}[];
+  mentees: MenteeCommonData[];
   me: Mentor;
 }
 
@@ -117,7 +117,7 @@ export default class App extends React.Component {
       return (
         <Flex className="js-react-error-container">
           <Headline color="text-red-60" extraBold size="medium">{this.state.error}</Headline>
-          <Button onClick={this.FetchActions.bind(this)}
+          <Button onClick={_ => this.FetchActions()}
             type="outline">{locales.common.tryAgain}</Button>
         </Flex>
       );
@@ -136,7 +136,7 @@ export default class App extends React.Component {
             me={this.state.me}
           />
           {(!this.state.actions.length && !this.state.nextPageId) ?
-            <Spinner/> :
+            <Spinner /> :
             <div className="actions grid-items-container">{this.state.actions.map(action =>
               <ActionContainer
                 key={action.hash}

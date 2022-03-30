@@ -64,13 +64,13 @@ export type Warn = {
 export interface MenteeCommonData {
   id: number;
   nick: string;
+  avatar: string;
 }
 
 export interface Mentee extends MenteeCommonData {
   market: Market;
   mentorId: number;
   note: string;
-  avatar: string;
   rank: string;
   charts: {
     [T in keyof {"daily", "weekly", "monthly"}]: MenteeCharts;
