@@ -4,6 +4,7 @@ $grid-item-height: 322px;
 
 .mentees-dashboard .grid-item {
   height: $grid-item-height;
+  padding-top: 18px;
 
   & .user-info {
     & > .sg-avatar {
@@ -13,6 +14,8 @@ $grid-item-height: 322px;
     & a {
       word-break: break-all;
       line-height: 1;
+      font-weight: 900;
+      color: #323c45;
     }
   }
 

@@ -3,8 +3,8 @@
   "version": "3.0.0",
   "description": "A toolbox for Brainly mentors to make their life and work easier",
   "scripts": {
-    "production": "gulp build && npm run webpack:build && gulp zip",
-    "watch": "concurrently -n w: npm:watch:* \"gulp build\" && gulp watch",
+    "production": "gulp clean && gulp build && npm run webpack:build && gulp zip",
+    "watch": "gulp clean && concurrently -n w: npm:watch:* \"gulp build\" && gulp watch",
     "watch:webpack": "webpack -w --mode=development",
     "watch:gulp": "gulp watch",
     "webpack:build": "webpack build --mode=production",
@@ -21,6 +21,7 @@
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "babel-loader": "^8.2.3",
+    "del": "^6.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.29.3",
     "glob": "^7.2.0",
