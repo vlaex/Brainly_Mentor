@@ -40,7 +40,17 @@ export default class MenteesDashboard extends React.Component<DashboardProps, Da
   }
 
   componentDidMount() {
+    this.GetMe();
     this.RenderMentees();
+  }
+
+  private async GetMe() {
+    try {
+      const meData = await _API.GetMe();
+      this.setState({ me: meData.mentor });
+    } catch (err) {
+      this.setState({ error: err.message });
+    }
   }
 
   private async RenderMentees() {
@@ -48,18 +58,14 @@ export default class MenteesDashboard extends React.Component<DashboardProps, Da
       loading: true,
       error: null,
       mentees: [],
-      addMenteeBoxVisible: false,
-      me: null
+      addMenteeBoxVisible: false
     });
 
     try {
-      const meData = await _API.GetMe();
       const data = await _API.GetMentees(this.props.mentor && this.props.mentor.id);
-
-      const me = meData.mentor;
-      const mentees = data.mentees;
-
-      this.setState({ mentees: mentees, me: me });
+      this.setState({ 
+        mentees: data.mentees 
+      });
     } catch (err) {
       this.setState({ error: err.message });
     } finally {

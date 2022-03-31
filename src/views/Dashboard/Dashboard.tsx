@@ -2,7 +2,7 @@ import React from "react";
 
 import MenteesDashboard from "./Mentees/MenteesDashboard";
 import MentorsDashboard from "./Mentors/MentorsDashboard";
-import { Mentor, DashboardScreens } from "@typings";
+import type { Mentor, DashboardScreens } from "@typings";
 
 type DashboardState = {
   whatRender: DashboardScreens;

@@ -24,6 +24,7 @@ export default class MentorContainer extends React.Component<MentorContainerProp
 
     this.state = { error: null };
     this.DeleteMentor = this.DeleteMentor.bind(this);
+    this.editSenior = this.editSenior.bind(this);
   }
 
   private async DeleteMentor() {
@@ -54,7 +55,7 @@ export default class MentorContainer extends React.Component<MentorContainerProp
 
     return (
       <Box color="white"
-        className="mentee-container grid-item sg-flex--relative">
+        className="mentor-container grid-item sg-flex--relative">
         <Flex alignItems="center" className="sg-flex--gap-s user-info">
           <Flex direction="column" fullWidth>
             <Link target="_blank" size="large" color="text-black"
@@ -70,18 +71,25 @@ export default class MentorContainer extends React.Component<MentorContainerProp
             </Flex>
           </Flex>
         </Flex>
-        <Checkbox defaultChecked={mentor.senior} onChange={(e: ChangeEvent<HTMLInputElement>) => this.editSenior(e)}>{locales.common.senior}</Checkbox>
+        <Checkbox defaultChecked={mentor.senior} onChange={this.editSenior}>{locales.common.senior}</Checkbox>
         <SeparatorHorizontal className="sg-flex--margin-xs" />
-        <Headline >{mentees.length ? locales.common.mentees : locales.common.noMentees }</Headline>
-        {mentees.map(mentee => {
-          const key = mentee.id;
-          return (
-            <Media key={key} contentArray={[
-              <Link key={key} href={`/users/redirect_user/${mentee.id}`} target="_blank" color="text-gray-70">{mentee.nick}</Link>,
-              <span key={key}>{mentee.rank}</span>
-            ]} aside={
-              <Avatar imgSrc={mentee.avatar} />} />);
-        })}
+        <Flex justifyContent="space-between">
+          <Headline>
+            {mentees.length ? locales.common.mentees : locales.common.noMentees}
+          </Headline>
+          <Text size="small" weight="bold" color="text-gray-70" align="to-right" type="span">{mentees.length.toString()}</Text>
+        </Flex>
+        <Flex direction="column" className="mentor-mentees-list">
+          {mentees.map(mentee => {
+            const menteeId = mentee.id;
+
+            return (
+              <Media key={menteeId} contentArray={[
+                <Link key={menteeId} href={`/users/redirect_user/${mentee.id}`} target="_blank" color="text-gray-70">{mentee.nick}</Link>,
+                <span key={menteeId}>{mentee.rank}</span>
+              ]} aside={<Avatar imgSrc={mentee.avatar} />} />);
+          })}
+        </Flex>
 
         {this.state.error && <Flex alignItems="center" className="mentee-container-bottom-error">
           <Icon type="info" color="icon-red-50" size={24} />
