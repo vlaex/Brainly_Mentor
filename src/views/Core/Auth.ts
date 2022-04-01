@@ -9,11 +9,20 @@ storage.get("authToken").then(async function(token) {
   try {
     const userConversation = await BrainlyApi.GetDM(locales.botUserId);
 
+    const mentorTokenRegex = /(?<=\[).+(?=__brainly-mentor]$)/;
+
     const lastMessage = userConversation.data.messages
       .reverse()
-      .find(message => message.user_id === locales.botUserId);
+      .find(message => 
+        message.user_id === locales.botUserId &&
+        message.content.match(mentorTokenRegex)
+      );
+
+    const mentorToken = lastMessage.content
+      .split("\n")
+      .pop()
+      .match(mentorTokenRegex)?.[0];
     
-    const mentorToken = lastMessage?.content.match(/(?<=\[).+(?=__brainly-mentor]$)/)?.[0];
     if (!mentorToken) throw Error(locales.errors.couldNotFindAuthTokenInDM);
 
     await storage.set("authToken", mentorToken);
