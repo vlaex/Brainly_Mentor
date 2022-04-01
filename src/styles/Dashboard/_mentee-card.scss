@@ -6,6 +6,10 @@ $grid-item-height: 322px;
   height: $grid-item-height;
   padding-top: 18px;
 
+  @include mobile {
+    overflow-x: auto;
+  }
+
   & .user-info {
     & > .sg-avatar {
       flex-shrink: 0;

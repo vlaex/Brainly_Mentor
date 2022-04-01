@@ -67,7 +67,7 @@ export class AddMentorBox extends React.Component<
 
   render() {
     return (
-      <Flex direction="column" className="add-mentee-box">
+      <Flex direction="column" className="add-mentor-box">
         <Headline extraBold color="text-green-60">{locales.common.addMentor}</Headline>
         <Flex marginTop="s" marginBottom="xs" alignItems="center" className="sg-flex--gap-s">
           <Input 

@@ -9,6 +9,12 @@
   &.to-bottom {
     transform: translate(2.6rem, 2.5rem);
   }
+
+  @include mobile {
+    top: 4.8rem;
+    right: 0.3rem;
+    z-index: 9000;
+  }
 }
 
 .mentees-dashboard.overlay-container {
@@ -39,6 +45,15 @@
 
     & h1.sg-text-bit {
       font-size: 34px;
+
+      @include mobile {
+        font-size: 20px;
+        line-height: 1;
+      }
+    }
+
+    & .sg-button.sg-button--solid-mint {
+      margin-right: 10px;
     }
 
     & > .sg-flex {
@@ -46,15 +61,43 @@
       align-items: center;
       margin-right: 4%;
     }
+
+    @include mobile {
+      flex-direction: column;
+
+      > .sg-flex:last-child {
+        max-width: 100%;
+        gap: 5px;
+        overflow-x: auto;
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+        width: 100%;
+        justify-content: center;
+
+        > .sg-button.sg-button--m:last-child {
+          @include hidden;
+        }
+      }
+    }
   }
 
   & .grid-items-container {
     padding: 10px 15px 15px 0;
 
     @include modern-overflow;
+
+    @include mobile {
+      overflow-x: hidden;
+      grid-template-columns: 100%;
+      padding: 0;
+      padding-right: 5px;
+      margin-top: 10px;
+    }
   }
 
-  & .add-mentee-box {
+  & .add-mentee-box,
+  & .add-mentor-box {
     padding: 20px;
     border: 2px solid #32bd77;
     border-radius: 8px;
@@ -65,5 +108,9 @@
     transform: translate(-50%, -50%);
     width: 700px;
     margin: auto;
+
+    @include mobile {
+      width: 100%;
+    }
   }
 }

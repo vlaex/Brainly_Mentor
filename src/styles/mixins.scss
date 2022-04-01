@@ -41,3 +41,14 @@
     @content;
   }
 }
+
+@mixin hidden {
+  /* stylelint-disable-next-line declaration-no-important */
+  display: none !important;
+}
+
+@mixin hidden-if-mobile {
+  @include mobile {
+    @include hidden;
+  }
+}

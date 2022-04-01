@@ -8,7 +8,7 @@ import type {
 } from "@typings/brainly";
 
 class BrainlyApi {
-  private graphqlURL = `https://brainly.com/graphql/${locales.market}`;
+  private graphqlURL = `https://${locales.marketHost}/graphql/${locales.market}`;
   private legacyApiURL = `https://${locales.marketHost}/api/28`;
   private tokenLong: string;
 

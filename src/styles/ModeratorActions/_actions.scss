@@ -53,7 +53,7 @@
   &.Action-ReviewStatus-DISAPPROVED,
   &.Action-ReviewStatus-APPROVED {
     .action-operations .sg-button:not(.revert-action) {
-      display: none;
+      @include hidden;
     }
   }
 
@@ -62,7 +62,7 @@
   }
 
   &:not(.Action-ReviewStatus-DISAPPROVED):not(.Action-ReviewStatus-APPROVED) .action-operations .revert-action {
-    display: none;
+    @include hidden;
   }
 
   & .action-type {

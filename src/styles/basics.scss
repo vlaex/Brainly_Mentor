@@ -1,9 +1,9 @@
-/* stylelint-disable declaration-no-important */
+@import "./mixins";
 
 body.mint:not(#brainly-mentor),
 [hidden],
 .hidden {
-  display: none !important;
+  @include hidden;
 }
 
 .sg-flex--margin-top-auto {
@@ -19,6 +19,7 @@ body.mint:not(#brainly-mentor),
 }
 
 .sg-flex--relative {
+  /* stylelint-disable-next-line declaration-no-important */
   position: relative !important;
 }
 

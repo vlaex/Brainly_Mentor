@@ -7,6 +7,11 @@ $overlay-width: 545px;
   & > .overlay {
     padding: 28px 0;
     align-items: flex-start;
+
+    @include mobile {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   & .overlay-container {
@@ -19,6 +24,12 @@ $overlay-width: 545px;
     border-radius: 8px 0 0 8px;
 
     @include modern-overflow;
+
+    @include mobile {
+      border-radius: 0;
+      min-width: 92%;
+      width: 92%;
+    }
 
     > .sg-flex.sg-flex--column:first-child {
       overflow: hidden;
