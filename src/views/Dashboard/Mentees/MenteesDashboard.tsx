@@ -100,8 +100,8 @@ export default class MenteesDashboard extends React.Component<DashboardProps, Da
                     locales.common.yourMentees} &#32;
                     [{this.state.mentees.length}]
                 </TextBit>
-                {!this.props.mentor &&
-                    <Button onClick={this.ToggleAddMenteeBoxVisibility} type="solid-mint" icon={<Icon type="plus" />} iconOnly />}
+                {(!this.props.mentor && this.state.me?.senior) &&
+                  <Button onClick={this.ToggleAddMenteeBoxVisibility} type="solid-mint" icon={<Icon type="plus" />} iconOnly />}
               </Flex>
               <Flex>
                 {this.state.me?.senior && 
@@ -116,7 +116,12 @@ export default class MenteesDashboard extends React.Component<DashboardProps, Da
             </Flex>
             <div className="grid-items-container">
               {this.state.mentees.map(mentee =>
-                <MenteeContainer data={mentee} key={mentee.id} deleteHandler={this.RenderMentees} />
+                <MenteeContainer 
+                  data={mentee}
+                  key={mentee.id} 
+                  deleteHandler={this.RenderMentees}
+                  canDelete={this.state.me?.senior}
+                />
               )}
             </div>
             {this.state.addMenteeBoxVisible && <AddMenteeBox handler={this.RenderMentees} />}

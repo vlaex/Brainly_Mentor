@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Headline, Button, Input, Text } from "brainly-style-guide";
+import { Flex, Headline, Button, Input, Text, Select } from "brainly-style-guide";
 import locales from "@locales";
 import type { Mentee } from "@typings";
 import _API from "@lib/api/extension";
@@ -8,6 +8,8 @@ type AddMenteeBoxState = {
   error?: string;
   loading: boolean;
   userId?: number;
+  mentors: {id: number; nick: string}[];
+  mentorId?: number;
 }
 
 type AddMenteeBoxProps = {
@@ -21,10 +23,18 @@ export class AddMenteeBox extends React.Component<
   constructor(props: AddMenteeBoxProps) {
     super(props);
 
-    this.state = { loading: false };
+    this.state = { loading: false, mentors: [] };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    _API.GetCommonMentorsData().then(data => {
+      this.setState({
+        mentors: data.mentors
+      });
+    });
   }
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -40,10 +50,13 @@ export class AddMenteeBox extends React.Component<
   }
 
   async handleClick() {
+    let { userId, mentorId } = this.state;
+    if (!userId) return;
+
     this.setState({ loading: true });
 
     try {
-      const data = await _API.AddMentee(this.state.userId);
+      const data = await _API.AddMentee(userId, mentorId);
       this.props.handler(data.mentee);
     } catch (err) {
       this.setState({ error: err.message });
@@ -56,13 +69,20 @@ export class AddMenteeBox extends React.Component<
     return (
       <Flex direction="column" className="add-mentee-box">
         <Headline extraBold color="text-green-60">{locales.common.addMentee}</Headline>
-        <Flex marginTop="s" marginBottom="xs" alignItems="center" className="sg-flex--gap-s">
-          <Input 
-            onChange={this.handleChange} 
-            placeholder={locales.common.linkToUserProfile} 
-            fullWidth
-            disabled={this.state.loading}
-          />
+        <Flex marginTop="s" alignItems="center" alignSelf="center">
+          <Flex marginRight="s" direction="column" className="sg-flex--gap-s" fullWidth>
+            <Input 
+              onChange={this.handleChange} 
+              placeholder={locales.common.linkToUserProfile} 
+              fullWidth
+              disabled={this.state.loading}
+            />
+            <Select options={this.state.mentors.map(mentor => {
+              return { value: mentor.id.toString(), text: mentor.nick };
+            })} color="default" onChange={(e: React.ChangeEvent<HTMLSelectElement>) => 
+              this.setState({ mentorId: +e.currentTarget.value })
+            } />
+          </Flex>
           <Button onClick={this.handleClick} loading={this.state.loading} type="solid-mint" size="s">OK</Button>
         </Flex>
         {this.state.error && 

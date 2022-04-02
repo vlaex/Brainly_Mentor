@@ -14,6 +14,7 @@ type MenteeChartsType = typeof MENTEE_CHART_TYPES[number];
 type MenteeContainerProps = {
   data: Mentee;
   deleteHandler: () => void;
+  canDelete: boolean;
 }
 
 type MenteeContainerState = {
@@ -84,7 +85,7 @@ export default class MenteeContainer extends React.Component<
           <Flex direction="column">
             <Headline extraBold transform="uppercase" size="medium" color="text-gray-70" type="h3">{mentee.charts[chartsType].count}</Headline>
             <Flex className="sg-flex--gap-xs mentee-stats-options">
-              {MENTEE_CHART_TYPES.map((chartType: MenteeChartsType) => 
+              {MENTEE_CHART_TYPES.map(chartType => 
                 <Text 
                   key={chartType} 
                   onClick={_ => this.ChangeChartsType(chartType)} 
@@ -98,7 +99,9 @@ export default class MenteeContainer extends React.Component<
             <Link href={`/moderation_new/view_moderator/${mentee.id}`} target="_blank">
               <Button icon={<Icon type="open_in_new_tab" size={16} />} size="s" iconOnly type="solid-blue" title={locales.common.viewActions} />
             </Link>
-            <Button onClick={this.DeleteMentee} icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly toggle="peach" type="outline" title={locales.common.deleteMentee} />
+            {this.props.canDelete &&
+              <Button onClick={this.DeleteMentee} icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly toggle="peach" type="outline" title={locales.common.deleteMentee} />
+            }
           </Flex>
         </Flex>
         <LineChart dataset={mentee.charts[chartsType].dataset} type={chartsType} />

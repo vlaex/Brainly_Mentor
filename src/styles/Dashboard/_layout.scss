@@ -112,5 +112,9 @@
     @include mobile {
       width: 100%;
     }
+
+    > .sg-flex {
+      width: 60%;
+    }
   }
 }

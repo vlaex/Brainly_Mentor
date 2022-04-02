@@ -91,10 +91,13 @@ class Api {
     return await this.Request("GET", path);
   }
 
-  async AddMentee(userId: number): Promise<{
+  async AddMentee(userId: number, mentorId: number): Promise<{
     mentee: Mentee;
   }> {
-    return await this.Request("POST", "mentees", { id: userId });
+    return await this.Request("POST", "mentees", { 
+      id: userId,
+      mentorId
+    });
   }
   
   async EditMentee(mentorId: number, menteeId: number, data: {
@@ -107,15 +110,17 @@ class Api {
     return await this.Request("DELETE", `mentees/${mentorId}/${userId}`);
   }
 
-  async GetMentors(): Promise<{
-    mentors: Mentor[]
-  }> {
+  async GetMentors(): Promise<{ mentors: Mentor[] }> {
     return await this.Request("GET", "mentors");
   }
 
-  async GetMe(): Promise<{
-    mentor: Mentor;
+  async GetCommonMentorsData(): Promise<{
+    mentors: {id: number; nick: string}[]
   }> {
+    return await this.Request("GET", "mentors?includeMentees=false");
+  }
+
+  async GetMe(): Promise<{ mentor: Mentor }> {
     return await this.Request("GET", "mentors/me");
   }
 
