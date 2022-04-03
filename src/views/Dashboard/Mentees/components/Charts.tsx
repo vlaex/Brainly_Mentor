@@ -57,15 +57,17 @@ export const LineChart = (props: MenteeChartsProps) => {
   };
 
   return (
-    <Line options={options} data={{
-      labels,
-      datasets: [{
-        label: "",
-        data: dataset,
-        fill: true,
-        backgroundColor: "rgb(79 179 247 / 20%)",
-        borderColor: "#4fb3f6",
-      }]
-    }} />
+    <div style={{ width: "100%", overflow: "auto" }}>
+      <Line options={options} data={{
+        labels,
+        datasets: [{
+          label: "",
+          data: dataset,
+          fill: true,
+          backgroundColor: "rgb(79 179 247 / 20%)",
+          borderColor: "#4fb3f6",
+        }]
+      }} />
+    </div>
   );
 };

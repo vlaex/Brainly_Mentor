@@ -1,13 +1,14 @@
 @import "../mixins";
 
-$grid-item-height: 322px;
-
 .mentees-dashboard .grid-item {
-  height: $grid-item-height;
   padding-top: 18px;
 
   @include mobile {
     overflow-x: auto;
+  }
+
+  &.mentor-container {
+    height: 322px;
   }
 
   & .user-info {

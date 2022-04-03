@@ -61,7 +61,7 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
           <Button disabled={!this.props.hasNextPage} onClick={_ => this.UpdatePage("next")} title={locales.common.nextPage} type="transparent" iconOnly icon={<Icon type="arrow_right" color="icon-black" size={24} />} size="s" />
         </Flex>
         <Flex alignItems="center">
-          <Link target="_blank">
+          <Link target="_blank" href={`/users/redirect_user/${userId}`}>
             <Avatar size="m" imgSrc={currentUserAvatar} alt="user avatar" className="current-user-avatar" />
           </Link>
           {!!this.props.mentees.length && 
