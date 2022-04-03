@@ -35,7 +35,7 @@ export const LineChart = (props: MenteeChartsProps) => {
     }
   }
 
-  while (!dataset[dataset.length - 1]) dataset.pop();
+  while (dataset[dataset.length - 1] === 0) dataset.pop();
 
   const fontOptions = { family: "ProximaNova" };
   const options: ChartOptions<"line"> = {
