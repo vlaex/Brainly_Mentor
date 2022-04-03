@@ -4,6 +4,9 @@ export default {
   "marketHost": "brainly.com",
   "marketName": "brainly",
   "common": {
+    "daily": "daily",
+    "weekly": "weekly",
+    "monthly": "monthly",
     "withWarn": "with warn",
     "as": "as",
     "questionLog": "Log",

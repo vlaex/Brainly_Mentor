@@ -4,6 +4,9 @@ export default {
   "marketHost": "znanija.com",
   "marketName": "znanija",
   "common": {
+    "daily": "день",
+    "weekly": "неделя",
+    "monthly": "месяц",
     "withWarn": "с предупреждением",
     "as": "как",
     "noWarns": "Нет предупреждений",

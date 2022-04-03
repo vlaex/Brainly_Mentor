@@ -91,7 +91,7 @@ export default class MenteeContainer extends React.Component<
                   onClick={_ => this.ChangeChartsType(chartType)} 
                   size="small" 
                   weight={chartsType === chartType ? "bold" : "regular"}
-                >{chartType}</Text>
+                >{locales.common[chartType]}</Text>
               )}
             </Flex>
           </Flex>

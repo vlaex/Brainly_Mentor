@@ -69,7 +69,7 @@ export class AddMenteeBox extends React.Component<
     return (
       <Flex direction="column" className="add-mentee-box">
         <Headline extraBold color="text-green-60">{locales.common.addMentee}</Headline>
-        <Flex marginTop="s" alignItems="center" alignSelf="center">
+        <Flex marginTop="s" alignItems="center" alignSelf="center" fullWidth>
           <Flex marginRight="s" direction="column" className="sg-flex--gap-s" fullWidth>
             <Input 
               onChange={this.handleChange} 

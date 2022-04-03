@@ -6,7 +6,7 @@ Chart.register(...registerables);
 
 type MenteeChartsProps = {
   dataset: number[];
-  type: keyof Mentee["charts"]
+  type: keyof Mentee["charts"];
 }
 
 function padNumber (num: number): string {
@@ -14,6 +14,7 @@ function padNumber (num: number): string {
 }
 
 export const LineChart = (props: MenteeChartsProps) => {
+  let dataset = props.dataset;
   let labels = [] as string[];
 
   if (props.type === "weekly") {
@@ -34,9 +35,10 @@ export const LineChart = (props: MenteeChartsProps) => {
     }
   }
 
-  let fontOptions = { family: "ProximaNova" };
+  while (!dataset[dataset.length - 1]) dataset.pop();
 
-  let options: ChartOptions<"line"> = {
+  const fontOptions = { family: "ProximaNova" };
+  const options: ChartOptions<"line"> = {
     scales: {
       x: { 
         ticks: { font: { ...fontOptions, size: 10 } }
@@ -59,7 +61,7 @@ export const LineChart = (props: MenteeChartsProps) => {
       labels,
       datasets: [{
         label: "",
-        data: props.dataset,
+        data: dataset,
         fill: true,
         backgroundColor: "rgb(79 179 247 / 20%)",
         borderColor: "#4fb3f6",
