@@ -112,9 +112,9 @@
     @include mobile {
       width: 100%;
     }
+  }
 
-    > .sg-flex {
-      width: 60%;
-    }
+  & .add-mentee-box > > .sg-flex {
+    width: 60%;
   }
 }
