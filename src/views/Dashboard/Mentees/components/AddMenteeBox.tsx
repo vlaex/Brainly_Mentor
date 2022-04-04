@@ -51,7 +51,7 @@ export class AddMenteeBox extends React.Component<
 
   async handleClick() {
     let { userId, mentorId } = this.state;
-    if (!userId) return;
+    if (!userId || !mentorId) return;
 
     this.setState({ loading: true });
 
@@ -77,9 +77,12 @@ export class AddMenteeBox extends React.Component<
               fullWidth
               disabled={this.state.loading}
             />
-            <Select options={this.state.mentors.map(mentor => {
-              return { value: mentor.id.toString(), text: mentor.nick };
-            })} color="default" onChange={(e: React.ChangeEvent<HTMLSelectElement>) => 
+            <Select className="add-mentee-select" options={[
+              { value: "0", text: locales.common.chooseMentor },
+              ...this.state.mentors.map(mentor => (
+                { value: mentor.id.toString(), text: mentor.nick }
+              ))
+            ]} color="default" onChange={(e: React.ChangeEvent<HTMLSelectElement>) => 
               this.setState({ mentorId: +e.currentTarget.value })
             } />
           </Flex>

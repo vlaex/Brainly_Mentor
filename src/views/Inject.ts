@@ -1,7 +1,7 @@
 import { version as brainlyStyleGuideVersion } from "brainly-style-guide/package.json";
 import ToBackground from "@lib/ToBackground";
 
-const MARKETS = ["brainly.com", "znanija.com"];
+const MARKETS = ["brainly.com", "znanija.com", "nosdevoirs.fr"];
 
 class Core {
   private market = window.location.hostname;
@@ -24,7 +24,7 @@ class Core {
       ], { oldPage: true, cleanBody: true });
     }
 
-    if (this.Path(/(\/$)|(\/(question|task)\/\d+)|(\/subject\/\w+)/)) {
+    if (this.Path(/(\/$)|(\/(question|task|devoir)\/\d+)|(\/(subject|matiere)\/\w+)/)) {
       this.InjectFiles([
         "content-scripts/Core/index.js",
         "content-scripts/Dashboard/index.js",

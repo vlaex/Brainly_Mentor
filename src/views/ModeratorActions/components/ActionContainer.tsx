@@ -80,6 +80,9 @@ export default class ActionContainer extends React.Component<ActionProps, Action
       `Action-DeleteReason-${action.reason.id}`
     ];
 
+    if (this.state.showQuestionPreview)
+      boxClasses.push("action--violet");
+
     return (
       <Box color="white" padding="s" className={boxClasses.join(" ")}>
         <Flex alignItems="center" className="sg-flex--relative">

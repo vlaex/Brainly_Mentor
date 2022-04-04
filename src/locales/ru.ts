@@ -4,6 +4,7 @@ export default {
   "marketHost": "znanija.com",
   "marketName": "znanija",
   "common": {
+    "chooseMentor": "Выберите наставника",
     "daily": "день",
     "weekly": "неделя",
     "monthly": "месяц",
@@ -33,7 +34,6 @@ export default {
     "all": "Все",
     "nick": "Ник",
     "filters": "Фильтры",
-    "clickHereToLogin": "Нажмите сюда, чтобы войти",
     "viewActions": "Смотреть акции",
     "viewMentor": "Смотреть наставника",
     "loading": "Загрузка...",

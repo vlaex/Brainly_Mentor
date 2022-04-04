@@ -7,6 +7,11 @@
 }
 
 .action {
+  &.action--violet {
+    background-color: #d1d9ff;
+    border-color: #cad2ff;
+  }
+
   & .action-content {
     font-size: 14px;
     line-height: 1.2;

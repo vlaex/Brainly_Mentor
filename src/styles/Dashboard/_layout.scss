@@ -113,4 +113,8 @@
       width: 100%;
     }
   }
+
+  & .add-mentee-select > option:first-child {
+    @include hidden;
+  }
 }

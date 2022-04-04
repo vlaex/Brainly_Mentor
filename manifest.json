@@ -12,7 +12,8 @@
   },
   "host_permissions": [
     "*://znanija.com/*",
-    "*://brainly.com/*"
+    "*://brainly.com/*",
+    "*://nosdevoirs.fr/*"
   ],
   "permissions": ["storage", "scripting"],
   "web_accessible_resources": [{
@@ -20,7 +21,11 @@
     "resources": ["styles/*", "content-scripts/*"]
   }],
   "content_scripts": [{
-    "matches": ["*://znanija.com/*", "*://brainly.com/*"],
+    "matches": [
+      "*://znanija.com/*", 
+      "*://brainly.com/*",
+      "*://nosdevoirs.fr/*"
+    ],
     "js": ["content-scripts/contentScript.js"],
     "run_at": "document_start"
   }],
