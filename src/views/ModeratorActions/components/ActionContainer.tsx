@@ -116,7 +116,7 @@ export default class ActionContainer extends React.Component<ActionProps, Action
         <Flex
           justifyContent="space-between"
           alignItems="center"
-          className="sg-flex--margin-top-auto sg-flex--relative"
+          className="sg-flex--margin-top-auto sg-flex--relative action-info"
           onMouseEnter={_ => this.setState({ warnsVisible: true })}
           onMouseLeave={_ => this.setState({ warnsVisible: false })}
         >

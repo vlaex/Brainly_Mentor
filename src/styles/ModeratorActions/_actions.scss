@@ -85,4 +85,12 @@
       @include scale;
     }
   }
+
+  & .action-info {
+    $len-negative: -17px;
+    $len-positive: 17px;
+
+    margin: 0 $len-negative;
+    padding: 0 $len-positive;
+  }
 }

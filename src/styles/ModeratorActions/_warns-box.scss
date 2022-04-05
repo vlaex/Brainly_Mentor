@@ -55,4 +55,22 @@
     padding: 4px 10px;
     border-radius: 8px;
   }
+
+  &--to-left {
+    margin-left: -414px;
+  }
+
+  &--to-top {
+    margin-top: -320px;
+
+    &.warnsBox--to-left {
+      margin-bottom: -20px;
+      margin-left: -400px;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
 }

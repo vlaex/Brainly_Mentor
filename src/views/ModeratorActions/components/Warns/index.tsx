@@ -38,6 +38,24 @@ export default class Warns extends React.Component<WarnsProps, WarnsState> {
       );
   }
 
+  private MakeWarnsResponsive(element: HTMLDivElement) {
+    if (!element) return;
+
+    let rect = element.getBoundingClientRect();
+
+    let offsetBottom = window.innerHeight - rect.bottom;
+    let offsetRight = window.innerWidth - rect.right;
+
+    if (offsetBottom < 10) {
+      element.classList.add("warnsBox--to-top", "sg-bubble--bottom");
+    } else if (offsetRight < 10) {
+      element.classList.add("warnsBox--to-left", "sg-bubble--right");
+    } else {
+      element.classList.add("sg-bubble--left");
+    }
+    
+  }
+
   render() {
     const { warns, loading } = this.state;
 
@@ -56,14 +74,14 @@ export default class Warns extends React.Component<WarnsProps, WarnsState> {
     }
 
     return (
-      <Bubble direction="left" className="warnsBox">
+      <div className="warnsBox sg-bubble" ref={this.MakeWarnsResponsive}>
         <BanSection userId={this.props.userId} />
         <Accordion spacing="none" allowMultiple>
           {warns.map(warn => 
             <WarnEntry warn={warn} key={md5(warn.reason + warn.time + warn.content)} />)
           }
         </Accordion>
-      </Bubble>
+      </div>
     );
   }
 }
