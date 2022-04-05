@@ -12,10 +12,9 @@ type FiltersState = {
   contentType: Action["contentType"] | "ALL";
   actionType: Action["type"] | "ALL";
   userNick: string;
-  dateNotBefore: string;
-  dateNotAfter: string;
   deletionReason: string;
 }
+
 type FilterChangeEvent = React.FormEvent<HTMLElement & HTMLInputElement>;
 
 const DefaultFiltersState: FiltersState = {
@@ -24,8 +23,6 @@ const DefaultFiltersState: FiltersState = {
   contentType: "ALL",
   actionType: "ALL",
   userNick: "",
-  dateNotBefore: "1-12-12",
-  dateNotAfter: "9999-12-12",
   deletionReason: "ALL"
 };
 
@@ -64,15 +61,11 @@ export default class Filters extends React.Component {
     try {
       let userNickRegex = new RegExp(this.state.userNick || ".+");
       userNickMatch = userNickRegex.test(
-        element.querySelector(".user > .sg-text").textContent
+        element.querySelector(".user .user-nick").textContent
       );
     } catch (err) {
       if (!(err instanceof SyntaxError)) throw Error(err);
     }
-
-    let actionTimestamp = +new Date(
-      element.querySelector(".action-date-container > .sg-text").getAttribute("data-date")
-    );
 
     let { contentType, actionType, deletionReason } = this.state;
 
@@ -88,10 +81,6 @@ export default class Filters extends React.Component {
     if (
       hideComments ||
       !userNickMatch ||
-      (
-        actionTimestamp < +new Date(this.state.dateNotBefore) ||
-        actionTimestamp > +new Date(this.state.dateNotAfter)
-      ) ||
       !actionTypeMatch ||
       !contentTypeMatch ||
       !deletionReasonMatch
@@ -100,10 +89,13 @@ export default class Filters extends React.Component {
   }
 
   private FilterActions() {
-    Array.from(
-      document.querySelectorAll(".actions > .action")
-    )
-      .forEach((e: HTMLDivElement) => this.Filter(e));
+    const actions = document.querySelectorAll(".actions > .action");
+    if (!actions.length) return;
+
+    Array.from(actions).forEach(this.Filter.bind(this));
+
+    if (!document.querySelectorAll(".action:not(.hidden)").length)
+      Flash({ type: "info", text: locales.common.nextPagesMayContainActions });
   }
 
   componentDidMount() {
@@ -111,7 +103,6 @@ export default class Filters extends React.Component {
   }
 
   handleFilterChange = (event: FilterChangeEvent) => {
-    Flash({ type: "info", text: locales.common.nextPagesMayContainActions });
     this.setState({ [event.currentTarget.id]: event.currentTarget.value });
   }
 
@@ -135,11 +126,6 @@ export default class Filters extends React.Component {
           <Flex>
             <Text size="small" weight="bold">{locales.common.user}</Text>
             <Input placeholder={locales.common.nick.toLowerCase()} onChange={this.handleFilterChange} id="userNick" />
-          </Flex>
-          <Flex>
-            <Text size="small" weight="bold">{locales.common.dateBetween}</Text>
-            <Input type="date" onChange={this.handleFilterChange} id="dateNotBefore" />
-            <Input type="date" onChange={this.handleFilterChange} id="dateNotAfter" />
           </Flex>
           <Checkbox onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             this.setState({ hideComments: event.currentTarget.checked })

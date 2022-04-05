@@ -39,7 +39,7 @@ export class AddMenteeBox extends React.Component<
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     let value = event.currentTarget.value;
-    let userIdMatch = /(?<=(?<=brainly|znanija)\.com\/[a-zA-Z/\d]+-).+/;
+    let userIdMatch = /(?<=\/profile?\/[A-Za-z0-9]+-)\d+/;
 
     this.setState({ 
       error: !userIdMatch.test(value) ?

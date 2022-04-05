@@ -24,7 +24,7 @@ class Api {
     apiMethod: string,
     body?
   ) {
-    const authToken = await storage.get("authToken");
+    const authToken = await storage.get(`authToken_${locales.market}`);
     if (!authToken) throw Error(ERRORS.notAuthed);
 
     let url = `${this.serverURL}/${this.market}/${apiMethod}`;

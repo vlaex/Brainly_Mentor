@@ -18,7 +18,7 @@
   "permissions": ["storage", "scripting"],
   "web_accessible_resources": [{
     "matches": ["<all_urls>"],
-    "resources": ["styles/*", "content-scripts/*"]
+    "resources": ["styles/*", "content-scripts/*", "icons/*"]
   }],
   "content_scripts": [{
     "matches": [

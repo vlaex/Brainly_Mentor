@@ -76,7 +76,13 @@
     margin-left: 10px;
   }
 
-  & .user.sg-flex > .sg-avatar {
-    @include scale;
+  & .user {
+    .user-nick {
+      line-height: 1;
+    }
+
+    .sg-avatar {
+      @include scale;
+    }
   }
 }

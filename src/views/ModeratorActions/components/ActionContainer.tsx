@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Flex,
-  Button,
-  Link,
-  Text,
-  Icon,
-  Box,
-  Avatar
-} from "brainly-style-guide";
+import { Flex, Button, Link, Text, Icon, Box, Avatar } from "brainly-style-guide";
 
 import Tooltip from "./Tooltip";
 import _API from "@lib/api/extension";
@@ -128,13 +120,15 @@ export default class ActionContainer extends React.Component<ActionProps, Action
           onMouseEnter={_ => this.setState({ warnsVisible: true })}
           onMouseLeave={_ => this.setState({ warnsVisible: false })}
         >
-          <Link
-            href={`/users/redirect_user/${action.user.id}`} target="_blank">
-            <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>
+          <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>
+            <Link href={`/users/redirect_user/${action.user.id}`} target="_blank">
               <Avatar imgSrc={action.user.avatar} size="xs" />
-              <Text size="small" weight="bold" className="sg-flex--margin-left-xs">{action.user.nick}</Text>
+            </Link>
+            <Flex direction="column" marginLeft="xs">
+              <Text size="small" weight="bold" className="user-nick">{action.user.nick}</Text>
+              <Text size="xsmall" color="text-gray-70">{action.user.rank?.name}</Text>
             </Flex>
-          </Link>
+          </Flex>
 
           {this.state.warnsVisible && <Warns
             key={action.hash}
@@ -152,5 +146,4 @@ export default class ActionContainer extends React.Component<ActionProps, Action
       </Box>
     );
   }
-
 }

@@ -3,7 +3,7 @@ import storage from "@lib/storage";
 import locales from "@locales";
 import { Flash } from "@utils/Flashes";
 
-storage.get("authToken").then(async function(token) {
+storage.get(`authToken_${locales.market}`).then(async function(token) {
   if (token) return;
 
   try {
@@ -25,18 +25,20 @@ storage.get("authToken").then(async function(token) {
     
     if (!mentorToken) throw Error(locales.errors.couldNotFindAuthTokenInDM);
 
-    await storage.set("authToken", mentorToken);
+    await storage.set(`authToken_${locales.market}`, mentorToken);
 
     Flash({
       type: "success",
-      text: locales.common.youHaveBeenAuthorized
+      text: locales.common.youHaveBeenAuthorized,
+      withIcon: true
     });
 
   } catch (err) {
     Flash({
       type: "info",
       sticky: true,
-      text: `${locales.errors.couldNotAuthorizeYou}: ${err.message}`
+      text: `${locales.errors.couldNotAuthorizeYou}: ${err.message}`,
+      withIcon: true
     });
   }
 

@@ -31,6 +31,7 @@ export interface Action {
     link: string;
     isModerator?: boolean;
     avatar?: string;
+    rank?: {id: number; name: string};
   };
   date: string;
   reason: {

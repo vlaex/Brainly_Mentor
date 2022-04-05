@@ -29,6 +29,7 @@ export default async function GetActions(moderatorId: number, pageId: number): P
     extraDataQuery += `_${userId}: user(id: "${userGlobalId}") {
       avatar {thumbnailUrl url}
       specialRanks {name id}
+      rank {name id}
     } `;
   });
 
@@ -48,6 +49,7 @@ export default async function GetActions(moderatorId: number, pageId: number): P
 
     action.user.avatar = userData?.avatar?.url || "";
     action.user.isModerator = !!userData?.specialRanks?.length;
+    action.user.rank = userData?.rank;
   }
 
   return data[0];
