@@ -1,5 +1,6 @@
 import { version as brainlyStyleGuideVersion } from "brainly-style-guide/package.json";
 import ToBackground from "@lib/ToBackground";
+import _API from "@lib/api/extension";
 
 const MARKETS = ["brainly.com", "znanija.com", "nosdevoirs.fr"];
 
@@ -21,7 +22,7 @@ class Core {
       this.InjectFiles([
         "content-scripts/ModeratorActions/index.js",
         "styles/ModeratorActions/styles.css"
-      ], { oldPage: true, cleanBody: true });
+      ], { oldPage: true, cleanBody: true, loadConfig: true });
     }
 
     if (this.Path(/(\/$)|(\/(question|task|devoir)\/\d+)|(\/(subject|matiere)\/\w+)/)) {
@@ -56,7 +57,8 @@ class Core {
     options: {
       cleanBody: boolean;
       oldPage: boolean;
-    } = { oldPage: false, cleanBody: false }
+      loadConfig?: boolean;
+    } = { oldPage: false, cleanBody: false, loadConfig: false }
   ) {
     const jsFiles = files.filter(file => file.match(/\.js$/));
     const cssFiles = files.filter(file => file.match(/\.css$/));
@@ -64,6 +66,13 @@ class Core {
     if (cssFiles.length) ToBackground("InjectStyles", cssFiles);
 
     window.addEventListener("load", async function() {
+      if (options.loadConfig) {
+        let extensionConfig = await _API.GetConfig();
+
+        window.deletionReasons = extensionConfig.deletionReasons;
+        window.subjects = extensionConfig.subjects;
+      }
+
       if (options.cleanBody) {
         document.body.innerHTML = "";
 

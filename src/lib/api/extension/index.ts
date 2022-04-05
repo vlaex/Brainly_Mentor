@@ -8,6 +8,7 @@ import type {
 } from "@typings";
 import locales from "@locales";
 import storage from "@lib/storage";
+import { ServerConfig } from "@typings/extension";
 
 const ERRORS = locales.errors;
 
@@ -154,6 +155,10 @@ class Api {
 
   async ReviewCandidate(id: number): Promise<{ warnings: string[] }> {
     return await this.Request("POST", `candidates/review/${id}`);
+  }
+
+  async GetConfig(): Promise<ServerConfig> {
+    return await this.Request("GET", "config.json");
   }
 
 }
