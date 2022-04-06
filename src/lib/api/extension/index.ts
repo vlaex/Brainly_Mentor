@@ -8,13 +8,24 @@ import type {
 } from "@typings";
 import locales from "@locales";
 import storage from "@lib/storage";
-import { ServerConfig } from "@typings/extension";
+import type { ServerConfig } from "@typings/extension";
 
 const ERRORS = locales.errors;
 
 class Api {
   private serverUrl = "https://mentors.br-helper.com";
   private market: string = locales.market;
+
+  private extensionConfig: ServerConfig;
+
+  get config(): ServerConfig {
+    if (!this.extensionConfig) {
+      let configInLS = localStorage.getItem("BRAINLY_MENTOR_EXTENSION_CONFIG");
+      this.extensionConfig = JSON.parse(configInLS);
+    }
+
+    return this.extensionConfig;
+  }
 
   get serverURL() {
     return this.serverUrl;

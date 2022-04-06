@@ -16,6 +16,7 @@ import QuestionLog from "../Log";
 import type { QuestionData, User } from "@typings/brainly";
 import locales from "@locales";
 import BrainlyApi from "@lib/api/brainly";
+import _API from "@lib/api/extension";
 
 type QuestionPreviewProps = {
   taskId: number;
@@ -91,7 +92,7 @@ export default class QuestionPreview extends React.Component<
               <Flex fullWidth alignItems="center">
                 <Link color="text-black" target="_blank" href={`${locales.taskPath}/${data.task.id}`}>{locales.common.question}</Link>
                 <Text color="text-gray-70" size="small">
-                  <b>{window.subjects.find(subject => subject.id === data.task.subject_id)?.name} </b> 
+                  <b>{_API.config.subjects.find(subject => subject.id === data.task.subject_id)?.name} </b> 
                   • {data.task.points.ptsForTask} {locales.common.pts}
                 </Text>
               </Flex>

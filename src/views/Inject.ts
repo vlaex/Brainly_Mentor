@@ -1,5 +1,6 @@
 import { version as brainlyStyleGuideVersion } from "brainly-style-guide/package.json";
 import ToBackground from "@lib/ToBackground";
+import type { ServerConfig } from "@typings/extension";
 import _API from "@lib/api/extension";
 
 const MARKETS = ["brainly.com", "znanija.com", "nosdevoirs.fr"];
@@ -14,15 +15,35 @@ class Core {
   }
 
   constructor() {
-    this.InjectContent();
+    this.Init();
   }
 
-  private async InjectContent() {
+  private async Init() {
+    await this.SetExtensionConfigs();
+    await this.InjectContent();
+  }
+
+  async SetExtensionConfigs() {
+    let config: ServerConfig = {
+      deletionReasons: [],
+      subjects: []
+    };
+
+    try {
+      config = await _API.GetConfig();
+    } catch (err) {
+      console.error("Can't set the extension config :(", err);
+    }
+
+    localStorage.setItem("BRAINLY_MENTOR_EXTENSION_CONFIG", JSON.stringify(config));
+  }
+
+  async InjectContent() {
     if (this.Path(/\/moderation_new\/view_moderator\/\d+/)) {
       this.InjectFiles([
         "content-scripts/ModeratorActions/index.js",
         "styles/ModeratorActions/styles.css"
-      ], { oldPage: true, cleanBody: true, loadConfig: true });
+      ], { oldPage: true, cleanBody: true });
     }
 
     if (this.Path(/(\/$)|(\/(question|task|devoir)\/\d+)|(\/(subject|matiere)\/\w+)/)) {
@@ -66,13 +87,6 @@ class Core {
     if (cssFiles.length) ToBackground("InjectStyles", cssFiles);
 
     window.addEventListener("load", async function() {
-      if (options.loadConfig) {
-        let extensionConfig = await _API.GetConfig();
-
-        window.deletionReasons = extensionConfig.deletionReasons;
-        window.subjects = extensionConfig.subjects;
-      }
-
       if (options.cleanBody) {
         document.body.innerHTML = "";
 

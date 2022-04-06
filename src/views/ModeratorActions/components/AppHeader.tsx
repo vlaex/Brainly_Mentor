@@ -14,7 +14,6 @@ import {
 import locales from "@locales";
 import Filters from "./Filters";
 import { MenteeCommonData, Mentor } from "@typings";
-import _API from "@lib/api/extension";
 
 type AppHeaderProps = {
   onChange: (number) => Promise<void>;
@@ -48,9 +47,7 @@ export default class AppHeader extends React.Component<AppHeaderProps> {
   render() {
     const { me, mentees, userId } = this.props;
     
-    let currentUserAvatar = mentees.find(mentee => mentee.id === userId)?.avatar;
-    if (!currentUserAvatar)
-      currentUserAvatar = `${_API.serverURL}/static/travolta.gif`;
+    const currentUserAvatar = mentees.find(mentee => mentee.id === userId)?.avatar;
 
     return (
       <Flex className="actions-header" alignItems="center" justifyContent="space-between" disabled={this.props.loading}>

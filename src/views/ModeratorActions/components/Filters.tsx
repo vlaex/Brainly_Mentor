@@ -5,6 +5,7 @@ import locales from "@locales";
 import { HideElement, ShowElement } from "@utils/ElementsVisibility";
 import type { Action } from "@typings";
 import { Flash } from "@utils/Flashes";
+import _API from "@lib/api/extension";
 
 type FiltersState = {
   filtersHidden: boolean;
@@ -121,7 +122,9 @@ export default class Filters extends React.Component {
           </Flex>
           <Flex>
             <Text size="small" weight="bold">{locales.common.deletionReason}</Text>
-            <SelectFilter onChange={this.handleFilterChange} id="deletionReason" options={locales.common.actionFilters.deletionReasons} />
+            <SelectFilter onChange={this.handleFilterChange} id="deletionReason" options={_API.config.deletionReasons.map(reason =>
+              ({ value: reason.id.toString(), text: reason.name })
+            )} />
           </Flex>
           <Flex>
             <Text size="small" weight="bold">{locales.common.user}</Text>
