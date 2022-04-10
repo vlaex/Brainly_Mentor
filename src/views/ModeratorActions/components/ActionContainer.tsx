@@ -1,43 +1,52 @@
 import React from "react";
-import {
-  Flex,
-  Button,
-  Link,
-  Text,
-  Icon,
-  Box,
-  Avatar,
-} from "brainly-style-guide";
+import { Flex, Button, Link, Text, Icon, Box, Avatar } from "brainly-style-guide";
 
 import Tooltip from "./Tooltip";
-import locales from "@locales";
-import _API from "@lib/Api";
+import _API from "@lib/api/extension";
 import { Flash } from "@utils/Flashes";
 import BeautifyISO from "@utils/BeautifyISODate";
 
-import type { IconPropsType, IconType } from "brainly-style-guide";
 import type { Action } from "@typings";
+import ReplaceLatexWithURL from "@utils/ReplaceTextWithLinks";
 
-export default class ActionContainer extends React.Component<{
+import QuestionPreview from "./QuestionPreview";
+import Warns from "./Warns";
+
+type ActionProps = {
   data: Action,
   moderator: number;
   page: number;
-}> {
-  state = {
-    reviewStatus: this.props.data.reviewStatus,
-    loading: false,
-    reasonTooltipVisible: false
+}
+
+type ActionState = {
+  reviewStatus: Action["reviewStatus"];
+  loading: boolean;
+  reasonTooltipVisible: boolean;
+  warnsVisible: boolean;
+  showQuestionPreview: boolean;
+}
+
+export default class ActionContainer extends React.Component<ActionProps, ActionState> {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      reviewStatus: this.props.data.reviewStatus,
+      loading: false,
+      reasonTooltipVisible: false,
+      warnsVisible: false,
+      showQuestionPreview: false
+    };
+
+    this.ShowQuestionPreview = this.ShowQuestionPreview.bind(this);
   }
 
   private async ReviewAction(status: Action["reviewStatus"]) {
     this.setState({ loading: true });
 
-    await _API.ReviewAction({
-      userId: this.props.moderator,
-      pageId: this.props.page,
-      id: this.props.data.id,
-      status
-    })
+    let hash = this.props.data.hash;
+
+    await _API.ReviewActions(hash, this.props.moderator, status)
       .then(() => this.setState({ reviewStatus: status }))
       .catch(err => {
         Flash({
@@ -48,56 +57,85 @@ export default class ActionContainer extends React.Component<{
       .finally(() => this.setState({ loading: false }));
   }
 
-  render() {
-    const action = this.props.data;
+  private ShowQuestionPreview() {
+    this.setState({ showQuestionPreview: true });
+  }
 
-    const iconColor: IconPropsType["color"] = action.type === "ACCEPTED" ? "icon-green-50" :
-      action.type === "REPORTED_FOR_CORRECTION" ? "icon-blue-50" : 
-      `icon-${action.contentType === "answer" ? "blue" : "indigo"}-50`;
+  render() {
+    let action = this.props.data;
+
+    let boxClasses = [
+      "grid-item", "action",
+      `Action-ReviewStatus-${this.state.reviewStatus}`,
+      `Action-ContentType-${action.contentType}`,
+      `Action-Type-${action.type}`,
+      `Action-DeleteReason-${action.reason.id}`
+    ];
+
+    if (this.state.showQuestionPreview)
+      boxClasses.push("action--violet");
 
     return (
-      <Box color="white" padding="s" className={
-        "action " +
-        `Action-ReviewStatus-${this.state.reviewStatus} ` +
-        `Action-ContentType-${action.contentType} ` +
-        `Action-Type-${action.type} ` + 
-        `Action-DeleteReason-${action.reason.id}`
-      }>
+      <Box color="white" padding="s" className={boxClasses.join(" ")}>
         <Flex alignItems="center" className="sg-flex--relative">
-          <Link href={action.taskLink} target="_blank">
-            <Icon title={action.localizedType} type={action.frontIcon as IconType} size={24} color={iconColor}></Icon>
+          <Link href={action.task.link} target="_blank">
+            <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor} />
           </Link>
-          <Link 
-            onMouseEnter={() => this.setState({ reasonTooltipVisible: true })} 
-            onMouseLeave={() => this.setState({ reasonTooltipVisible: false })} 
-            href={action.taskLink} 
+          <Link
+            onMouseEnter={_ => this.setState({ reasonTooltipVisible: true })}
+            onMouseLeave={_ => this.setState({ reasonTooltipVisible: false })}
+            href={action.task.link}
             target="_blank"
             className="action-type">{action.localizedType}
           </Link>
 
-          <Tooltip visible={this.state.reasonTooltipVisible}>
-            {action.reason.fullText ?
-              <span>{action.reason.fullText}</span> :
-              <i>{locales.common.noReason}</i>
-            }
-          </Tooltip>
+          {action.reason.fullText &&
+            <Tooltip visible={this.state.reasonTooltipVisible}>
+              <span>{action.reason.fullText}</span>
+            </Tooltip>
+          }
+          {this.state.showQuestionPreview &&
+            <QuestionPreview
+              taskId={action.task.id}
+              onClose={() => this.setState({ showQuestionPreview: false })}
+            />
+          }
 
-          <Flex className="action-operations">
-            <Button loading={this.state.loading} onClick={() => this.ReviewAction("APPROVED")} className="approve-action" title={locales.common.approveAction} type="transparent" iconOnly icon={<Icon type="thumb_up" color="icon-green-50" size={24} />}></Button>
-            <Button loading={this.state.loading} onClick={() => this.ReviewAction("DISAPPROVED")} className="disapprove-action" title={locales.common.disapproveAction} type="transparent" iconOnly icon={<Icon type="thumb_down" color="icon-red-50" size={24} />}></Button>
-            <Button loading={this.state.loading} onClick={() => this.ReviewAction("NONE")} className="revert-action" title={locales.common.revertAction} type="solid-inverted" iconOnly icon={<Icon type="reload" color="icon-black" size={24} />}></Button>
+          <Flex className="action-operations" disabled={this.state.loading}>
+            <Button onClick={_ => this.ReviewAction("APPROVED")} className="approve-action" type="transparent" iconOnly icon={<Icon type="thumb_up" color="icon-green-50" size={24} />} />
+            <Button onClick={this.ShowQuestionPreview} type="transparent" iconOnly icon={<Icon type="seen" size={24} color="icon-gray-70" />} />
+            <Button onClick={_ => this.ReviewAction("DISAPPROVED")} className="disapprove-action" type="transparent" iconOnly icon={<Icon type="thumb_down" color="icon-red-50" size={24} />} />
+            <Button onClick={_ => this.ReviewAction("NONE")} className="revert-action" type="solid-inverted" iconOnly icon={<Icon type="reload" color="icon-black" size={24} />} />
           </Flex>
         </Flex>
         <div className="action-content">
-          <Text size="small" type="div" breakWords={true}>{action.content}</Text>
+          <Text size="small" type="div" breakWords dangerouslySetInnerHTML={{
+            __html: ReplaceLatexWithURL(action.content)
+          }} />
         </div>
-        <Flex justifyContent="space-between" alignItems="center" className="sg-flex--margin-top-auto">
-          <Link href={`/users/redirect_user/${action.user.id}`} target="_blank">
-            <Flex alignItems="center" className={action.isModerator ? "user-is-moderator user" : "user"}>
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          className="sg-flex--margin-top-auto sg-flex--relative action-info"
+          onMouseEnter={_ => this.setState({ warnsVisible: true })}
+          onMouseLeave={_ => this.setState({ warnsVisible: false })}
+        >
+          <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>
+            <Link href={`/users/redirect_user/${action.user.id}`} target="_blank">
               <Avatar imgSrc={action.user.avatar} size="xs" />
-              <Text size="small" weight="bold" className="sg-flex--margin-left-xs">{action.user.nick}</Text>
+            </Link>
+            <Flex direction="column" marginLeft="xs">
+              <Text size="small" weight="bold" className="user-nick">{action.user.nick}</Text>
+              <Text size="xsmall" color="text-gray-70">{action.user.rank?.name}</Text>
             </Flex>
-          </Link>
+          </Flex>
+
+          {this.state.warnsVisible && <Warns
+            key={action.hash}
+            onMouseEnter={_ => this.setState({ warnsVisible: true })}
+            onMouseOut={_ => this.setState({ warnsVisible: false })}
+            userId={action.user.id} />}
+
           <Flex alignItems="center" className="action-date-container">
             <Icon type="counter" color="icon-gray-50" size={16} />
             <Text data-date={action.date} weight="bold" size="xsmall" color="text-gray-70" className="sg-flex--margin-left-xxs">
@@ -108,5 +146,4 @@ export default class ActionContainer extends React.Component<{
       </Box>
     );
   }
-
 }

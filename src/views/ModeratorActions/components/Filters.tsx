@@ -4,6 +4,8 @@ import { Button, Flex, Icon, Checkbox, Text, Input, Select } from "brainly-style
 import locales from "@locales";
 import { HideElement, ShowElement } from "@utils/ElementsVisibility";
 import type { Action } from "@typings";
+import { Flash } from "@utils/Flashes";
+import _API from "@lib/api/extension";
 
 type FiltersState = {
   filtersHidden: boolean;
@@ -11,10 +13,9 @@ type FiltersState = {
   contentType: Action["contentType"] | "ALL";
   actionType: Action["type"] | "ALL";
   userNick: string;
-  dateNotBefore: string;
-  dateNotAfter: string;
   deletionReason: string;
 }
+
 type FilterChangeEvent = React.FormEvent<HTMLElement & HTMLInputElement>;
 
 const DefaultFiltersState: FiltersState = {
@@ -23,8 +24,6 @@ const DefaultFiltersState: FiltersState = {
   contentType: "ALL",
   actionType: "ALL",
   userNick: "",
-  dateNotBefore: "1-12-12",
-  dateNotAfter: "9999-12-12",
   deletionReason: "ALL"
 };
 
@@ -38,7 +37,7 @@ const SelectFilter = (props: {
 }) => {
   return (
     <Select options={[
-      {value: "ALL", text: locales.common.all},
+      { value: "ALL", text: locales.common.all },
       ...props.options
     ]} defaultValue="ALL" id={props.id} onChange={props.onChange} />
   );
@@ -56,41 +55,33 @@ export default class Filters extends React.Component {
   private Filter(element: HTMLDivElement) {
     ShowElement(element);
 
-    let hideComments = this.state.hideComments && 
+    let hideComments = this.state.hideComments &&
       element.classList.contains("Action-ContentType-comment");
 
     let userNickMatch = true;
     try {
       let userNickRegex = new RegExp(this.state.userNick || ".+");
       userNickMatch = userNickRegex.test(
-        element.querySelector(".user > .sg-text").textContent
+        element.querySelector(".user .user-nick").textContent
       );
     } catch (err) {
       if (!(err instanceof SyntaxError)) throw Error(err);
     }
 
-    let actionTimestamp = +new Date(
-      element.querySelector(".action-date-container > .sg-text").getAttribute("data-date")
-    );
-
     let { contentType, actionType, deletionReason } = this.state;
-      
+
     let contentTypeMatch = contentType === "ALL" ? true :
       element.classList.contains(`Action-ContentType-${contentType}`);
-        
-    let actionTypeMatch = actionType === "ALL" ? true : 
+
+    let actionTypeMatch = actionType === "ALL" ? true :
       element.classList.contains(`Action-Type-${actionType}`);
 
     let deletionReasonMatch = deletionReason === "ALL" ? true :
       element.classList.contains(`Action-DeleteReason-${deletionReason}`);
 
     if (
-      hideComments || 
+      hideComments ||
       !userNickMatch ||
-      (
-        actionTimestamp < +new Date(this.state.dateNotBefore) ||
-        actionTimestamp > +new Date(this.state.dateNotAfter) 
-      ) ||
       !actionTypeMatch ||
       !contentTypeMatch ||
       !deletionReasonMatch
@@ -99,10 +90,13 @@ export default class Filters extends React.Component {
   }
 
   private FilterActions() {
-    Array.from(
-      document.querySelectorAll(".actions > .action")
-    )
-      .forEach((e: HTMLDivElement) => this.Filter(e));
+    const actions = document.querySelectorAll(".actions > .action");
+    if (!actions.length) return;
+
+    Array.from(actions).forEach(this.Filter.bind(this));
+
+    if (!document.querySelectorAll(".action:not(.hidden)").length)
+      Flash({ type: "info", text: locales.common.nextPagesMayContainActions });
   }
 
   componentDidMount() {
@@ -115,8 +109,8 @@ export default class Filters extends React.Component {
 
   render() {
     return (
-      <div className="sg-flex sg-flex--relative filters">
-        <Button onClick={this.ToggleVisibility.bind(this)} title={locales.common.filters} type="solid-blue" icon={<Icon type="filters" color="adaptive" size={24} />} iconOnly />
+      <Flex className="sg-flex--relative filters" marginLeft="s">
+        <Button onClick={_ => this.ToggleVisibility()} title={locales.common.filters} type="solid-blue" icon={<Icon type="filters" color="adaptive" size={24} />} iconOnly />
         <Flex hidden={this.state.filtersHidden} direction="column" className="filters-box">
           <Flex>
             <Text size="small" weight="bold">{locales.common.contentType}</Text>
@@ -128,22 +122,19 @@ export default class Filters extends React.Component {
           </Flex>
           <Flex>
             <Text size="small" weight="bold">{locales.common.deletionReason}</Text>
-            <SelectFilter onChange={this.handleFilterChange} id="deletionReason" options={locales.common.actionFilters.deletionReasons} />
+            <SelectFilter onChange={this.handleFilterChange} id="deletionReason" options={_API.config.deletionReasons.map(reason =>
+              ({ value: reason.id.toString(), text: reason.name })
+            )} />
           </Flex>
           <Flex>
             <Text size="small" weight="bold">{locales.common.user}</Text>
             <Input placeholder={locales.common.nick.toLowerCase()} onChange={this.handleFilterChange} id="userNick" />
           </Flex>
-          <Flex>
-            <Text size="small" weight="bold">{locales.common.dateBetween}</Text>
-            <Input type="date" onChange={this.handleFilterChange} id="dateNotBefore" />
-            <Input type="date" onChange={this.handleFilterChange} id="dateNotAfter" />
-          </Flex>
-          <Checkbox onChange={event => 
-            this.setState({ hideComments: (event.currentTarget as HTMLInputElement).checked })
+          <Checkbox onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            this.setState({ hideComments: event.currentTarget.checked })
           }>{locales.common.hideComments}</Checkbox>
         </Flex>
-      </div>
+      </Flex>
     );
   }
 }

@@ -1,0 +1,82 @@
+@import "../mixins";
+
+.mentees-dashboard .grid-item {
+  padding-top: 18px;
+
+  @include mobile {
+    overflow-x: auto;
+  }
+
+  &.mentor-container {
+    height: 322px;
+  }
+
+  & .user-info {
+    & > .sg-avatar {
+      flex-shrink: 0;
+    }
+
+    & a {
+      word-break: break-all;
+      line-height: 1;
+      font-weight: 900;
+      color: #323c45;
+    }
+  }
+
+  & .user-ranks {
+    margin-top: 1px;
+
+    > .sg-headline {
+      font-size: 15px;
+      line-height: 1;
+    }
+  }
+
+  & .user-note {
+    font-size: 14px;
+    color: #222;
+    outline: none;
+    border: none;
+    padding-left: 0;
+  }
+
+  & .mentee-container-bottom-error {
+    $red: #ff3419;
+
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    margin-bottom: -30px;
+    width: 100%;
+    padding: 10px 16px;
+    background: #fff1f0;
+    border-bottom: 5px solid $red;
+    border-radius: 0 0 5px 5px;
+
+    > .sg-text {
+      margin-left: 8px;
+      margin-right: auto;
+      color: $red;
+    }
+  }
+
+  & .mentee-stats-options > .sg-text {
+    cursor: pointer;
+  }
+
+  & .mentor-mentees-list {
+    max-height: 100%;
+    overflow-y: auto;
+
+    @include modern-overflow;
+
+    > .sg-media {
+      align-items: center;
+      padding: 0;
+      min-height: auto;
+      margin: 7px 0;
+    }
+  }
+}

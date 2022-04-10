@@ -1,0 +1,20 @@
+.grid-items-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 10px;
+  width: 100%;
+  overflow: auto;
+  max-height: calc(100vh - 65px);
+  padding: 20px 25px 25px;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #ebf2f7;
+  transition-duration: 0.2s;
+
+  &:hover {
+    border-color: #e1eaf1;
+  }
+}

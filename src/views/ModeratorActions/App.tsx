@@ -1,13 +1,14 @@
 import React from "react";
 import { Flex, Button, Headline, Spinner } from "brainly-style-guide";
 
-import BrainlyApi from "@lib/BrainlyApi";
-import _API from "@lib/Api";
-import type { Action } from "@typings";
+import type { Action, MenteeCommonData, Mentor } from "@typings";
 import locales from "@locales";
 
 import ActionContainer from "./components/ActionContainer";
 import AppHeader from "./components/AppHeader";
+import GetActions from "@lib/api/brainly/GetActions";
+import _API from "@lib/api/extension";
+import { Flash } from "@utils/Flashes";
 
 type AppState = {
   userId: number;
@@ -17,6 +18,8 @@ type AppState = {
   actions: Action[];
   loading: boolean;
   hasMore: boolean;
+  mentees: MenteeCommonData[];
+  me: Mentor;
 }
 
 export default class App extends React.Component {
@@ -27,11 +30,59 @@ export default class App extends React.Component {
     actions: [],
     error: null,
     loading: true,
-    hasMore: true
+    hasMore: true,
+    mentees: [],
+    me: null
   };
 
+  constructor(props) {
+    super(props);
+
+    this.SetPageSwitcher();
+  }
+
   componentDidMount() {
+    this.FetchUsers();
     this.FetchActions();
+  }
+
+  private SetPageSwitcher() {
+    document.addEventListener("keyup", (event: KeyboardEvent) => {
+      if (this.state.loading) return;
+
+      let pageId = this.state.currentPageId;
+
+      if (
+        pageId > 1 &&
+        (event.code === "ArrowLeft" || event.code === "KeyA")
+      )
+        this.FetchActions(--pageId);
+      else if (
+        this.state.hasMore &&
+        (event.code === "ArrowRight" || event.code === "KeyD")
+      )
+        this.FetchActions(++pageId);
+
+    });
+  }
+
+  private async FetchUsers() {
+    try {
+      const [menteesData, meData] = await Promise.all([
+        _API.GetMenteesWithoutStats(),
+        _API.GetMe()
+      ]);
+
+      this.setState({
+        mentees: menteesData.mentees,
+        me: meData.mentor,
+      });
+    } catch (err) {
+      Flash({
+        type: "error",
+        text: err.message
+      });
+    }
   }
 
   private async FetchActions(pageId?: number) {
@@ -40,43 +91,34 @@ export default class App extends React.Component {
     this.setState({ error: null, loading: true });
 
     try {
-      const data = await _API.GetActions(this.state.userId, pageId);
+      const moderatorId = this.state.userId;
+      const data = await GetActions(moderatorId, pageId);
 
-      this.setState({ 
-        currentPageId: pageId,
+      this.setState({
+        currentPageId: data.pageId,
         hasMore: data.hasMore,
         nextPageId: pageId + 1,
-        actions: data.actions,
+        actions: data.actions
       });
 
-      await this.GetExtraData();
+      const newURL = `/moderation_new/view_moderator/${moderatorId}/page:${pageId}`;
+      window.history.pushState(null, null, newURL);
+
     } catch (err) {
+      console.error(err);
       this.setState({ error: err.message });
+    } finally {
+      this.setState({ loading: false });
     }
-
-    this.setState({ loading: false });
   }
 
-  private async GetExtraData() {
-    let actions = this.state.actions;
-    let users = await BrainlyApi.GetUsers(actions.map(action => action.user.id));
-
-    for (let user of users) {
-      let thisAction = actions.find(action => action.user.id === user.id);
-
-      thisAction.user.avatar = user.avatar;
-      thisAction.isModerator = !!user.specialRanks.length;
-    }
-
-    this.setState({ actions });
-  }
-  
   render() {
     if (this.state.error) {
       return (
         <Flex className="js-react-error-container">
           <Headline color="text-red-60" extraBold size="medium">{this.state.error}</Headline>
-          <Button onClick={() => this.FetchActions()} type="outline">{locales.common.tryAgain}</Button>
+          <Button onClick={_ => this.FetchActions()}
+            type="outline">{locales.common.tryAgain}</Button>
         </Flex>
       );
     }
@@ -84,16 +126,24 @@ export default class App extends React.Component {
     return (
       <div className="layout">
         <Flex direction="column">
-          <AppHeader 
-            onChange={(pageId) => this.FetchActions(pageId)} 
-            loading={this.state.loading} 
+          <AppHeader
+            onChange={(pageId) => this.FetchActions(pageId)}
+            loading={this.state.loading}
             pageId={this.state.currentPageId}
             hasNextPage={this.state.hasMore}
+            mentees={this.state.mentees}
+            userId={this.state.userId}
+            me={this.state.me}
           />
-          {(!this.state.actions.length && !this.state.nextPageId) ? 
+          {(!this.state.actions.length && !this.state.nextPageId) ?
             <Spinner /> :
-            <div className="actions">{this.state.actions.map(data => 
-              <ActionContainer key={data.id} data={data} moderator={this.state.userId} page={this.state.currentPageId} />
+            <div className="actions grid-items-container">{this.state.actions.map(action =>
+              <ActionContainer
+                key={action.hash}
+                data={action}
+                moderator={this.state.userId}
+                page={this.state.currentPageId}
+              />
             )}</div>
           }
         </Flex>

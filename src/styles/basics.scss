@@ -1,0 +1,57 @@
+@import "./mixins";
+
+body.mint:not(#brainly-mentor),
+[hidden],
+.hidden {
+  @include hidden;
+}
+
+.sg-flex--margin-top-auto {
+  margin-top: auto;
+}
+
+.sg-button {
+  flex-shrink: 0;
+
+  body#brainly-mentor &:not(.sg-button--loading)[disabled] {
+    opacity: 0.1;
+  }
+}
+
+.sg-flex--relative {
+  /* stylelint-disable-next-line declaration-no-important */
+  position: relative !important;
+}
+
+.flash-messages-container {
+  position: fixed;
+  z-index: 10000;
+  top: 4rem;
+  width: 100%;
+}
+
+@each $prefix, $val in ("s": 10px, "xs": 5px) {
+  .sg-flex--gap-#{$prefix} {
+    gap: $val;
+  }
+}
+
+.latex {
+  display: block;
+  margin: 8px 0;
+}
+
+.blue-bold-link {
+  font-weight: bold;
+  color: #2c98e1;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.flash-messages-container .sg-flash .mentor-extension-icon {
+  height: 24px;
+  width: 23px;
+  margin-right: 10px;
+}

@@ -1,0 +1,76 @@
+@import "../mixins";
+
+.warnsBox {
+  /* stylelint-disable-next-line declaration-no-important */
+  position: absolute !important;
+  margin-left: 40px;
+  z-index: 8;
+  align-items: center;
+
+  @include flex(column);
+
+  & > div:not(.sg-spinner) {
+    overflow: auto;
+    max-height: 300px;
+    padding-right: 5px;
+
+    @include modern-overflow;
+  }
+
+  & img.no-warns-meme {
+    width: auto;
+    height: 120px;
+    align-self: center;
+    margin-bottom: 7px;
+  }
+
+  & .warn-content,
+  & .warn-reason {
+    font-size: 14px;
+    line-height: 1.1;
+    word-break: break-word;
+  }
+
+  & .sg-accordion-item {
+    width: 350px;
+
+    .sg-accordion-item__icon {
+      width: 30px;
+      height: 30px;
+
+      > .sg-icon {
+        height: 16px;
+        width: 16px;
+      }
+    }
+
+    &.warn-inactive .sg-accordion-item__button {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+  }
+
+  & .ban-active {
+    background: #fdacac;
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  &--to-left {
+    margin-left: -414px;
+  }
+
+  &--to-top {
+    margin-top: -200px;
+
+    &.warnsBox--to-left {
+      margin-bottom: -20px;
+      margin-left: -400px;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
+}

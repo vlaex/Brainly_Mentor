@@ -1,13 +1,16 @@
-import ext from "webextension-polyfill";
+import { version as brainlyStyleGuideVersion } from "brainly-style-guide/package.json";
+import ToBackground from "@lib/ToBackground";
+import type { ServerConfig } from "@typings/extension";
+import _API from "@lib/api/extension";
+
+const MARKETS = ["brainly.com", "znanija.com", "nosdevoirs.fr"];
 
 class Core {
-  private markets = ["brainly.com", "znanija.com"];
   private market = window.location.hostname;
   private path = window.location.href;
 
   private Path(pattern: RegExp): boolean {
-    if (!this.markets.includes(this.market)) return;
-    
+    if (!MARKETS.includes(this.market)) return;
     return pattern.test(this.path);
   }
 
@@ -16,17 +19,26 @@ class Core {
   }
 
   private async Init() {
-    await this.CheckIfUserIsAuthed();
-    
-    this.InjectScripts();
+    await this.SetExtensionConfigs();
+    await this.InjectContent();
   }
 
-  private async CheckIfUserIsAuthed() {
-    let userToken = "testAuthToken"; // await storage.get("authToken");
-    if (!userToken) throw Error("Not authorized");
+  async SetExtensionConfigs() {
+    let config: ServerConfig = {
+      deletionReasons: [],
+      subjects: []
+    };
+
+    try {
+      config = await _API.GetConfig();
+    } catch (err) {
+      console.error("Can't set the extension config :(", err);
+    }
+
+    localStorage.setItem("BRAINLY_MENTOR_EXTENSION_CONFIG", JSON.stringify(config));
   }
 
-  private InjectScripts() {
+  async InjectContent() {
     if (this.Path(/\/moderation_new\/view_moderator\/\d+/)) {
       this.InjectFiles([
         "content-scripts/ModeratorActions/index.js",
@@ -34,63 +46,70 @@ class Core {
       ], { oldPage: true, cleanBody: true });
     }
 
-    if (this.Path(/(\/$)|(\/question\/\d+)|(\/subject\/\w+)/)) {
+    if (this.Path(/(\/$)|(\/(question|task|devoir)\/\d+)|(\/(subject|matiere)\/\w+)/)) {
       this.InjectFiles([
-        "content-scripts/MenteesDashboard/index.js",
-        "styles/MenteesDashboard/styles.css"
+        "content-scripts/Core/index.js",
+        "content-scripts/Dashboard/index.js",
+        "styles/Dashboard/styles.css"
       ]);
+    }
+
+    // For znanija.com market only
+    if (this.market === "znanija.com") {
+      if (this.Path(/\/profil\/[A-Za-z0-9]+-\d+/)) {
+        this.InjectFiles([
+          "content-scripts/UserProfile/index.js",
+          "styles/UserProfile/styles.css"
+        ]);
+      }
+
+      if (this.Path(/\/$|\/(subject|predmet)\//)) {
+        this.InjectFiles([
+          "content-scripts/HomePage/index.js",
+          "styles/HomePage/styles.css"
+        ]);
+      }
     }
 
   }
 
-  private InjectFiles(
-    paths: string[],
+  private async InjectFiles(
+    files: string[],
     options: {
       cleanBody: boolean;
       oldPage: boolean;
-    } = {oldPage: false, cleanBody: false}
+      loadConfig?: boolean;
+    } = { oldPage: false, cleanBody: false, loadConfig: false }
   ) {
-    window.addEventListener("load", () => {
-      if (options.cleanBody) document.body.innerHTML = "";
+    const jsFiles = files.filter(file => file.match(/\.js$/));
+    const cssFiles = files.filter(file => file.match(/\.css$/));
+
+    if (cssFiles.length) ToBackground("InjectStyles", cssFiles);
+
+    window.addEventListener("load", async function() {
+      if (options.cleanBody) {
+        document.body.innerHTML = "";
+
+        let brainlyLinks = document.querySelectorAll(`
+          script[src*="zadanium"], 
+          script[src*="chat/bind"],
+          link[rel="stylesheet"]
+        `);
+
+        brainlyLinks.forEach(e => e.remove());
+      }
+
       if (options.oldPage) {
-        import("@assets/styleguide-icons");
+        import("@assets/styleguide-icons.js");
         
         document.head.innerHTML += `
-          <link data-brainly-mentor="true" href="https://styleguide.brainly.com/208.2.3/style-guide.css" rel="stylesheet" />
+          <link href="https://styleguide.brainly.com/${brainlyStyleGuideVersion}/style-guide.css" rel="stylesheet" />
         `;
         document.body.innerHTML += `<div class="flash-messages-container"></div>`;
       }
 
-      paths.forEach(this.InjectFile);
-      console.info("[Brainly Mentor] Extension scripts and styles have been injected into DOM!");
+      return await ToBackground("InjectScripts", jsFiles);
     });
-  }
-
-  private InjectFile(
-    filePath: string,
-  ) {
-    let fileExtension = filePath.split(".").pop();
-    let path = ext.runtime.getURL(filePath);
-
-    if (fileExtension === "js") {
-      let script: HTMLScriptElement = document.createElement("script");
-
-      script.src = path;
-      script.type = "text/javascript";
-      script.dataset.brainlyMentor = "true";
-
-      document.body.insertAdjacentElement("beforeend", script);
-    } else if (fileExtension === "css") {
-      let link: HTMLLinkElement = document.createElement("link");
-
-      link.href = path;
-      link.type = "text/css";
-      link.rel = "stylesheet";
-      link.dataset.brainlyMentor = "true";
-
-      document.head.appendChild(link);
-    }
-
   }
 }
 

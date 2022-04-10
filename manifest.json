@@ -12,18 +12,20 @@
   },
   "host_permissions": [
     "*://znanija.com/*",
-    "*://brainly.com/*"
+    "*://brainly.com/*",
+    "*://nosdevoirs.fr/*"
   ],
-  "permissions": ["storage"],
+  "permissions": ["storage", "scripting"],
   "web_accessible_resources": [{
     "matches": ["<all_urls>"],
-    "resources": ["styles/*"]
-  }, {
-    "matches": ["<all_urls>"],
-    "resources": ["content-scripts/*"]
+    "resources": ["styles/*", "content-scripts/*", "icons/*"]
   }],
   "content_scripts": [{
-    "matches": ["*://znanija.com/*", "*://brainly.com/*"],
+    "matches": [
+      "*://znanija.com/*", 
+      "*://brainly.com/*",
+      "*://nosdevoirs.fr/*"
+    ],
     "js": ["content-scripts/contentScript.js"],
     "run_at": "document_start"
   }],

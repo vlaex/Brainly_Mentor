@@ -1,0 +1,54 @@
+@mixin shadow {
+  box-shadow: 0 4px 16px 0 rgb(50 60 69 / 20%);
+}
+
+@mixin disabled($opacity: 0) {
+  pointer-events: none;
+  opacity: $opacity;
+}
+
+@mixin scale {
+  transition-duration: 0.3s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+@mixin modern-overflow {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e1eaf1;
+    border-radius: 5px;
+  }
+}
+
+@mixin flex($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+}
+
+@mixin mobile {
+  @media (max-width: 780px) {
+    @content;
+  }
+}
+
+@mixin hidden {
+  /* stylelint-disable-next-line declaration-no-important */
+  display: none !important;
+}
+
+@mixin hidden-if-mobile {
+  @include mobile {
+    @include hidden;
+  }
+}

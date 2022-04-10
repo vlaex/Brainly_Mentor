@@ -15,14 +15,16 @@ export default function BeautifyISO (isoDate: string): string {
   } else if (daysDifference === 1) {
     beautifiedDate = `${locales.common.yesterday},`;
   } else if (daysDifference < 7) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    beautifiedDate = `${locales.common.nDaysAgo.replace("%{days}", daysDifference)},`;
+    beautifiedDate = `
+      ${locales.common.nDaysAgo.
+    replace("%{days}", String(daysDifference))
+},
+    `;
   } else {
     beautifiedDate = date.format(locales.dateFormat);
   }
 
-  const time = splittedISO.pop();
+  const time = splittedISO.pop().replace(/[-+](\d{2}:?)*$/, "");
 
   return `${beautifiedDate} ${time}`;
 }

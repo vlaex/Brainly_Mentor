@@ -1,23 +1,15 @@
-@import "./mixins";
+@import "../mixins";
 
-.actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 10px;
-  width: 100%;
-  overflow: auto;
-  max-height: calc(100vh - 65px);
-  padding: 20px 25px 25px;
+.actions.grid-items-container {
+  @include mobile {
+    grid-template-columns: auto;
+  }
 }
 
 .action {
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #ebf2f7;
-  transition-duration: 0.2s;
-
-  &:hover {
-    border-color: #e1eaf1;
+  &.action--violet {
+    background-color: #d1d9ff;
+    border-color: #cad2ff;
   }
 
   & .action-content {
@@ -30,14 +22,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    & > div {
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 
   & .user-is-moderator.sg-flex {
@@ -48,10 +32,8 @@
         hsl(78deg 100% 71% / 24%) 50%,
         hsl(0deg 0% 100%) 80%
       );
-    animation-timing-function: linear;
-    animation-duration: 11s;
     border-radius: 25px;
-    padding: 3px 10px 3px 4px;
+    padding: 3px 12px 3px 6px;
     border: 1px solid #b1d32f;
   }
 
@@ -67,12 +49,16 @@
 
   & .action-operations {
     margin-left: auto;
+
+    &[disabled] {
+      @include disabled(0.7);
+    }
   }
 
   &.Action-ReviewStatus-DISAPPROVED,
   &.Action-ReviewStatus-APPROVED {
     .action-operations .sg-button:not(.revert-action) {
-      display: none;
+      @include hidden;
     }
   }
 
@@ -81,7 +67,7 @@
   }
 
   &:not(.Action-ReviewStatus-DISAPPROVED):not(.Action-ReviewStatus-APPROVED) .action-operations .revert-action {
-    display: none;
+    @include hidden;
   }
 
   & .action-type {
@@ -90,7 +76,21 @@
     margin-left: 10px;
   }
 
-  & .user.sg-flex > .sg-avatar {
-    @include scale;
+  & .user {
+    .user-nick {
+      line-height: 1;
+    }
+
+    .sg-avatar {
+      @include scale;
+    }
+  }
+
+  & .action-info {
+    $len-negative: -17px;
+    $len-positive: 17px;
+
+    margin: 0 $len-negative;
+    padding: 0 $len-positive;
   }
 }

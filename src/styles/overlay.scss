@@ -1,0 +1,81 @@
+@import "./mixins";
+
+.overlay {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  position: fixed;
+  z-index: 1000;
+  background: rgb(0 0 0 / 67%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > .overlay-container {
+    margin: 0 40px;
+    gap: 10px;
+    position: relative;
+    height: 85vh;
+    max-width: 60vw;
+    min-width: 50vw;
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+
+    & > .sg-flex.sg-flex--column {
+      overflow: auto;
+      max-height: 100%;
+      width: 100%;
+    }
+
+    & > .sg-spinner,
+    & .error-container-with-image,
+    & .error-container {
+      margin: auto;
+      align-items: center;
+    }
+
+    & .error-container > .sg-button {
+      margin-top: 10px;
+    }
+
+    & .task-content {
+      padding: 13px 5px;
+    }
+
+    & > .close-modal-button.sg-button {
+      position: absolute;
+      right: 2%;
+      z-index: 12;
+
+      & svg {
+        color: #000;
+      }
+    }
+
+    & .error-container-with-image {
+      /* stylelint-disable-next-line declaration-no-important */
+      overflow: hidden !important;
+
+      > .sg-headline {
+        text-align: center;
+      }
+
+      & > img {
+        border-radius: 50%;
+        height: 168px;
+        width: 169px;
+        margin-bottom: 10px;
+        align-self: center;
+        -webkit-user-drag: none;
+        flex-shrink: 0;
+        filter: sepia(1);
+      }
+    }
+
+    @include shadow;
+  }
+}
