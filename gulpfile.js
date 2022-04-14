@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const tasks = require("./scripts/gulp");
 
 exports.assets = tasks.assets;

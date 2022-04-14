@@ -1,4 +1,4 @@
-const { GetFiles, ExtractFolder } = require("./files");
+const { glob } = require("glob");
 
 function MakeEntries(
   pattern, 
@@ -6,12 +6,19 @@ function MakeEntries(
   bundleFileName,
   withSubfolder = false
 ) {
-  let files = GetFiles(pattern);
+  let files = glob.sync(pattern);
   let entries = {};
 
   for (let file of files) {
     let bundleFile = `${outputFolder}`;
-    if (withSubfolder) bundleFile += `/${ExtractFolder(file)}`;
+
+    if (withSubfolder) {
+      let fileSplitted = file.split(/\.|\//);
+      let dir = fileSplitted[fileSplitted.length - 3];
+
+      bundleFile += `/${dir}`;
+    }
+
     bundleFile += `/${bundleFileName}`;
 
     if (!entries[bundleFile]) entries[bundleFile] = [];

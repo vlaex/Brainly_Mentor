@@ -4,6 +4,7 @@ export default {
   "marketHost": "brainly.com",
   "marketName": "brainly",
   "common": {
+    "accountDeleted": "Account deleted",
     "chooseMentor": "Choose a mentor",
     "daily": "daily",
     "weekly": "weekly",

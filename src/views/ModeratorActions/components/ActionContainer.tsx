@@ -1,16 +1,17 @@
 import React from "react";
 import { Flex, Button, Link, Text, Icon, Box, Avatar } from "brainly-style-guide";
 
-import Tooltip from "./Tooltip";
+import locales from "@locales";
 import _API from "@lib/api/extension";
 import { Flash } from "@utils/Flashes";
 import BeautifyISO from "@utils/BeautifyISODate";
 
 import type { Action } from "@typings";
-import ReplaceLatexWithURL from "@utils/ReplaceTextWithLinks";
+import ReplaceTextWithLinks from "@utils/ReplaceTextWithLinks";
 
 import QuestionPreview from "./QuestionPreview";
 import Warns from "./Warns";
+import Tooltip from "./Tooltip";
 
 type ActionProps = {
   data: Action,
@@ -110,7 +111,7 @@ export default class ActionContainer extends React.Component<ActionProps, Action
         </Flex>
         <div className="action-content">
           <Text size="small" type="div" breakWords dangerouslySetInnerHTML={{
-            __html: ReplaceLatexWithURL(action.content)
+            __html: ReplaceTextWithLinks(action.content)
           }} />
         </div>
         <Flex
@@ -122,10 +123,15 @@ export default class ActionContainer extends React.Component<ActionProps, Action
         >
           <Flex alignItems="center" className={action.user.isModerator ? "user-is-moderator user" : "user"}>
             <Link href={`/users/redirect_user/${action.user.id}`} target="_blank">
-              <Avatar imgSrc={action.user.avatar} size="xs" />
+              <Avatar imgSrc={action.user.avatar} size="xs" title={action.user.nick} />
             </Link>
             <Flex direction="column" marginLeft="xs">
-              <Text size="small" weight="bold" className="user-nick">{action.user.nick}</Text>
+              <Text size="small" weight="bold" className="user-nick">
+                {action.user.nick} 
+                {action.user.nick === locales.common.accountDeleted &&
+                  <Text type="span" size="xsmall" color="text-gray-70" className="user-id-small"> [{action.user.id}]</Text>
+                }
+              </Text>
               <Text size="xsmall" color="text-gray-70">{action.user.rank?.name}</Text>
             </Flex>
           </Flex>

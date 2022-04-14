@@ -4,6 +4,7 @@ export default {
   "marketHost": "znanija.com",
   "marketName": "znanija",
   "common": {
+    "accountDeleted": "Аккаунт удален",
     "chooseMentor": "Выберите наставника",
     "daily": "день",
     "weekly": "неделя",
@@ -87,7 +88,7 @@ export default {
     "linkToUserProfile": "Ссылка на профиль пользователя"
   },
   "errors": {
-    "accountDeleted": "Аккаунт удалён",
+    "accountDeleted": "Аккаунт удален",
     "couldNotLoadActions": "Нам не удалось загрузить акции :(",
     "notAuthorizedToUseExtension": "Вы не авторизованы, чтобы использовать расширение",
     "couldNotAuthorizeYou": "Мы не смогли вас авторизовать",

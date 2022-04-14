@@ -4,3 +4,4 @@ src/assets/*
 src/typings/*.d.ts
 scripts/*.js
 scripts/gulp/*.js
+gulpfile.js
