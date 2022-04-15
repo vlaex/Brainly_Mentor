@@ -81,6 +81,12 @@
       line-height: 1;
     }
 
+    .user-id-small {
+      font-size: 11px;
+      line-height: 1;
+      margin-left: 3px;
+    }
+
     .sg-avatar {
       @include scale;
     }

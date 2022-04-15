@@ -1,6 +1,7 @@
 import { version as brainlyStyleGuideVersion } from "brainly-style-guide/package.json";
+
 import ToBackground from "@lib/ToBackground";
-import type { ServerConfig } from "@typings/extension";
+import type { FileInjectionOptions, ServerConfig } from "@typings/extension";
 import _API from "@lib/api/extension";
 
 const MARKETS = ["brainly.com", "znanija.com", "nosdevoirs.fr"];
@@ -15,12 +16,7 @@ class Core {
   }
 
   constructor() {
-    this.Init();
-  }
-
-  private async Init() {
-    await this.SetExtensionConfigs();
-    await this.InjectContent();
+    this.InjectContent();
   }
 
   async SetExtensionConfigs() {
@@ -32,7 +28,7 @@ class Core {
     try {
       config = await _API.GetConfig();
     } catch (err) {
-      console.error("Can't set the extension config :(", err);
+      console.error("Failed to fetch the extension config. Maybe not logged in?", err);
     }
 
     localStorage.setItem("BRAINLY_MENTOR_EXTENSION_CONFIG", JSON.stringify(config));
@@ -43,7 +39,7 @@ class Core {
       this.InjectFiles([
         "content-scripts/ModeratorActions/index.js",
         "styles/ModeratorActions/styles.css"
-      ], { oldPage: true, cleanBody: true });
+      ], { oldPage: true, cleanBody: true, loadConfig: true });
     }
 
     if (this.Path(/(\/$)|(\/(question|task|devoir)\/\d+)|(\/(subject|matiere)\/\w+)/)) {
@@ -73,14 +69,13 @@ class Core {
 
   }
 
+  /** Inject content scripts and CSS */
   private async InjectFiles(
     files: string[],
-    options: {
-      cleanBody: boolean;
-      oldPage: boolean;
-      loadConfig?: boolean;
-    } = { oldPage: false, cleanBody: false, loadConfig: false }
+    options: FileInjectionOptions = { oldPage: false, cleanBody: false, loadConfig: false }
   ) {
+    if (options.loadConfig) await this.SetExtensionConfigs();
+
     const jsFiles = files.filter(file => file.match(/\.js$/));
     const cssFiles = files.filter(file => file.match(/\.css$/));
 

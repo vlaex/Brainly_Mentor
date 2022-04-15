@@ -12,7 +12,7 @@ import {
 
 import type { Response, Task, User } from "@typings/brainly";
 import locales from "@locales";
-import ReplaceLatexWithURL from "@utils/ReplaceTextWithLinks";
+import ReplaceTextWithLinks from "@utils/ReplaceTextWithLinks";
 
 type ContentBoxProps = {
   users: User[],
@@ -69,7 +69,7 @@ export default class ContentBox extends React.Component<ContentBoxProps> {
             </Flex>
           </Flex>
           <Text className="sg-flex--margin-top-s" size="small" dangerouslySetInnerHTML={{
-            __html: ReplaceLatexWithURL(data.content)
+            __html: ReplaceTextWithLinks(data.content)
           }} />
           {!!data.attachments.length &&
             <Flex marginTop="s" alignItems="center" className="question-preview-content-box-attachments">

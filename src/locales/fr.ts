@@ -4,6 +4,7 @@ export default {
   "marketHost": "nosdevoirs.fr",
   "marketName": "nosdevoirs",
   "common": {
+    "accountDeleted": "Account deleted",
     "chooseMentor": "Choose a mentor",
     "daily": "daily",
     "weekly": "weekly",

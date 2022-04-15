@@ -1,9 +1,9 @@
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import Dashboard from "./Dashboard";
 
 export default function RenderApp() {
-  ReactDOM.render(
-    <Dashboard />,
-    document.querySelector(".overlay")
-  );
+  const overlay = document.querySelector(".overlay");
+
+  ReactDOM.createRoot(overlay)
+    .render(<Dashboard />);
 }
