@@ -93,7 +93,7 @@ export default class Filters extends React.Component {
     const actions = document.querySelectorAll(".actions > .action");
     if (!actions.length) return;
 
-    Array.from(actions).forEach(this.Filter.bind(this));
+    actions.forEach(this.Filter.bind(this));
 
     if (!document.querySelectorAll(".action:not(.hidden)").length)
       Flash({ type: "info", text: locales.common.nextPagesMayContainActions });

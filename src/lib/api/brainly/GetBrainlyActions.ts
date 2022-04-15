@@ -23,9 +23,7 @@ export default async function GetBrainlyActions(userId: number, pageId: number):
 
   const actions: Action[] = [];
 
-  for (
-    let row of Array.from(doc.querySelectorAll(".activities tr"))
-  ) {
+  for (let row of doc.querySelectorAll(".activities tr")) {
     let action = {} as Action;
 
     let taskId = +row.querySelector(".dataTime > a").textContent;

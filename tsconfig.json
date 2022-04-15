@@ -15,7 +15,7 @@
       "@utils/*": ["./utils/*"],
       "@assets/*": ["./assets/*"]
     },
-    "lib": ["ES5", "ES6", "DOM"]
+    "lib": ["ES5", "ES6", "DOM", "DOM.Iterable"]
   },
   "exclude": ["node_modules", "build"],
   "include": ["src"]
