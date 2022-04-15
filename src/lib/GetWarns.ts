@@ -1,7 +1,6 @@
-import type {
-  Warn
-} from "@typings";
+import type { Warn } from "@typings";
 import locales from "@locales";
+
 const ERRORS = locales.errors;
 
 export default async function GetWarns(userId: number): Promise<Warn[]> {
@@ -15,20 +14,20 @@ export default async function GetWarns(userId: number): Promise<Warn[]> {
 
   const warns: Warn[] = [];
 
-  for (
-    let row of Array.from(doc.querySelectorAll("tr"))
-  ) {
+  for (let row of doc.querySelectorAll("tr")) {
     const fields = row.querySelectorAll("td");
-    if (fields.length == 7) {
-      const warnObject = {} as Warn;
-      warnObject.time = fields[0].innerText;
-      warnObject.reason = fields[1].innerHTML;
-      warnObject.content = fields[2].innerHTML;
-      warnObject.taskId = parseInt(fields[3].querySelector("a")?.href.match(/\d+/)[0]);
-      warnObject.warner = fields[4].innerText.trim();
-      warnObject.active = fields[5].innerText.trim() == "Отменить";
-      warns.push(warnObject);
-    }
+    if (fields.length !== 7) continue;
+
+    const warnObject = {} as Warn;
+    warnObject.time = fields[0].innerText;
+    warnObject.reason = fields[1].innerHTML;
+    warnObject.content = fields[2].innerHTML;
+    warnObject.taskId = parseInt(fields[3].querySelector("a")?.href.match(/\d+/)[0]);
+    warnObject.warner = fields[4].innerText.trim();
+    warnObject.active = !!fields[5].querySelector(`a[href*="cancel"]`);
+      
+    warns.push(warnObject);
   }
+
   return warns;
 }

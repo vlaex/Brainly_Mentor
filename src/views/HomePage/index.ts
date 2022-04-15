@@ -60,7 +60,7 @@ class HomePage {
       .sg-content-box__content .sg-content-box:not(:last-child):not(.candidate)
     `);
 
-    for (let item of Array.from(items)) {
+    for (let item of items) {
       let userLink: HTMLLinkElement = item.querySelector(".sg-actions-list__hole > a");
       let userId = +userLink?.href.match(/\d+$/);
 

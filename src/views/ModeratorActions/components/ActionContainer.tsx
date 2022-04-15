@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Button, Link, Text, Icon, Box, Avatar } from "brainly-style-guide";
+import { Flex, Button, Link, Text, Icon, Avatar } from "brainly-style-guide";
 
 import locales from "@locales";
 import _API from "@lib/api/extension";
@@ -66,7 +66,8 @@ export default class ActionContainer extends React.Component<ActionProps, Action
     let action = this.props.data;
 
     let boxClasses = [
-      "grid-item", "action",
+      "grid-item", 
+      "action",
       `Action-ReviewStatus-${this.state.reviewStatus}`,
       `Action-ContentType-${action.contentType}`,
       `Action-Type-${action.type}`,
@@ -77,7 +78,7 @@ export default class ActionContainer extends React.Component<ActionProps, Action
       boxClasses.push("action--violet");
 
     return (
-      <Box color="white" padding="s" className={boxClasses.join(" ")}>
+      <Flex className={boxClasses.join(" ")}>
         <Flex alignItems="center" className="sg-flex--relative">
           <Link href={action.task.link} target="_blank">
             <Icon title={action.localizedType} type={action.icon} size={24} color={action.iconColor} />
@@ -149,7 +150,7 @@ export default class ActionContainer extends React.Component<ActionProps, Action
             </Text>
           </Flex>
         </Flex>
-      </Box>
+      </Flex>
     );
   }
 }
