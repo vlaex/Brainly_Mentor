@@ -1,7 +1,7 @@
 @import "../mixins";
 
 .mentees-dashboard .grid-item {
-  padding-top: 18px;
+  padding: 18px;
 
   @include mobile {
     overflow-x: auto;
@@ -9,6 +9,7 @@
 
   &.mentor-container {
     height: 322px;
+    padding: 20px;
   }
 
   & .user-info {

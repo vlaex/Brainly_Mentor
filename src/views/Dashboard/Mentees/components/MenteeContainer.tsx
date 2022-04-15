@@ -1,6 +1,6 @@
 import React, { FocusEvent } from "react";
 import {
-  Box, Flex, Avatar, Headline, Text, Icon, Button, Link
+  Flex, Avatar, Headline, Text, Icon, Button, Link
 } from "brainly-style-guide";
 
 import { LineChart } from "./Charts";
@@ -68,7 +68,7 @@ export default class MenteeContainer extends React.Component<
     const chartsType = this.state.chartsType;
 
     return (
-      <Box color="white" className="mentee-container grid-item sg-flex--relative">
+      <Flex direction="column" className="mentee-container grid-item sg-flex--relative">
         <Flex alignItems="center" className="sg-flex--gap-s user-info">
           <Avatar size="m" border={false} imgSrc={mentee.avatar} />
           <Flex direction="column" fullWidth>
@@ -116,7 +116,7 @@ export default class MenteeContainer extends React.Component<
             size="s" 
           />
         </Flex>}
-      </Box>
+      </Flex>
     );
   }
 }

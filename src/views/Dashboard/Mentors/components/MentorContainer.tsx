@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from "react";
 import {
-  Box, Flex, Avatar, Headline, Text, Icon, Button, Link, Media, Checkbox, SeparatorHorizontal
+  Flex, Avatar, Headline, Text, Icon, Button, Link, Media, Checkbox, SeparatorHorizontal
 } from "brainly-style-guide";
+
 import locales from "@locales";
 import type { Mentor, DashboardScreens } from "@typings";
 import _API from "@lib/api/extension";
@@ -54,8 +55,7 @@ export default class MentorContainer extends React.Component<MentorContainerProp
     const mentees = this.props.mentor.mentees;
 
     return (
-      <Box color="white"
-        className="mentor-container grid-item sg-flex--relative">
+      <Flex direction="column" className="mentor-container grid-item sg-flex--relative">
         <Flex alignItems="center" className="sg-flex--gap-s user-info">
           <Flex direction="column" fullWidth>
             <Link target="_blank" size="large" color="text-black"
@@ -102,7 +102,7 @@ export default class MentorContainer extends React.Component<MentorContainerProp
             size="s"
           />
         </Flex>}
-      </Box>
+      </Flex>
     );
   }
 }
