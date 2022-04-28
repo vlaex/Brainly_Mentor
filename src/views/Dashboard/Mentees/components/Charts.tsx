@@ -9,7 +9,7 @@ type MenteeChartsProps = {
   type: keyof Mentee["charts"];
 }
 
-function padNumber (num: number): string {
+function padNumber(num: number): string {
   return (num < 10 ? "0" : "") + num.toString();
 }
 
@@ -18,10 +18,10 @@ export const LineChart = (props: MenteeChartsProps) => {
   let labels = [] as string[];
 
   if (props.type === "weekly") {
-    let currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() - props.dataset.length);
-    
-    while (currentDate < new Date()) {
+    let now = new Date();
+    let currentDate = new Date(now.setDate(now.getDate() + now.getDay() - 7));
+
+    while (currentDate <= new Date()) {
       labels.push(
         padNumber(new Date(currentDate).getDate())
       );
@@ -40,19 +40,19 @@ export const LineChart = (props: MenteeChartsProps) => {
   const fontOptions = { family: "ProximaNova" };
   const options: ChartOptions<"line"> = {
     scales: {
-      x: { 
+      x: {
         ticks: { font: { ...fontOptions, size: 10 } }
       },
-      y: { 
+      y: {
         ticks: { font: { ...fontOptions, size: 11, weight: "bold" } }
-      } 
+      }
     },
     plugins: {
       tooltip: {
         bodyFont: fontOptions,
         titleFont: fontOptions
       },
-      legend: { display: false } 
+      legend: { display: false }
     },
   };
 
