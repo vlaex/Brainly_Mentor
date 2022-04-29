@@ -1,6 +1,7 @@
 import { Chart, registerables, ChartOptions } from "chart.js";
 import { Line } from "react-chartjs-2";
 import type { Mentee } from "@typings";
+import { GetMonday} from "./GetMonday";
 
 Chart.register(...registerables);
 
@@ -18,8 +19,7 @@ export const LineChart = (props: MenteeChartsProps) => {
   let labels = [] as string[];
 
   if (props.type === "weekly") {
-    let now = new Date();
-    let currentDate = new Date(now.setDate(now.getDate() + now.getDay() - 7));
+    let currentDate = GetMonday(new Date());
 
     while (currentDate <= new Date()) {
       labels.push(
