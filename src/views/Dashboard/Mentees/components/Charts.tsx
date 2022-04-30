@@ -1,7 +1,7 @@
-import { Chart, registerables, ChartOptions } from "chart.js";
+import { Chart, ChartOptions, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
 import type { Mentee } from "@typings";
-import { GetMonday} from "./GetMonday";
+import GetMonday from "@utils/GetMonday";
 
 Chart.register(...registerables);
 
