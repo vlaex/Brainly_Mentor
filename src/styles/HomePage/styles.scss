@@ -1,42 +1,4 @@
-[data-test="ranking-box"] {
-  & .sg-content-box.sg-content-box--full {
-    margin-left: 5px;
-  }
-
-  & .sg-actions-list__hole > .review-candidate.sg-button {
-    position: absolute;
-    height: 25px;
-    width: 25px;
-    margin-top: -30px;
-    margin-left: -28px;
-
-    .sg-icon {
-      fill: black;
-    }
-
-    $red: #ff8787;
-    $green: #7dd1a7;
-
-    &.good-candidate {
-      background-color: $green;
-
-      :hover,
-      :focus {
-        background: $green;
-      }
-    }
-
-    &.bad-candidate {
-      background-color: $red;
-
-      :hover,
-      :focus {
-        background: $red;
-      }
-    }
-  }
-}
-
+/* stylelint-disable declaration-no-important */
 .candidate-label {
   border: 2px solid #55ab80;
   background: white;
@@ -53,4 +15,36 @@
   margin-left: 15px;
   position: absolute;
   font-size: 12px;
+}
+
+.review-candidate.sg-button {
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  margin-left: -28px;
+
+  .sg-icon {
+    fill: black;
+  }
+
+  $red: #ff8787;
+  $green: #7dd1a7;
+
+  &.good-candidate {
+    background-color: $green !important;
+
+    :hover,
+    :focus {
+      background: $green !important;
+    }
+  }
+
+  &.bad-candidate {
+    background-color: $red !important;
+
+    :hover,
+    :focus {
+      background: $red !important;
+    }
+  }
 }

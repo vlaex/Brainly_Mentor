@@ -33,6 +33,8 @@ storage.get(`authToken_${locales.market}`).then(async function(token) {
       withIcon: true
     });
 
+    window.location.reload();
+
   } catch (err) {
     Flash({
       type: "info",

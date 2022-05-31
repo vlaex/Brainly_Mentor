@@ -25,7 +25,9 @@ class HomePage {
   }
 
   private BindReviewCandidateListener(button: HTMLButtonElement) {
-    button.onclick = async () => {
+    button.onclick = async (e) => {
+      e.preventDefault();
+
       DisableButton(button);
 
       let icon = button.querySelector(".sg-icon use");
@@ -57,26 +59,27 @@ class HomePage {
 
   private RenderLabels() {
     let items = this.#box.querySelectorAll(`
-      .sg-content-box__content .sg-content-box:not(:last-child):not(.candidate)
+      .sg-box > .sg-flex--column .sg-flex--column [data-testid="ranking-item"]:not(.candidate)
     `);
 
     for (let item of items) {
-      let userLink: HTMLLinkElement = item.querySelector(".sg-actions-list__hole > a");
+      let userLink: HTMLLinkElement = item.querySelector("a:first-child");
       let userId = +userLink?.href.match(/\d+$/);
 
       const candidate = this.candidates.find(candidate =>
         userId === candidate.id
       );
-
-      const listHole = item.querySelector(".sg-actions-list .sg-actions-list__hole:first-child");
       
       const candidateColor = /отказ/i.test(candidate?.status) ? "red" :
         /актив/i.test(candidate?.status) ? "#6322ff" : "#55ab80";
 
       item.classList.add("candidate");
-      listHole.insertAdjacentHTML("beforeend", candidate ? `
+      if (candidate) {
+        item.querySelector(".sg-avatar").insertAdjacentHTML("afterend", `
         <div style="border-color: ${candidateColor}" class="candidate-label" title="Кандидат: ${candidate.status}">К</div>
-      ` : `
+        `);
+      } else {
+        item.insertAdjacentHTML("afterbegin", `
         <button data-id="${userId}" title="Кандидат?" class="sg-button--icon-only sg-button review-candidate sg-button--solid-light sg-button--solid-light-toggle-blue">
           <span class="sg-button__icon">
             <div class="sg-icon sg-icon--adaptive sg-icon--x16"><svg class="sg-icon__svg" role="img" focusable="false">
@@ -84,15 +87,15 @@ class HomePage {
             </svg></div>
           </span>
         </button>
-      `);
+        `);
 
-      if (item.querySelector(".review-candidate"))
         this.BindReviewCandidateListener(item.querySelector(".review-candidate"));
+      }
     }
   }
 
   async Init() {
-    let box: HTMLDivElement = document.querySelector(`[data-test="ranking-box"]`);
+    let box: HTMLDivElement = document.querySelector(`div[data-testid="ranking"]`);
 
     if (!box) return setTimeout(this.Init, 1000);
 
