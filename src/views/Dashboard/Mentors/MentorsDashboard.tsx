@@ -68,8 +68,7 @@ export default class MentorsDashboard extends React.Component
         <Overlay>
           <Flex className="error-container" justifyContent="center">
             <Headline extraBold color="text-red-60">{this.state.error}</Headline>
-            <Button onClick={this.RenderMentors} type="outline"
-              toggle="peach">{locales.common.tryAgain}</Button>
+            <Button onClick={this.RenderMentors} type="outline">{locales.common.tryAgain}</Button>
           </Flex>
         </Overlay>
       );
@@ -83,8 +82,8 @@ export default class MentorsDashboard extends React.Component
               className="mentees-dashboard-header">
               <Flex>
                 <TextBit color="text-blue-60">{locales.common.mentors} [{this.state.mentors.length}]</TextBit>
-                <Button onClick={this.ToggleAddMentorBoxVisibility} type="solid-mint"
-                  icon={<Icon type="plus" />} iconOnly />
+                <Button onClick={this.ToggleAddMentorBoxVisibility} type="solid-light"
+                  icon={<Icon type="plus" color="icon-black" />} iconOnly />
               </Flex>
               <Flex>
                 <Button

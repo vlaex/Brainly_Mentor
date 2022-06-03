@@ -83,7 +83,7 @@ export default class MenteesDashboard extends React.Component<DashboardProps, Da
         <Overlay>
           <Flex className="error-container" justifyContent="center">
             <Headline extraBold color="text-red-60">{this.state.error}</Headline>
-            <Button onClick={this.RenderMentees} type="outline" toggle="peach">{locales.common.tryAgain}</Button>
+            <Button onClick={this.RenderMentees} type="outline">{locales.common.tryAgain}</Button>
           </Flex>
         </Overlay>
       );
@@ -101,7 +101,7 @@ export default class MenteesDashboard extends React.Component<DashboardProps, Da
                     [{this.state.mentees.length}]
                 </TextBit>
                 {(!this.props.mentor && this.state.me?.senior) &&
-                  <Button onClick={this.ToggleAddMenteeBoxVisibility} type="solid-mint" icon={<Icon type="plus" />} iconOnly />}
+                  <Button onClick={this.ToggleAddMenteeBoxVisibility} type="solid-light" icon={<Icon type="plus" color="icon-black" />} iconOnly />}
               </Flex>
               <Flex>
                 {this.state.me?.senior && 

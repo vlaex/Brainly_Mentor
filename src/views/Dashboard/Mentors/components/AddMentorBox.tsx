@@ -77,7 +77,7 @@ export class AddMentorBox extends React.Component<
             disabled={this.state.loading}
           />
           <Checkbox onChange={this.handleChangeCheckBox} disabled={this.state.loading}>{locales.common.senior}</Checkbox>
-          <Button onClick={this.handleClick} loading={this.state.loading} type="solid-mint" size="s">OK</Button>
+          <Button onClick={this.handleClick} loading={this.state.loading} type="solid-light" size="s">OK</Button>
         </Flex>
         {this.state.error && 
           <Text color="text-red-60" weight="bold" size="medium" align="to-center">{this.state.error}</Text>}

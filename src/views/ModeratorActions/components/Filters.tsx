@@ -110,7 +110,7 @@ export default class Filters extends React.Component {
   render() {
     return (
       <Flex className="sg-flex--relative filters" marginLeft="s">
-        <Button onClick={_ => this.ToggleVisibility()} title={locales.common.filters} type="solid-blue" icon={<Icon type="filters" color="adaptive" size={24} />} iconOnly />
+        <Button onClick={_ => this.ToggleVisibility()} title={locales.common.filters} type="facebook" icon={<Icon type="filters" color="adaptive" size={24} />} iconOnly />
         <Flex hidden={this.state.filtersHidden} direction="column" className="filters-box">
           <Flex>
             <Text size="small" weight="bold">{locales.common.contentType}</Text>

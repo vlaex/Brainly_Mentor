@@ -17,7 +17,7 @@ class Dashboard {
 
   private async InsertButtons() {
     document.body.insertAdjacentHTML("beforeend", `
-      <button class="open-mentees-dashboard sg-button sg-button--solid-blue sg-button--s sg-button--icon-only">
+      <button class="open-mentees-dashboard sg-button sg-button--facebook sg-button--s sg-button--icon-only">
         <span class="sg-button__icon">
           <div class="sg-icon sg-icon--adaptive sg-icon--x16">
             <svg class="sg-icon__svg" role="img" focusable="false"><use xlink:href="#icon-academic_cap" aria-hidden="true"></use></svg>

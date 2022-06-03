@@ -38,6 +38,7 @@ export default class EntriesSection extends React.Component<
 
   render() {
     let { date, entries, users } = this.props;
+    let { visible } = this.state;
 
     date = moment(date).tz(locales.timezone, true).format(locales.dateFormat);
 
@@ -49,11 +50,11 @@ export default class EntriesSection extends React.Component<
             type="solid-light" 
             iconOnly 
             size="s" 
-            icon={<Icon type={this.state.visible ? "arrow_up" : "arrow_down"} size={16} />}
+            icon={<Icon color="icon-black" type={visible ? "arrow_up" : "arrow_down"} size={16} />}
             onClick={this.ToggleVisibility}
           />
         </Flex>
-        <Flex direction="column" hidden={!this.state.visible}>
+        <Flex direction="column" hidden={!visible}>
           {entries.map((logEntry, i) => <LogEntry usersData={users} key={i} entry={logEntry} />)}
         </Flex>
       </Flex>

@@ -86,7 +86,7 @@ export class AddMenteeBox extends React.Component<
               this.setState({ mentorId: +e.currentTarget.value })
             } />
           </Flex>
-          <Button onClick={this.handleClick} loading={this.state.loading} type="solid-mint" size="s">OK</Button>
+          <Button onClick={this.handleClick} loading={this.state.loading} type="solid-light" size="s">OK</Button>
         </Flex>
         {this.state.error && 
           <Text color="text-red-60" weight="bold" size="medium" align="to-center">{this.state.error}</Text>}

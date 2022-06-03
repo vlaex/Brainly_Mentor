@@ -97,10 +97,10 @@ export default class MenteeContainer extends React.Component<
           </Flex>
           <Flex className="sg-flex--gap-xs">
             <Link href={`/moderation_new/view_moderator/${mentee.id}`} target="_blank">
-              <Button icon={<Icon type="open_in_new_tab" size={16} />} size="s" iconOnly type="solid-blue" title={locales.common.viewActions} />
+              <Button icon={<Icon type="open_in_new_tab" size={16} />} size="s" iconOnly type="facebook" title={locales.common.viewActions} />
             </Link>
             {this.props.canDelete &&
-              <Button onClick={this.DeleteMentee} icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly toggle="peach" type="outline" title={locales.common.deleteMentee} />
+              <Button onClick={this.DeleteMentee} icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly type="outline" title={locales.common.deleteMentee} />
             }
           </Flex>
         </Flex>

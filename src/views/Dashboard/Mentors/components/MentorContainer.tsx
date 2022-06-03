@@ -64,10 +64,14 @@ export default class MentorContainer extends React.Component<MentorContainerProp
           <Flex justifyContent="space-between">
             <Flex className="sg-flex--gap-xs">
               <Button onClick={() => this.props.switchScreen("Mentees", mentor)} icon={<Icon type="seen" size={16} />} size="s" iconOnly
-                type="solid-blue" title={locales.common.viewMentor} />
-              <Button onClick={this.DeleteMentor}
-                icon={<Icon type="trash" color="adaptive" size={16} />} size="s" iconOnly
-                toggle="peach" type="outline" title={locales.common.deleteMentor} />
+                type="facebook" title={locales.common.viewMentor} />
+              <Button 
+                onClick={this.DeleteMentor} 
+                icon={<Icon type="trash" color="adaptive" size={16} />} 
+                size="s" 
+                iconOnly 
+                type="outline" title={locales.common.deleteMentor} 
+              />
             </Flex>
           </Flex>
         </Flex>
